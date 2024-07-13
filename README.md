@@ -1,35 +1,47 @@
-# Android Avanzado
+<img src="images/bedu.jpg" width="150">
 
-## :wave: Bienvenid@s
+## Módulo: Android Avanzado GN
 
-## :dart: Objetivo
+<img src="images/androidify.gif" align="right" height="150" width="150" hspace="10">
 
-Construir una aplicación Android con funciones inyectadas por dependencias y librerías, con simplificación de autenticación, reporte y seguimiento de errores, servicios de terceros, elementos de realidad aumentada, y publicable en tiendas alternativas a Google Play y/o en un servidor propio.
+<div style="text-align: justify;">
 
-## Datos relevantes
+### :clipboard:  Descripción
 
-- Firebase es una plataforma de Google para desarrollar y facilitar la creación de apps con alta calidad de una forma rápida.
-- ArCore es un kit de desarrollo de software para dispositivos móviles que permite la creación de aplicaciones de realidad aumentada.
-- Jetpack es un conjunto de bibliotecas que ayuda a los desarrolladores a seguir las prácticas recomendadas, reducir el código estándar y escribir código que funcione de manera coherente en los dispositivos y las versiones de Android, para que puedan enfocarse en el código que les interesa.			
+Este módulo tiene como  finalidad aplicar conceptos concurrentes en el desarrollo de aplicaciones móviles para estructurar correctamente un proyecto android, comunicar el sistema con servicios web, guardar información adquirida para su uso posterior,utilizar servicios de push notifications y analytics.
 
 ## :gear: Requerimientos
 
 - Android Studio
 - Cuenta de Google
 - Teléfono físico (Recomendado)
-- SDK ArCore
+
+## Datos relevantes
+
+- Firebase es una plataforma de Google en la nube (SaaS) que brinda herramientas para facilitar el desarrollo de una aplicación y volverla más robusta en distintos rubros (seguridad, monitorización, notificaciones entre otras cosas).
+- Jetpack es un conjunto de bibliotecas que ayuda a los desarrolladores a seguir las prácticas recomendadas, reducir el código estándar y escribir código que funcione de manera coherente en los dispositivos y las versiones de Android, para que puedan enfocarse en el código que les interesa.	
 
 ## 💻 Proyecto
 
-Desarrollar una app Android con Kotlin como principal lenguaje de desarrollo, con funciones agregadas mediante Firebase Authentication, Firebase Crashlytics, Dependencias, Navigation, SDK´s, Deploys, Librerías y RA.
+Continuaremos con el desarrollo del proyecto del módulo anterior. Implementanto logins, notificaciones y otras utilidades para mejorar la usabilidad y la experiencia de usuario mediante un Mínimo Producto Viable.
 
-## :bookmark_tabs: Sesiones
+### :memo:  Contenido
 
-1. [Firebase Authentication ](./Sesion-01)(Simplifica el inicio de sesión y el registro)
-2. [Firebase Crashlytics ](./Sesion-02)(Reportes y seguimiento a errores)
-3. [Dependencias ](./Sesion-03)(Simplifica el código)
-4. [Navigation ](./Sesion-04)(Mejora el flujo de datos)
-5. [Terceros ](./Sesion-05)(Implementar SDK's de terceros) Facebook, Spotify, Conekta
-6. [Deploys ](./Sesion-06)(Publica en tiendas altenativas a Google Play o en un servidor externo)
-7. [Librerías ](./Sesion-07)(Ahorra código y mejora el flujo)
-8. [RA ](./Sesion-08)(Implementaciones más utilizadas de RA)
+El módulo consta de 8 sesiones en su mayoría prácticas que abordarán los siguientes temas:
+
+| Sesión | Tema                                                         | Descripción                                                  |
+| ------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 1      | [Conexiones GET y POST (Networking)](Sesion-01/Readme.md)    | Comunícate con sistemas remotos.                             |
+| 2      | [Persistencia y Bases de Datos](Sesion-02/Readme.md)         | Almacena diversos tipos de datos.                            |
+| 3      | [Patrones de Arquitectura](Sesion-03/Readme.md)              | Estructura adecuadamente el código fuente de tu proyecto.    |
+| 4      | [Testing](Sesion-04/Readme.md)                               | Crea pruebas automatizadas para detectar errores.            |
+| 5      | [GPS y Google Maps](Sesion-05/Readme.md)                     | Obtén tu ubicación y utiliza el servicio de mapas de google. |
+| 6      | [Notifications](Sesion-06/Readme.md)                         | Configura y recibe notificaciones en tu aplicación.          |
+| 7      | [Servicios de Firebase](Sesion-07/Readme.md)                 | Implementa autenticación segura, detecta bugs en tu app y recibe push notifications remotas. |
+| 8      | [Acceso a cámara y generación de pdf's](Sesion-08/Readme.md) | Utiliza la cámara de tu dispositivo y crea archivos pdf con el contenido que desees. |
+
+
+
+[`Siguiente`](Sesion-01/Readme.md)
+
+</div>
