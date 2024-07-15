@@ -1,228 +1,744 @@
-# Ejemplo 02: Implementar Dagger Hilt
+[`Kotlin Avanzado`](../../Readme.md) > [`Sesión 07`](../Readme.md) > `Ejemplo 3`
 
-## Objetivo
+## Architecture Components
 
-* Implementar la inyección de dependencias de manera automatizada mediante Dagger Hilt y evitar problemas de inyección manual.
+<div style="text-align: justify;">
 
-## Desarrollo
+### 1. Objetivos :dart:
 
-En el ejemplo anterior se crearon, proporcionaron y administraron por cuenta propia las dependencias de las diferentes clases, sin recurrir a una biblioteca. Esto se denomina inyección de dependencias a mano o inyección de dependencias manual. 
 
-En el ejemplo de Car sólo había una dependencia, pero si hay varias dependencias y clases la inyección manual resulta más difícil y tediosa, además de que presenta los siguientes problemas:
+- Migrar una actividad convencional al patrón Model-View-Presenter
 
-- En el caso de aplicaciones grandes, tomar las dependencias y conectarlas correctamente puede requerir una gran cantidad de código estándar. En una arquitectura de varias capas, para crear un objeto en una capa superior, se deben proporcionar todas las dependencias de las capas que se encuentran debajo de ella. Por ejemplo, para construir un automóvil real es posible que necesites un motor, una transmisión, un chasis y otras piezas; a su vez, el motor necesita cilindros y bujías.
+### 2. Requisitos :clipboard:
 
-- Cuando no se pueden construir dependencias antes de pasarlas (por ejemplo, si usas inicializaciones diferidas, o si solicitas permisos para objetos en los flujos de tu app), necesitas escribir y conservar un contenedor personalizado (o un grafo de dependencias) que administre las dependencias en la memoria desde el principio.
+* Haber leído previamente el tema de Patrones de arquitectura para android en el Prework
 
-Debido a estos inconvenientes Hilt es la biblioteca de Jetpack recomendada para la inyección de dependencias en Android. Hilt establece una forma estándar de usar la inyección de dependencias en tu aplicación, pues proporciona contenedores para cada clase de Android en tu proyecto y administra sus ciclos de vida de forma automática.
+### 3. Desarrollo :computer:
 
-Se basa en la popular biblioteca de inyección de dependencias Dagger y se beneficia de la corrección en tiempo de compilación, el rendimiento del entorno de ejecución, la escalabilidad, y la compatibilidad con Android Studio que proporciona.
+Un proyecto de android puede variar en cuanto a la complejidad de su estructura, dependiendo de muchos factores que afectan al performance, escalabilidad y al peso de una app. Una de estas características es la estructura que siga el proyecto.
 
-Ahora utilizaremos el proyecto del ejemplo 1 y lo prepararemos para trabajar con Hilt.  Para hacerlo realiza los siguientes pasos.
+Además de los distintos patrones de arquitectura que se han utilizado desde el desarrollo de las primeras aplicaciones para android, tales como MVC o MVP, la plataforma de android sugiere una arquitectura adecuado para muchos de los flujos de trabajo. Dicha estructura utiliza ___Android Architecture Components___.
 
-1. Dirígete al Gradle del proyecto y agrega la siguiente línea de código, como se aprecia en la imagen.
+_Android Architecture Components_ es una serie de librerías que proveen de herramientas para facilitar la estructuración de un código mantenible y testeable. Dentro de estas, podemos encontrar los siguientes componentes:
 
-    ```Gradle
-    classpath "com.google.dagger:hilt-android-gradle-plugin:2.36"
-    ```
+* ***Room***, librería para gestionar bases de datos SQLite de manera local de forma óptima y sintetizada. Este fue abordado en el [Ejemplo 2](../../Sesion-04/Ejemplo-02) de la [Sesión 4](../../Sesion-04/Readme.md)
+* ***LiveData***, Un wrapper que da la capacidad a un objeto de ser observable.
+* ***ViewModel***, Es encargada de gestionar los datos correspondientes a la UI (podríamos decir,  relacionados a un Activity o Fragment) y su procesamiento.
 
-    <img src="assets/01.png" width="80%"/>
 
-2. Ahora debe abrirse el Gradle del módulo y ahí es necesario agregar las siguientes líneas de código, como se visualiza en las imágenes.
 
-    ```Gradle
-    id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
+La estructura sugerida para utilizarse con _Architecture Components_ es la siguiente:
 
-    ...
+<img src="images/architecture.png" width="80%">
 
-    //Dagger - Hilt
-    implementation "com.google.dagger:hilt-android:2.36"
-    kapt "com.google.dagger:hilt-android-compiler:2.36"
-    ```
 
-    <img src="assets/02.png" width="80%"/>
 
-    <img src="assets/03.png" width="80%"/>
+* Al primer nivel, que está compuesto por un *Activity* o *Fragment*,  se le llama ***UI Controller*** y se encarga de dirigir los eventos asociados a la interfaz de usuario. 
+* El segundo nivel está conformado con el ___ViewModel___, un contenedor de datos requeridos por la UI. Los datos contenidos pueden ser envueltos por una clase ***LiveData***, que se encarga de volver dicho objeto observable, entre otras propiedades.
+* En el tercer nivel se encuentra el ___Repositorio___, quien controla y administra el acceso a diferentes fuentes de datos. Como tal es una ___Single source of thruth___ (Única fuente de verdad), es decir, que es la única que debe realizar esta tarea.
+* Los últimos niveles son como tal fuentes de información que están bajo la dirección del repositorio. En este diagrama contemplamos un modelo de datos relacionado a Room, quien maneja instancias de dicho modelo en una DB. También tenemos una fuente remota manejada por el cliente http _Retrofit_.
 
-3. Después se debe crear una clase que será llamada Application.
 
-    <img src="assets/04.png" width="60%"/>
 
-4. Es necesario que se le agregue el siguiente código.
+Este es un esquema general, sin embargo, utilizaremos una versión reducida de este esquema para implementarlo en una aplicación y comprender el alcance de los Architecture Components. En este caso, utilizaremos nuestra Base de Datos local como única fuente de datos.
 
-    ```Gradle
-    import android.app.Application
-    import dagger.hilt.android.HiltAndroidApp
 
-    @HiltAndroidApp
-    class Application : Application()
-    ```
 
-    > Nota: con la anotación **@HiltAndroidApp** indicamos a Hilt que tiene que implementar la inyección de dependencias en nuestra app.
+<img src="images/reduced-architecture.png" width="80%">
 
-5. Posteriormente debe crearse el object **AppModule**. Este será el encargado de pasar las dependencias que se adhieran. Debe agregarse el siguiente código dentro de él, el cual contiene la primera dependencia.
 
-    <img src="assets/05.png" width="60%"/>
 
-    ```Gradle
-    import dagger.Module
-    import dagger.Provides
-    import dagger.hilt.InstallIn
-    import dagger.hilt.components.SingletonComponent
-    import javax.inject.Named
-    import javax.inject.Singleton
+#### Setup inicial 
 
-    @Module
-    @InstallIn(SingletonComponent::class)
-    object AppModule {
+Para este ejemplo, volveremos a desarrollar el ejercicio del  [Ejemplo 2](../../Sesion-04/Ejemplo-02) de la [Sesión 4](../../Sesion-04/Readme.md), para esto, volveremos a tomar la [base del proyecto](base) (incluído aquí).
 
-        @Singleton
-        @Provides
-        @Named("String1")
-        fun provideTestString1() = "This is string to inject"
 
+
+Editaremos el archivo ***app/buid.gradle***. Agregaremos la opción de databinding, que abordaremos más adelante, mediante las siguientes líneas: 
+
+```groovy
+android{
+  ...
+  buildFeatures {
+        dataBinding true
     }
-    ```
+} 
 
-    La explicación de las anotaciones usadas en el código son las siguientes.
+```
 
-    - **@Module.** Tiene la función de especificar que el objeto es un módulo y contiene dependencias.
-    - **@InstallIn.** Indica a Hilt en qué clase de Android se usará o instalará cada módulo.
-    - **@Singleton.** Expresa que la dependencia sólo se puede instanciar una vez.
-    - **@Provides.** Indica que el valor resultante será enviado a quien lo implemente.
-    - **@Named.** Expresa el nombre que se brinda a la dependencia, y quién lo quiera implementar tendrá que buscarla por el nombre que se defina dentro del named, o de lo contrario toma el valor de la función.
 
-    </br>
 
-6. Luego debe crearse el **MainActivity** que inyecta la dependencia del **AppModule**. Para ello se agrega el siguiente código de manera que resulte como se aprecia a continuación.
+Utilizaremos la siguiente dependencia, para utilizar las clases necesarias de Architecture components.
 
-    ```Gradle
-    import android.os.Bundle
-    import android.util.Log
-    import androidx.appcompat.app.AppCompatActivity
-    import dagger.hilt.android.AndroidEntryPoint
-    import javax.inject.Inject
-    import javax.inject.Named
+```groovy
+implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
+```
 
-    @AndroidEntryPoint
-    class MainActivity : AppCompatActivity() {
 
-        @Inject
-        @Named("String1")
-        lateinit var testString: String
 
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            setContentView(R.layout.activity_main)
+#### Repositorio
 
-            Log.e("MainActivity", testString)
+Lo siguiente es crear una clase que actúe como interfaz entre el Dao y quien requiera la información. Esta clase será nuestro __Repositorio__.  
+
+```kotlin
+class VehicleRepository(
+    private val vehicleDao: VehicleDao,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    ) {
+    
+    
+}
+```
+
+El _CoroutineDispatcher_ determina el _Thread_ donde se ejecuta nuestra corrutina, por eso lo necesitamos. (Dispatchers.IO envía nuestro proceso a un Thread Pool).
+
+Agregaremos por el momento un método para recuperar todos los vehículos guardados y otro para agregar un set de vehículos.
+
+```kotlin
+fun getVehicles(): List<Vehicle> {
+        return vehicleDao.getVehicles()
+    }
+
+suspend fun populateVehicles(vehicles: List<Vehicle>) = withContext(ioDispatcher){
+        return@withContext vehicleDao.insertAll(vehicles)
+    }
+```
+
+
+
+El repositorio deberá ser único y accesible para todos los ViewModels, es por eso que crearemos una instancia en nuestra aplicación y desde ahí realizaremos las operaciones.
+
+```kotlin
+val vehicleRepository: VehicleRepository
+        get() = VehicleRepository(
+            VehicleDb.getInstance(this)!!.vehicleDao()
+        )
+```
+
+Debido a que nuestro constructor requiere al menos el ___Dao___, se lo proporcionamos mediante nuesto database obtenido con el singleton ___getInstance()___. 
+
+Asegúrate de que el nuevo componente _Application_ sea asignado en nuestro __Manifest__.
+
+```xml
+<application
+    android:name=".VehiclesApplication"
+             ...
+```
+
+
+
+
+
+#### Creando los ViewModels 
+
+Ahora requeriremos guardar los datos que utilizaremos en el Fragment, esto lo determinaremos en una nueva clase ___VehicleListViewModel___, dentro del package _vehiclelist_. Nuestro ViewModel recibirá una instancia del repositorio en su constructor.
+
+
+
+```kotlin
+class VehicleListViewModel(
+    private val vehicleRepository: VehicleRepository): ViewModel(){
+
+}
+```
+
+por el momento, requeriremos únicamente de la lista de vehículos, por lo que declaramos esta variable. También utilizaremos un método temporal para poblar nuestra base de datos (es un truco que usaremos una sola vez ;) ).
+
+```kotlin
+
+  private var _vehicles: List<Vehicle> = listOf()
+
+  init{
+      prepopulate()
+  }
+
+  fun getVehicleList(): List<Vehicle>{
+      _vehicles = vehicleRepository.getVehicles()
+      return _vehicles
+  }
+
+  fun prepopulate(){
+      val vehicles = listOf(
+          Vehicle(model = "Vento",brand = "Volkswagen",platesNumber = "STF0321",isWorking = true),
+          Vehicle(model = "Jetta",brand = "Volkswagen",platesNumber = "FBN6745",isWorking = true)
+      )
+
+      viewModelScope.launch {
+          vehicleRepository.populateVehicles(vehicles)
+      }
+
+```
+
+Ahora, en ___VehicleListFragment___, Crearemos un atributo que almacenará una instancia de nuestro `ViewModel`
+
+```kotlin
+ private lateinit var viewModel: VehicleListViewModel
+```
+
+Y le asignamos una instancia en `onCreateView`
+
+```kotlin
+viewModel = VehicleListViewModel(
+    (requireContext().applicationContext as VehiclesApplication).vehicleRepository
+)
+```
+
+Crearemos un nuevo método para llenar la lista de vehículos
+
+```kotlin
+private fun setupVehicleList(){
+
+    lifecycleScope.launch {
+        withContext(Dispatchers.IO) {
+            val vehicleList = viewModel.getVehicleList().toMutableList()
+						adapter = VehicleAdapter(vehicleList, this@VehicleListFragment)   
+        }
+      recyclerVehicle.adapter = adapter
+    }
+}
+```
+
+
+
+Y la utilizaremos en el método `onViewCreated`
+
+```kotlin
+override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+
+    setupVehicleList()
+}
+```
+
+Corremos la aplicación y verificamos que los vehículos estén en la lista:
+
+<img src="images/list-vehicles.png" width="35%">
+
+
+
+Recuerda comentar el código ___prepopulate___ en nuestro ___ViewModel___.
+
+```kotlin
+// prepopulate()
+```
+
+#### Explorando el Adapter
+
+Anteriormente hemos utilizado los adapters recibiendo una lista de items en su constructor, algo indeseable puesto que la información debe ser manejada únicamente por el ViewModel, además de que esta aproximación tiene el inconveniente de tener qué actualizar cada modificación en la lista, por lo que para este adapter utilizaremos una aproximación más sencilla: ___DiffUtil___. Esta herramienta compara una lista vieja de la nueva y si existen diferencias, determina la acción realizada (agregar, eliminar, editar), haciendo el trabajo por nosotros. Crearemos una clase que la implemente:
+
+```kotlin
+class VehicleDiffCallback : DiffUtil.ItemCallback<Vehicle>() {
+    override fun areItemsTheSame(oldItem: Vehicle, newItem: Vehicle): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: Vehicle, newItem: Vehicle): Boolean {
+        return oldItem == newItem
+    }
+}
+```
+
+* ___areItemsTheSame___ compara que dos objetos sean los mismos a través de alguna propiedad única, devolviendo true si es el caso, o false si no. Aquí compararemos los objetos por su id. Con esta propiedad sabremos si un item fue actualizado.
+* ___areContentsTheSame___ verifica todos los campos entre un objeto viejo y uno nuevo para saber si algún elemento fue actualizado. En este caso, compararemos los dos objetos como tal.
+
+
+
+#### Binding 
+
+Ahora utilizaremos Data Binding en nuestro Adapter, esto implica que un dato de nuestro _ViewModel_ va irremediablemente atado a un view de nuestro _layout_ sin necesidad de asignarlo programáticamente.
+
+Abrimos ___vehicle_item.xml___, damos click derecho en el  ___ConstraintLayout___ y seleccionamos la opción __Convert to data binding layout__. 
+
+<img src="images/binding.png"/>
+
+Esta opción Agregará un elemento <layout> junto a un <data></data>. Aquí declararemos nuestra variable vehicle y viewModel que estará atado al layout. 
+
+```kotlin
+<data>
+        <variable
+            name="vehicle"
+            type="org.bedu.architecturecomponents.data.local.Vehicle" />
+
+        <variable
+            name="viewModel"
+            type="org.bedu.architecturecomponents.vehiclelist.VehicleListViewModel" />
+    </data>
+```
+
+Como la variable ___vehicle___ contiene los datos que van en nuestros ___TextView___, vamos a asignarlos directamente a sus respectivas propiedades ___text___.
+
+```xml
+<TextView
+    android:id="@+id/plates_number"
+    android:text="@{vehicle.platesNumber}"
+    ...
+/>
+
+<TextView
+	  android:id="@+id/model_name"
+    android:text="@{vehicle.model}"
+    .../>
+```
+
+Cada vez que los datos cambien, el texto en estos ___Views___ serán actualizados automáticamente.
+
+Estas dos variables serán asignadas en el código del adapter a través de un objeto Binding creado automáticamente, su nombre es una conversión del nombre del layout en formato CamelCase + el sufijo __Binding__. Para _vehicle_item_, el nombre de la clase sería ___VehicleItemBinding___. Este elemento también contiene las referencias a las vistas, por lo cual ya no es necesario identificarlos por id. Con estas modificaciones, nuestro _ViewHolder_ quedaría así:
+
+```kotlin
+    class ViewHolder private constructor(val binding: VehicleItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(viewModel: VehicleListViewModel, item: Vehicle) {
+            binding.viewModel = viewModel
+            binding.vehicle = item
+            binding.executePendingBindings()
+        }
+
+        companion object {
+            fun from(parent: ViewGroup): ViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = VehicleItemBinding.inflate(layoutInflater, parent, false)
+
+                return ViewHolder(binding)
+            }
         }
     }
-    ```
+```
 
-    Con la anotación **@Inject** se indica a Hilt que inyecte la dependencia que se expresó en el Named.
 
-    Ahora, para ejecutar el código necesitamos realizar algunos pasos extra que se indican a continuación.
 
-7. Se crea el **activity_main** con el siguiente código XML.
+Notese que en la función bind es donde asignamos el valor de nuestras variables ___vehicle___ y ___viewModel___ declaradas en el layout. El método ___executePendingBindings___ fuerza a atar datos pendientes. El método ___from___ en nuestro companion object regresa una instancia de nuestro ViewHolder, resaltando que ahora inflamos mediante VehicleItemBinding en vez de nuestra ___View___ raíz y sin enlazar Views a objetos mediante su id.
 
-    <img src="assets/06.png" width="60%"/>
+Finalmente, toca modificar como tal los métodos del ___Adapter___. El método ___getItemCount__ ya no es requerido, pues un ___ListAdapter___ realiza el conteo internamente. Por lo tanto, su implementación se reduce a estos dos callbacks:
 
-    ```xml
-    <?xml version="1.0" encoding="utf-8"?>
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+```kotlin
+override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
+   return ViewHolder.from(viewGroup)
+}
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-    ```
+override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+    val item = getItem(position)
+    viewHolder.bind(viewModel,item)
+}
+```
 
-    Hasta este punto nuestra app no posee interfaz, por lo que el XML se encuentra vacío.
 
-8. Posteriormente modificamos el **AndroidManifest** para que implemente Hilt y acepte el **MainActivity** recién creado y se reemplaza el **Application** con el siguiente código XML.
 
-    ```xml
-    <application
-            android:name=".Application"
-            android:allowBackup="true"
-            android:icon="@mipmap/ic_launcher"
-            android:label="@string/app_name"
-            android:roundIcon="@mipmap/ic_launcher_round"
-            android:supportsRtl="true"
-            android:theme="@style/Theme.Dependencias"
-            android:fullBackupContent="false">
-            <activity android:name=".MainActivity">
-                <intent-filter>
-                    <action android:name="android.intent.action.MAIN" />
+Corremos el código y observamos que los datos se siguen desplegando de forma normal. 
 
-                    <category android:name="android.intent.category.LAUNCHER" />
-                </intent-filter>
-            </activity>
-    </application>
-    ```
 
-9. Ahora debe ejecutarse el proyecto. El **LogCat** debería mostrar la siguiente línea visualizada en la imagen. 
 
-    <img src="assets/07.png" width="70%"/>
+#### Gestión de eventos
 
-    Eso significa que la dependencia está funcionando correctamente.
+Para que los botones de edición y eliminación funcionen, debemos agregar dicho método al repositorio, llamando a su vez al respectivo método del DAO.
 
-    El módulo creado inyectará dependencias a todo el proyecto, por eso se agregó SingletonComponent en el InstallIn del AppModule.
-
-10. Ahora se creará un módulo que inyecte dependencias a las **Activities** y se apegue a su ciclo de vida. Para realizarlo crea el Objeto **MainModule** con el siguiente código.
-
-    ```Kotlin
-    import android.content.Context
-    import dagger.Module
-    import dagger.Provides
-    import dagger.hilt.InstallIn
-    import dagger.hilt.android.components.ActivityComponent
-    import dagger.hilt.android.qualifiers.ApplicationContext
-    import dagger.hilt.android.scopes.ActivityScoped
-    import javax.inject.Named
-
-    @Module
-    @InstallIn(ActivityComponent::class)
-    object MainModule {
-
-        @ActivityScoped
-        @Provides
-        @Named("String2")
-        fun provideTestString2(
-            @ApplicationContext context: Context,
-            @Named("String1") testString1: String
-        ) = "${context.getString(R.string.string_to_inject)} - $testString1"
+````kotlin
+suspend fun removeVehicle(vehicle: Vehicle){
+        coroutineScope {
+            launch { vehicleDao.removeVehicle(vehicle ) }
+        }
     }
-    ```
+````
 
-11. La anotación **@ActivityScoped** fue agregada para que este módulo trabaje con el ciclo de vida del **Activity**. Además, la dependencia solicita un **string** desde los recursos, el cual debemos crear. Para ello se le puede agregar el siguiente código, de modo que resulte como se aprecia en la siguiente imagen.
+Con esto, lanzamos una corrutina que lanza nuestra operación asíncrona de eliminar vehículo de la base de datos.
 
-    <img src="assets/08.png" width="70%"/>
+Ahora, desde nuestro ViewModel, llamamos este método a través de otro en nuestro ___viewModel___ (por que es él quien se encarga de gestionar los datos a final de cuentas).
 
-12. Ahora es necesario dirigirse al **MainActivity**, inyectar la dependencia e imprimirla en el **onCreate** mediante el siguiente código.
+```kotlin
+fun removeVehicle(vehicle: Vehicle) = viewModelScope.launch{
+        vehicleRepository.removeVehicle(vehicle)
+    }
+```
 
-    ```Kotlin
-    @Inject
-    @Named("String2")
-    lateinit var testString2: String
+Para que esto se accione desde el botón de eliminar, ataremos dicha acción a nuestro atributo ___onClick___ de nuestro ___Button___.
 
-    …
+```kotlin
+       <ImageButton
+            android:id="@+id/button_delete"
+						...
+            android:onClick="@{() -> viewModel.removeVehicle(vehicle)}"
+           .../>
+```
 
-    Log.e("MainActivity", testString2)
-    ```
+Ahora, probamos a eliminar un elemento. Al accionar el botón, el elemento desaparecerá de la lista.
 
-13. Posteriormente se ejecuta el proyecto. El resultado debería ser como el de la imagen, lo que representa que las dependencias, tanto del Application como del Activity, fueron inyectadas correctamente.
+Para el botón editar, enviaremos el id del vehículo a nuestra pantalla de edición.
 
-    <img src="assets/09.png" width="80%"/>
+Crearemos las siguientes variables y el método en el ___viewModel___:
 
-</br>
-</br>
+```kotlin
+private var _editVehicleId = MutableLiveData<Int?>()
+val eventEditVehicle = _editVehicleId
 
-¡Felicidades! Ahora puedes inyectar dependencias en tu proyecto Android con Dagger Hilt.
-El siguiente reto te espera para practicar lo aprendido.
+fun onEdit(vehicleId: Int){
+        eventEditVehicle.value = vehicleId
+    }
+```
+
+Como observamos, ***_editVehicle*** es un LiveData privado que guardará el id del vehículo a editar, su contraparte ___eventEditVehicle___ nos sirve para acceder a dicho valor. El id está envuelto por el LiveData para que al tener un nuevo valor, este pueda ser observado. ***onEdit*** es el método que llamaremos para asignar el id del coche a editar al dar click al botón editar. Para que se active el evento, debemos indicarlo en el bottón Edit de nuestro _vehicle_item_:
+
+```xml
+<ImageButton
+    android:id="@+id/button_edit"
+    android:onClick="@{() -> viewModel.onEdit(vehicle.id)}"
+    ...
+    />
+```
 
 
-</br>
 
-[Siguiente ](../Reto-01/README.md)(Reto 1)
+Para que nuestro ___Fragment___ pueda reaccionar al asignarse este nuevo id y navegar a la pantalla de edición, habrá que observar dicho evento mediante la siguiente línea:
+
+```kotlin
+eventEditVehicle.observe(viewLifecycleOwner, Observer {
+                   
+                })
+```
+
+Dentro de los curly brackets irá el callback a ejecutarse cuando se observe un cambio en el id. Aquí verificaremos que el id no sea nulo y en ese caso, navegaremos al ___AddEditFragment___.
+
+```kotlin
+private fun setupEditVehicle(){
+    if(viewModel!=null){
+
+        with(viewModel){
+
+            eventEditVehicle.observe(viewLifecycleOwner, Observer {
+                if(eventEditVehicle.value!=null){
+                    findNavController().navigate(
+                            R.id.action_vehicleListFragment_to_addEditFragment,
+                            bundleOf("vehicle_id" to eventEditVehicle.value!!)
+                    )
+                    eventEditVehicle.value = null
+                }
+            })
+        }
+    }
+
+}
+```
+
+
+
+Este método se ejecuta en ___onCreateView___, después de crear el __viewModel__.
+
+
+
+Para terminar este ___Fragment___, ataremos nuestro viewModel al su layout. El código extra para el data binding es el siguiente:
+
+```xml
+<data>
+    <variable
+        name="vehicleListViewModel"
+        type="org.bedu.architecturecomponents.vehiclelist.VehicleListViewModel"
+        />
+</data>
+```
+
+
+
+De vuelta al _Fragment_, eliminamos todas las variables que hacen referencia aun ___View___ y agregamos una variable binding:
+
+```kotlin
+private lateinit var binding: FragmentVehicleListBinding
+```
+
+
+
+
+
+ pondremos el siguiente código al principio para inflar las views (eliminamos la inicialización del view raíz):
+
+```kotlin
+binding = DataBindingUtil.inflate(
+    inflater,
+    R.layout.fragment_vehicle_list,
+    container,
+    false
+)
+```
+
+Debemos asegurarnos de que ___onCreateView___ regrese ___return binding.root___ en vez de ___view___.
+
+ Como ahora los nombres de los views son la versión CamelCase de sus id, reemplazaremo
+
+* addButton por binding.buttonAdd
+* recycleVehicle por binding.list
+
+Eliminamos todos las líneas que contengan el método ___findViewByID___ y corremos la aplicación,
+
+
+
+#### Lista de vehículos y LiveData
+
+Para hacer que la lista de vehículos se actualice cuando haya una modificación en la base de datos, podemos envolver la lista en un objeto `LiveData`. Dicho wrapper dará la opción de ejecutar una función cada vez que se modifique la lista, por lo cual avisaremos al recyclerview que hubo una modificación.
+
+Primero, tenemos qué hacer que nuestra query `getVehicles` devuelva un `LiveData`.
+
+```kotlin
+@Query("SELECT * FROM Vehicle")
+fun getVehicles(): LiveData<List<Vehicle>>
+```
+
+Después, actualizamos nuestra función `getVehicles ` de nuestro `VehicleRepository`.
+
+```kotlin
+fun getVehicles() = vehicleDao.getVehicles()
+```
+
+Declaramos la siguiente variable que será el elemento del ViewModel a observar desde nuestro fragment.
+
+```kotlin
+val vehicleList = vehicleRepository.getVehicles()
+```
+
+Y finalmente, en `VehicleListFragment` observaremos cualquier cambio y actualizaremos la lista cuando eso suceda.
+
+```kotlin
+viewModel.vehicleList.observe(viewLifecycleOwner, Observer {
+    it?.let {
+        adapter.submitList(it)
+    }
+})
+```
+
+Después de estos cambios, la lista debe seguir desplegándose.
+
+#### Agregar un vehículo
+
+Para agregar un vehículo, utilizamos AddEditFragment. Este tendrá básicamente los mismos componentes que el Fragment anterior.
+
+Crearemos un ___AddEditViewModel___ para el fragment, 
+
+```kotlin
+class AddEditViewModel(private val vehicleRepository: VehicleRepository): ViewModel() {}
+```
+
+Dentro de esta, vamos a definir algunas de las variables que utilizaremos. En este caso, serán las características de un vehículo:
+
+```kotlin
+    var model: String? = null
+    var brand: String? = null
+    var platesNumber: String? = null
+    var isWorking = false
+```
+
+
+
+Los usaremos al crear un nuevo vehículo. Para esto, requeriremos crear un método en nuestro repositorio para agregar el vehículo. Escribimos el siguiente método en `VehicleRepository`.
+
+
+
+```kotlin
+suspend fun addVehicle(vehicle: Vehicle){
+        coroutineScope {
+            launch { vehicleDao.insertVehicle(vehicle ) }
+        }
+    }
+```
+
+
+
+Para agregar un nuevo vehículo, debemos verificar que todos los campos no estén vacíos; si se cumple la condición anterior, crearemos un nuevo vehículo con las características contenidas en el _viewModel_ y agregareos el vehículo a la base de datos, a través del repositorio. Esto lo hacemos mediante el siguiente código:
+
+```kotlin
+fun newVehicle() = viewModelScope.launch{
+        if ( !model.isNullOrBlank() && !brand.isNullOrBlank() && !platesNumber.isNullOrBlank() ){
+            val vehicle = Vehicle(
+                    brand = brand,
+                    model = model,
+                    platesNumber = platesNumber,
+                    isWorking = isWorking
+            )
+
+            vehicleRepository.addVehicle(vehicle)
+        } 
+    }
+```
+
+Ahora agregaremos nuestro viewModel a ___AddEditFragment___.
+
+```kotlin
+private lateinit var viewModel: AddEditViewModel
+```
+
+en ___onCreateView___ instanciamos dicho *viewModel*:
+
+```kotlin
+  viewModel = AddEditViewModel(
+                (requireContext().applicationContext as VehiclesApplication).vehicleRepository
+        )
+```
+
+
+
+También accionaremos la creación del nuevo vehículo desde nuestro botón:
+
+```kotlin
+buttonAddCar.setOnClickListener{
+            viewModel.newVehicle()
+        }
+```
+
+
+
+ Agregaremos Data Binding a este fragment. Abrimos ___fragment_add_edit.xml___ y agregaremos nuestra variable ___viewModel___:
+
+```kotlin
+    <data>
+        <variable
+            name="viewModel"
+						type="org.bedu.architecturecomponents.addeditvehicle.AddEditViewModel"
+            />
+    </data>
+```
+
+ Con esto, podríamos definir métodos a través de nuestro ViewModel que sean disparados al editar el texto de nuestros ___EditText___ o al mover el switch.
+
+Crearemos esos métodos en ___AddEditViewModel___. Para un EditText, usaremos el atributo ___onTextChanged___, por lo que utilizaremos los siguientes:
+
+
+
+```kotlin
+fun setPlates(s: CharSequence, start:Int, before: Int, count:Int) {
+        platesNumber = s.toString()
+    }
+
+    fun setBrandName(s: CharSequence, start:Int, before: Int, count:Int) {
+        brand = s.toString()
+    }
+
+    fun setModelName(s: CharSequence, start:Int, before: Int, count:Int) {
+            model = s.toString()
+        }
+```
+
+
+
+Para el caso del booleano ___isWorking___, utilizaremos el siguiente:
+
+```kotlin
+    fun setIsWorking(button: CompoundButton,value: Boolean) {
+        isWorking = value
+    }
+```
+
+
+
+Estos métodos los proporcionaremos a los atributos de los respectivos views en el layout.
+
+
+
+```kotlin
+ <EditText
+            android:id="@+id/edit_plates"
+           ...
+            android:onTextChanged="@{viewModel::setPlates}"
+            />
+
+        <EditText
+            android:id="@+id/edit_brand"
+           ...
+            android:onTextChanged="@{viewModel::setBrandName}"
+            />
+
+        <EditText
+            android:id="@+id/edit_model"
+            ...
+            android:onTextChanged="@{viewModel::setModelName}"
+            />
+
+        <Switch
+            android:id="@+id/switch_working"
+            ...
+            android:onCheckedChanged="@{viewModel::setIsWorking}"
+           />
+
+```
+
+
+
+Con esto, nuestras variables se actualizarán constantemente. 
+
+Ahora, requerimos declarar el binding en nuestro fragment.
+
+```kotlin
+private lateinit var binding: FragmentAddEditBinding
+```
+
+Podemos remover los ___Views___ y sus asignaciones por id, ya que utilizaremos el binding, con el que inflaremos nuestras vistas:
+
+```kotlin
+binding = DataBindingUtil.inflate(
+                inflater,
+                R.layout.fragment_add_edit,
+                container,
+                false
+        )
+```
+
+
+
+Tenemos qué notificarle al binding el ___lifeCycleOwner___ y el ***viewModel***:
+
+````kotlin
+  binding.lifecycleOwner = this
+  binding.viewModel = viewModel
+````
+
+y finalmente reemplazamos toda referencia a los views restantes con atributos de ___binding___.
+
+
+
+```kotlin
+  binding.buttonAddCar.setOnClickListener{...}
+...
+   return binding.root                                       
+                                       
+```
+
+
+
+Por último, navegaremos a nuestra lista de vehículos al terminar de guardar nuestro vehículo. Para esto, observaremos un ___LiveData___ bandera que se levantará al terminar de guardar el vehículo a la DB. 
+
+Creamos la bandera y una variable pública para leerla:
+
+```kotlin
+private var _vehicleDone = MutableLiveData<Boolean>(false)
+val vehicleDone = _vehicleDone
+```
+
+*_vehicleDone* cambiará después de la ejecución del método ___addVehicle___:
+
+```kotlin
+fun newVehicle() = viewModelScope.launch{
+        ...
+
+        vehicleRepository.addVehicle(vehicle)
+        _vehicleDone.value = true
+        }
+    }
+```
+
+
+
+Para observar nuestra bandera y navegar cuando se levante implementamos lo siguiente:
+
+```kotlin
+fun setupNavigation() {
+        viewModel.vehicleDone.observe(viewLifecycleOwner, Observer {
+            if(it){
+                findNavController().navigate(
+                        R.id.action_addEditFragment_to_vehicleListFragment
+                )
+            }
+        })
+    }
+```
+
+
+
+Este método se utiliza en ___onCreateView___.
+
+[`Anterior`](../Ejemplo-02) | [`Siguiente`](../Proyecto/Readme.md)      
+
+</div>
