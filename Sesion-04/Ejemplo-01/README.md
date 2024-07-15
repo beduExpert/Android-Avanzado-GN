@@ -1,74 +1,176 @@
-# Ejemplo 01: Gráfico de navegación
+[`Kotlin Avanzado`](../../Readme.md) > [`Sesión 08`](../Readme.md) > `Ejemplo 1`
 
-## Objetivo
+## Ejemplo 1: Pruebas unitarias
 
-* Implementar el gráfico de navegación mediante su descripción de funciones e interfaz para usarlo desde Android Studio.
+<div style="text-align: justify;">
 
-## Desarrollo
 
-A partir de un proyecto de Android previamente creado, se revisarán las herramientas de navegación introducidas con Android Jetpack Navigation. Usaremos el [Proyecto base](./base) y le modificaremos lo que se requiera. 
 
-Para hacerlo realiza los siguientes pasos:
 
-1. Ejecutamos el proyecto base con Android Studio. Este desplegará la siguiente interfaz.
+### 1. Objetivos :dart:
 
-    <img src="assets/01.png" width="60%"/>
+* Realizar pruebas de clases y métodos aislados  en específico en la JVM.
 
-2. Nos dirigimos a los recursos del proyecto base y abrimos el mobile_navigation.xml
+### 2. Requisitos :clipboard:
 
-    <img src="assets/02.png" width="50%"/>
+* JUnit y Thruth instalados.
 
-    Este recurso define todas las rutas posibles que nuestro usuario puede tomar dentro de nuestra app. 
+### 3. Desarrollo :computer:
 
-    > Nota: Las flechas entre los destinos se denominan Acciones, y las vistas previas Destinos.
+Vamos a realizar ahora test unitarios. Para esto, utilizaremos el [proyecto base](base). A continuación repasamos lo agregado:
 
-    <img src="assets/03.png" width="100%"/>
 
-3. Android studio nos presenta tres opciones de visualización, “Como en cualquier XML”.
 
-    <img src="assets/04.png" width="60%"/>
+* Creamos una nuevo archivo ___VehicleUtils.kt___ dentro de un nuevo package (utils). Aquí estarán contenidos los dos métodos que calcularán nuestros datos extra.
 
-4. En el modo Design haz clic en la pantalla Step one, lo que despliega la opción Attributes.
+```kotlin
+internal fun getNumberOfVehicles(vehicles: List<Vehicle>?) = vehicles?.size ?: 0
 
-    <img src="assets/05.png" width="60%"/>
+internal fun activeVehiclesPercentage(vehicles: List<Vehicle>?): Float {
+    val activeVehicles = vehicles?.count{it.isWorking} ?: 0
+    val totalVehicles = vehicles?.size ?: 0
+    return ( activeVehicles/totalVehicles.toFloat() ) * 100f
+}
+```
 
-    En esta sección se especifican los argumentos / parámetros que recibe la vista, así como a qué destino es posible navegar. En esta pantalla vemos que recibe un **integer** y el destino es **Step Two**.
 
-    <img src="assets/06.png" width="60%"/>
 
-    Ten presente que:
-    - **\<navigation>** es el nodo raíz de cada gráfico de navegación.
-    - **\<navigation>** contiene uno o más destinos, representados con elementos **\<activity>** o **\<fragment>**.
-    - **app:startDestination** es un atributo que especifica el destino que se inicia de forma predeterminada cuando el usuario abre la app por primera vez.
+* Agregaremos un nuevo layout donde tendremos el número de vehículos, y el porcentage de vehículos activos:
 
-    </br>
+<img src="images/new-layer.png" width="33%">
 
-    Ahora veamos un destino de fragmento.
+#### Creando un nuevo Test
 
-    ```xml
-    <fragment
-      android:id="@+id/flow_step_one_dest"
-      android:name="com.bedu.navigation.FlowStepFragment"
-      tools:layout="@layout/flow_step_one_fragment">
-      <argument
-          android:name="flowStepNumber"
-          android:defaultValue="1"
-          app:argType="integer" />
+ Empezaremos agregando la siguiente dependencia (solo para testing):
 
-      <action
-          android:id="@+id/next_action"
-          app:destination="@+id/flow_step_two_dest" />
-    </fragment>
-    ```
+```kotlin
+dependencies {
+   // test
+    testImplementation "com.google.truth:truth:1.1.2"
+}
+```
 
-    Revisemos algunas de las etiquetas del XML presentado anteriormente:
+Esta es una librería de assertion (existen otras como hamcrest).
 
-    - **android:id** define un ID para el fragmento, que puedes usar en otra parte del archivo XML y de tu código para hacer referencia al destino.
-    - **android:name** declara el nombre de clase completamente calificado del fragmento para crear una instancia cuando navegas a ese destino.
-    - **tools:layout** especifica cuál es el diseño que se debe mostrar en el editor gráfico.
+Después, dentro de ___VehicleUtils.kt___, damos click derecho a cualquier función de las dos  luego _Generate>Test_.
 
-    </br>
+Se abrirá una nueva ventana, seleccionamos la versión de JUnit a utilizar, seleccionamos la carpeta donde se guardará el Test (verificar que sea app/src/test... y no app/src/androidTest) y damos aceptar.
 
-</br>
+<img src="images/new-test.gif" width="95%">
 
-[Siguiente ](../Ejemplo-02/README.md)(Ejemplo 2)
+
+
+Se creará la siguiente clase vacía:
+
+```kotlin
+class VehicleUtilsKtTest{
+
+}
+```
+
+
+
+Aquí escribiremos nuestras pruebas unitarias
+
+
+
+#### Ejecutando una prueba unitaria
+
+Antes de crear nuestra primera prueba, encontraremos ya creada una clase llamada ___ExampleUnitTest___ con un solo método:
+
+```kotlin
+class ExampleUnitTest {
+    @Test
+    fun addition_isCorrect() {
+        assertEquals(4, 2 + 2)
+    }
+}
+```
+
+Analizamos la estructura:
+
+* ___ExampleUnitTest___: es una clase simple que contiene todos los tests a ejecutar.
+* Addition_isCorrect: es un método que verifica un caso específico.
+* @Test: Es una anotación que debe ir siempre como cabecera de cualquier función de testing
+* assertEquals(): Método que verifica que dos expresiones sean correctas.
+
+Corremos el ejemplo y pasaremos el test. Modificamos el número 4. Comentar lo que sucede.
+
+
+
+#### Creando pruebas unitarias
+
+Con la estructura analizada, verificaremos que nuestro método ___getNumberOfVehicles___ funcione correctamente. para esto, haremos tres pruebas:
+
+1. Enviaremos una lista de vehículos vacía. El resultado debe ser cero.
+2. Pasamos un valor nulo, el resultado debe ser cero.
+3. Pasamos dos vehículos, el resultado debe ser dos.
+
+
+
+Para el primer caso, creamos la lista de vehículos vacío; luego, obtenemos el resultado y finalmente verificamos que este equivalga a cero.
+
+
+
+```kotlin
+@Test
+fun getNumberOfVehicles_empty_returnsZero(){
+    val vehicles = listOf<Vehicle>()
+
+    val result = getNumberOfVehicles(vehicles)
+
+    assertThat(result).isEqualTo(0)
+}
+```
+
+
+
+Para el segundo caso, creamos la lista nula; luego, obtenemos el resultado y finalmente verificamos que este equivalga a cero.
+
+
+
+```kotlin
+@Test
+fun getNumberOfVehicles_null_returnsZero(){
+    val vehicles = null
+
+    val result = getNumberOfVehicles(vehicles)
+
+    assertThat(result).isEqualTo(0)
+}
+```
+
+
+
+Para el tercer caso, creamos la lista con dos vehículos; luego, obtenemos el resultado y finalmente verificamos que este equivalga a dos.
+
+```kotlin
+@Test
+fun getNumberOfVehicles_two_returnsTwo(){
+    val vehicles = listOf(
+        Vehicle(
+            0,
+            "pointer",
+            "Volkswagen",
+            "SMT01",
+            true
+        ),
+        Vehicle(
+            1,
+            "Vento",
+            "Volkswagen",
+            "GTA05",
+            true
+        )
+    )
+
+    val result = getNumberOfVehicles(vehicles)
+
+    assertThat(result).isEqualTo(2)
+}
+```
+
+[`Anterior`](../) | [`Siguiente`](../Reto-01)      
+
+</div>
+

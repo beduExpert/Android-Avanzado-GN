@@ -1,42 +1,68 @@
+[`Kotlin-Avanzado`](../Readme.md) > `Sesión 4`
 
-# :wave: Sesión 04: Navigation - Mejora el flujo de datos
+## Sesión 4: Testing
 
-## 🎯  Objetivo de la sesión:
+<img src="images/testing.png" align="right" height="120" hspace="10">
 
-- Implementar el componente Navigation en el código de la app para desarrollar una ruta de navegación correcta y predecible.
+<div style="text-align: justify;">
 
-## 🎯 Qué aprenderán
+### 1. Objetivos :dart: 
 
-- Implementación del componente Navigation de Android Jetpack en un proyecto base.
-- Navegación e información compartida en la app.
+- Automatizar el testing de una aplicación
+- Implementar la metodología Test-Driven Development
+- Corregir errores detectados por nuestro sistema
 
-## ⚙ Requisitos
+### 2. Introducción
 
-+ Revisión previa del Prework de la sesión.
-+ Android Studio.
+En general, al desarrollar el código fuente de un software requerimos estar constantemente probando las características implementadas, ya que muchas veces estas no presentan el comportamiento esperado. Un desarrollo que no tome en cuenta una etapa de pruebas para corregir estos errores tiende a llevar retrasos y a dejar bugs en su versión final; es por eso que requerimos una planeación que tome en cuenta una capa de testing.
 
-## 🎩 Desarrollo
+TDD (Test-Driven Development) es una metodología de desarrollo donde se desarrollan ___Test Cases___ para validar automáticamente el código de las distintas características de nuestro programa. Estos tests incluyen simples exámenes de comportamientos en un elemento aislado hasta la comprobación de un flujo de navegación completo. Cada Test Case se debe crear incluso antes de haber creado el feature.
 
-En esta sesión aprenderemos a simplificar la navegación y el envío de información dentro de la app usando componentes creados y probados por Google, además de reconocer cómo incluir patrones de IU de Navigation.
 
-La navegación se refiere a las interacciones que permiten a los usuarios navegar a través, dentro y fuera de las diferentes piezas de contenido de la app. El componente Navigation de Android Jetpack te permite implementar la navegación, desde simples clics de botones hasta patrones más complejos, como las barras de apps y los paneles laterales de navegación, y además garantiza una experiencia de usuario coherente y predecible por el uso de un conjunto de principios.
 
-El componente Navigation consta de tres partes clave indicadas a continuación:
-- Gráfico de navegación
-- NavHost
-- NavController
+<img src="images/test flow.png" align="center" width="35%" hspace="10">
 
-El proceso que siguen es básicamente el siguiente: mientras navegas por tu app le dices a NavController que quieres navegar por una ruta específica de tu gráfico de navegación, o directamente a un destino específico. Luego, NavController muestra el destino apropiado en NavHost.
 
-</br>
 
-## 📂 Organización de la clase
+#### Tipos de tests
 
-- [Ejemplo 01: Gráfico de navegación](./Ejemplo-01/README.md)
-- [Ejemplo 02: Implementar Navigation y SafeArgs](./Ejemplo-02/README.md)
-- [Ejemplo 03: Agregando navegación](./Ejemplo-03/README.md)
-    - [Reto 01: Agregando transiciones](./Reto-01/README.md)
-    - [Reto  02: Navegando con acciones](./Reto-02/README.md)
-- [Ejemplo 04: SafeArgs y navegación con menús y paneles](./Ejemplo-04/README.md)
-    - [Reto  03: Nueva opción en Home](./Reto-03/README.md)
-- [Postwork: Deep links](./Postwork/README.md)
+Google divide los tipos de tests en tres categorías diferentes:
+
+* ___Unit tests___ (small tests): Son casos de pruebas que evalúan funcionalidades específicas y aisladas de nuestro código. Por ejemplo, una clase que evalue si una contraseña es válida será aislada de cualquier dependencia de la que se apoye y se probarán distintas contraseñas para comprobar que valide correctamente. Estos tests se pueden ejecutar en nuestra IDE como en un dispositivo físico o emulado. Estos tests son llamados _Unit Tests_ o pruebas unitarias. 
+* ___Integration tests___ (medium tests): Las pruebas unitarias verifican la función específica de una tarea, sin embargo, las tareas tienden a interactuar entre sí. En estos tests se ejecutan una serie de Unit Tests para evaluar su comportamiento en conjunto.
+* ___End-to-End tests___ (UI tests o large tests): Estas pruebas emulan la interacción de un usuario con la interfaz, específicamente los flujos principales de nuestra aplicación para verificar que no exista ningún error en esta. estas son las más lentas de ejecutar, más complejas de desarrollar y requieren ser probadas en dispositivos con distintos tamaños de pantalla y hardware diferente.
+
+
+
+### 3. Contenido :blue_book:
+
+ 
+
+#### <ins>Unit Tests</ins>
+
+Generaremos pruebas unitarias para una aplicación sencilla.
+
+- [**`EJEMPLO 1`**](Ejemplo-01/Readme.md)
+- [**`Reto 1`**](Reto-01/Readme.md)
+- [**`EJEMPLO 2`**](Ejemplo-02/Readme.md)
+
+#### <ins>Integrated tests y Tests instrumentados</ins>
+
+Generaremos pruebas unitarias para una aplicación sencilla.
+
+- [**`EJEMPLO 3`**](Ejemplo-03/Readme.md)
+
+
+
+### 3. Proyecto :hammer:
+
+Aplica los lineamientos que vienen en esta guía para definir y comenzar el desarrollo de tu proyecto.
+
+- [**`PROYECTO SESIÓN 8`**](Proyecto/Readme.md)
+
+<br/>
+
+[`Anterior`](../Sesion-03/Readme.md) | [`Siguiente`](../Sesion-05/Readme.md)      
+
+</div>
+
