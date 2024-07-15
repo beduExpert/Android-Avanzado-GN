@@ -1,38 +1,50 @@
+[`Kotlin-Avanzado`](../Readme.md) > `Sesión 2`
 
-# :wave: Sesión 02: Firebase Crashlytics - Reportes y seguimiento a errores
+## Sesión 2: Persistencia y Base de datos
 
-## 🎯  Objetivo de la sesión:
+<img src="images/db.png" align="right" height="120" hspace="10">
 
-- Gestionar Firebase Crashlytics en el código de la app para detectar y solucionar errores desde su sistema.
+<div style="text-align: justify;">
+### 1. Objetivos :dart: 
 
-## 🎯 Qué aprenderán
+- Almacenar información de sesión como tipos de datos básicos.
 
-- Implementación de firebase-crashlytics en un proyecto.
-- Generación de errores en un ambiente controlado.
-- Manejo del dashboard de Crashlytics.
-- Gestión de errores en Firebase Console.
+- Hacer operaciones simples a una DB con SQLite.
+
+- Gestionar una base de datos mediante una capa de abstracción.
+
+  
+
+### 2. Contenido :blue_book:
+
+#### <ins>Shared Preferences</ins>
+
+Meditante esta clase, guardaremos información no sensible en nuestra app.
+
+- [**`EJEMPLO 1`**](Ejemplo-01/Readme.md)
+- [**`RETO 1`**](Reto-01/Readme.md)
+
+---
 
 
-## ⚙ Requisitos
+<ins>Room</ins>
 
-+ Revisión previa del prework de esta sesión
-+ Cuenta de Google
-+ Proyecto de Firebase
-+ Android studio
+Crearemos una base de datos SQLite con ayuda de Room Database.
 
-## 🎩 Desarrollo
+- [**`EJEMPLO 2`**](Ejemplo-02/Readme.md)
+- [**`RETO 2`**](Reto-02/Readme.md)
 
-En esta sesión aprenderemos cuáles son los servicios de Firebase sumados con Crashlytics, cómo se implementa dentro de un proyecto de Android y de qué forma permite detectar, seguir y resolver errores generados en nuestra app. Para este propósito se generarán errores en un ambiente controlado y se gestionarán desde el dashboard de Firebase.
+ 
 
-Firebase Crashlytics proporciona reportes con estadísticas prácticas y claras sobre los problemas de la app, y basado en el establecimiento de comentarios del funcionamiento, así como seguimiento a los bugs a través de la plataforma de Firebase Console, con el propósito de resolver los fallos y brindar una experiencia de usuario satisfactoria.
+### 3. Proyecto :hammer:
 
-</br>
+Aplica los lineamientos que vienen en esta guía para definir y comenzar el desarrollo del proyecto.
 
-## 📂 Organización de la clase
+- [**`PROYECTO SESIÓN 2`**](Proyecto/Readme.md)
 
-- [Ejemplo 01:  Implementar Firebase Crashlytics](./Ejemplo-01/README.md)
-- [Ejemplo 02: Provocar un error controlado](./Ejemplo-02/README.md)
-    - [Reto 01: Dashboard Crashlytics](./Reto-01/README.md)
-- [Ejemplo 03: Funciones avanzadas](./Ejemplo-03/README.md)
-    - [Reto  02: Tipos de errores y su gestión](./Reto-02/README.md)
-- [Postwork: Reportes y seguimiento a errores](./Postwork/README.md)
+<br/>
+
+[`Anterior`](../Sesion-01/Readme.md) | [`Siguiente`](../Sesion-03/Readme.md)      
+
+</div>
+

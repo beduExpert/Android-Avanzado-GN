@@ -1,101 +1,208 @@
-# Ejemplo 02: Registro con correo y contraseña
+[`Kotlin Avanzado`](../../Readme.md) > [`Sesión 02`](../Readme.md) > `Ejemplo 2`
 
-## Objetivo
+## Ejemplo 2: Introducción a Retrofit
 
-* Operar el registro con una cuenta de correo electrónico y una contraseña mediante la conexión de la interfaz con las llamadas de Auth, y establecer la notificación al usuario con las respuestas de Auth.
+<div style="text-align: justify;">
 
-## Desarrollo
 
-A partir del proyecto de Android previamente creado se simulará la creación de una cuenta con un correo electrónico y una contraseña. 
 
-Para hacerlo realiza los siguientes pasos:
 
-1. Entra a Firebase Console. Dentro del menú Authentication haz clic en *Configurar el método de acceso*, como se visualiza en la siguiente imagen.
+### 1. Objetivos :dart:
 
-    <img src="assets/01.png" width="70%"/>
+- Aplicar los conceptos vistos en los anteriores ejemplos.
+- Utilizar la librería retrofit.
 
-2. Selecciona Correo electrónico / contraseña como método de acceso.
+### 2. Requisitos :clipboard:
 
-    <img src="assets/02.png" width="70%"/>
+1. Haber terminado todos los ejercicios anteriores de esta sesión.
+2. Haber leído el prework.
+3. Tener conocimiento suficiente de API's Rest.
 
-3. Posteriormente es necesario habilitar el primer check, y con el segundo desactivado haremos clic en Guardar como se visualiza en la imagen siguiente.
+### 3. Desarrollo :computer:
 
-    <img src="assets/03.png" width="70%"/>
+Vamos a crear en esta ocasión un Pokedex para todos los entrenadores pokemon.
 
-4. Nos dirigiremos al Gradle del proyecto. Ahí agregamos las siguientes dependencias y después hacemos clic en **Sync Now**.
+Para eso utilizaremos una API llamada PokeApi. Aquí queda el enlace de su sitio web https://pokeapi.co/.
 
-    ```kotlin
-    implementation platform('com.google.firebase:firebase-bom:28.0.1')
-    implementation 'com.google.firebase:firebase-auth-ktx'
-    ```
 
-5. Ahora modificamos la clase **MainActivity** de la siguiente manera.
+1. Creamos un proyecto con actividad en blanco.
 
-    Inicializando FirebaseApp
+2.- Definimos una interfaz adecuada para nuestro dispositivo. Esta consta de un módulo indicador donde se despliega el nombre, el peso y la imagen del pokemon (es decir, dos TextViews y un ImageView). y como controles, utilizamos un EditText para escribir el nombre del pokemon y un botón para efectuar la transaccción.
 
-    ```kotlin
-    //Dentro de onCreate
-    FirebaseApp.initializeApp(this)
-    ```
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
 
-6. Después modificamos **EmailActivity** de la siguiente manera.
+    <LinearLayout
+        android:id="@+id/pokecontainer"
+        android:layout_width="0dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_height="300dp"
+        android:background="#FF0000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <TextView
+            android:id="@+id/tvPokemon"
+            android:textStyle="bold"
+            android:textSize="32sp"
+            android:text="Pokemon"
+            android:textColor="#FFF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tvWeight"
+            android:textSize="20sp"
+            android:text="peso"
+            android:textColor="#FFF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:layout_marginTop="12dp"
+            android:id="@+id/pokemon"
+            android:layout_width="100dp"
+            android:layout_height="100dp"/>
+    </LinearLayout>
 
-    ```kotlin
-    //Declaramos la variable
-    private lateinit var auth: FirebaseAuth
-    ```
+    <EditText
+        android:id="@+id/etPokemon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:hint="Ingrese pokemon"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/btnSearch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pokecontainer"
+        app:layout_constraintVertical_bias="0.19999999" />
 
-    ```kotlin
-    //Dentro de onCreate
-    auth = Firebase.auth
-    ```
+    <Button
+        android:id="@+id/btnSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Buscar pokemon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etPokemon" />
 
-7. En suma, agregamos la siguiente llamada a la función **createAccount** para registrar el correo y la contraseña que escribió el usuario en la interfaz.
+</androidx.constraintlayout.widget.ConstraintLayout>
+```
 
-    ```kotlin
-    auth.createUserWithEmailAndPassword(email, password)
-      .addOnCompleteListener(this) { task ->
-          if (task.isSuccessful) {
-            Log.d(TAG, "createUserWithEmail:success")
-            val user = auth.currentUser
-            updateUI(user, null)
-          } else {
-            Log.w(TAG, "createUserWithEmail:failure", task.exception)
-            updateUI(null, task.exception)
-          }
-      }
-      ```
+3. Pedimos permiso de internet en el *AndroidManifest.xml*:
 
-8. Asimismo, en ambas respuestas, **(success - failure)**, llamamos a la función **updateUI**, la cual se encargará de mostrar los mensajes, así que la reemplazamos con el siguiente bloque de código.
+```xml
+<uses-permission android:name="android.permission.INTERNET"/>
+```
 
-      ```kotlin
-      private fun updateUI(user: FirebaseUser?, exception: Exception?) {
-        if (exception != null) {
-          binding.loading.visibility = View.GONE
-          binding.btnLogin.visibility = View.VISIBLE
-          Utility.displaySnackBar(binding.root, exception.message.toString(), this, R.color.red)
-        } else {
-          Utility.displaySnackBar(binding.root, "Login was successful", this, R.color.green)
-          binding.loading.visibility = View.GONE
-          binding.btnLogin.visibility = View.VISIBLE
+4. Escribimos las dependencias necesarias en el *app/build.gradle*. **P.D.** Picasso es una librería de *Square* (los creadores de okHttp y de Retrofit) que facilita la implementación de imágenes en vistas (en este caso, para insertar la imagen del pokemon en el ImageView).
+
+```kotlin
+implementation "com.squareup.retrofit2:retrofit:2.9.0"
+implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+implementation 'com.google.code.gson:gson:2.8.9'
+implementation 'com.squareup.picasso:picasso:2.71828'
+```
+
+5. Por compatibilidad, insertar esto también en *app/build.gradle*
+
+```kotlin
+android {
+compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+```
+
+6. Creamos la clase Pokemon, que será un Json transformado a objeto.
+
+```kotlin
+//de aquí, recuperaremos tres valores, uno de ellos es un objeto (sprites), por lo tanto, se tiene qué definir otra clase para él
+data class Pokemon (
+    val name : String? = "",
+    val weight: Int? = 0,
+    val sprites : sprites? = null
+
+)
+
+//la clase definida para sprites, sólo nos interesa la url, por lo cual ignoramos su(s) otro(s) parámetro(s).
+data class sprites(
+    @SerializedName("front_default")
+    val photoUrl : String? = ""
+)
+```
+
+6. Creamos un package llamado api, conteniendo su interfaz, donde guardaremos los detalles de la API. Dentro irá el archivo WebServices, donde se encuentra la interfaz: 
+
+```kotlin
+interface WebServices {
+    // Definimos el endpoint pokemont/{pokemon}, siendo este último una variable a ingresar por el usuario (en este caso, desde el edit text)
+    @GET("pokemon/{pokemon}/")
+    fun getPokemon(@Path("pokemon") pokemon: String): Call<Pokemon> //la clase Pokemon dentro de Call indica que el json de respuesta va a   ser transformado es un objeto de esa clase.                             
+
+    @GET("type/{id}") //tipos de pokemon, se obtienen por id 
+    fun getType(@Path("id") id: Int): Call<List<Type>>
+}
+
+```
+7. Ahora creamos un objeto Api, donde construimermos la intancia apuntando al endpoint de pokemones
+
+   ```kotlin
+   object Api {
+       private val retrofit = Retrofit.Builder()
+           .baseUrl("https://pokeapi.co/api/v2/")
+           .addConverterFactory(GsonConverterFactory.create())
+           .build()
+   
+       val endpoint = retrofit.create(WebServices::class.java)
+   }
+   ```
+
+8. seteamos el onClickListener en onCreate y ahí definimos el Builder de retrofit:
+
+```kotlin 
+binding.btnSearch.setOnClickListener{
+            val pokeSearch = binding.etPokemon.text.toString()
+            val call = Api.endpoint.getPokemon(pokeSearch)
+
+            call.enqueue(object : Callback<Pokemon> {
+                override fun onFailure(call: Call<Pokemon>, t: Throwable) {
+                    Toast.makeText(this@MainActivity, "Hubo un error", Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onResponse(call: Call<Pokemon>, response: Response<Pokemon>) {
+                    if(response.code()==200){
+                        val body = response.body()
+                        Log.e("Respuesta","${response.body().toString()}")
+
+                        binding.tvPokemon.text = body?.name
+                        binding.tvWeight.text = "peso: " + body?.weight.toString()
+                        Picasso.get().load(body?.sprites?.photoUrl).into(binding.pokemon);
+                    } else{
+                        Log.e("Not200","Error not 200: $response")
+                        Toast.makeText(this@MainActivity, "No se encontró el pokemon", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+            })
         }
-      }
-      ``` 
+```
 
-9. Es momento de ejecutar la app y registrar una cuenta, como en la siguiente imagen.
+El pokedex debería verse similar a esto.
 
-    <img src="assets/04.png" width="70%"/>
+<img src="images/01.png" width="33%">
 
-    Después de unos segundos deberíamos ver el siguiente mensaje en la app.
+[`Anterior`](../Reto-01) | [`Siguiente`](../Reto-02)      
 
-    <img src="assets/05.png" width="70%"/>
+</div>
 
-10. Además, verifica el registro del usuario en la pestaña users de Firebase Console. Ahí debería figurar, como en la siguiente imagen.
-
-    <img src="assets/06.png" width="80%"/>
-
-¡Felicidades! Ahora tu app puede registrar usuarios sin agregar código en el servidor.
-
-</br>
-
-[Siguiente ](../Reto-01/README.md)(Reto 1)

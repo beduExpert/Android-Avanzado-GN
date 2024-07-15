@@ -1,274 +1,215 @@
-# Ejemplo 03: Acceder con número telefónico
+[`Kotlin Avanzado`](../../Readme.md) > [`Sesión 01`](../Readme.md) > `Ejemplo 3`
 
-## Objetivo
+## Ejemplo 3: Retrofit y Coroutines
 
-* Establecer el registro de una cuenta con número telefónico y la simulación del inicio de sesión con el mismo método.
+<div style="text-align: justify;">
 
-## Desarrollo
+### 1. Objetivos :dart:
 
-Con las funciones de creación de usuarios y de inicio de sesión de Auth, ahora se simulará el método del número telefónico.
 
-Para hacerlo realiza los siguientes pasos:
+- Aplicar los conceptos vistos en los anteriores ejemplos.
+- Utilizar la librería retrofit.
 
-1. Antes de modificar el código deben generarse las huellas digitales de nuestro proyecto y activar API DeviceCheck. En **Google Cloud Console**, habilita la [API de Android DeviceCheck](https://console.cloud.google.com/apis/library/androidcheck.googleapis.com?authuser=0) en tu proyecto. Se usará la clave de API de Firebase predeterminada, y se debe tener acceso a la API de DeviceCheck. Esto se ejemplifica en la siguiente imagen.
+### 2. Requisitos :clipboard:
 
-    <img src="assets/14.png" width="70%"/>
+1. Haber terminado todos los ejercicios anteriores de esta sesión.
+2. Haber leído el prework.
+3. Conocimiento de Coroutines.
 
-2. Después, en Android Studio hacemos clic en la siguiente ruta: *Build > Generate Signed Bundle or APK*. Ahí es necesario hacer clic en *Next*, como se visualiza en la siguiente imagen.
+### 3. Desarrollo :computer:
 
-    <img src="assets/05.png" width="70%"/>
+Vamos a crear una pantalla de  login.
 
-3. Posteriormente, al ingresar datos de identidad se recomienda agregar la siguiente información, ya que esta llave sólo se usará para pruebas.
+Para eso utilizaremos una API con un endpoint para simular un login con algunos correos electrónicos preestablecidos. El enlace a la API es la siguiente:  https://reqres.in/.
 
-    **Contraseña**: android
 
-    **Alias**: android
+1. Creamos un proyecto con actividad en blanco.
 
-    **Name**: debug
+2.- Definimos una interfaz adecuada para nuestro dispositivo. En resumen, este layout contiene dos edit texts para ingresar correo y contraseña, y un botón de login para ejecutar la acción.
 
-    <img src="assets/06.png" width="70%"/>
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="48dp"
+        tools:context=".LoginActivity">
 
-4. Al estar creada la llave, esta tendrá el nombre de **debug.keystore.jks**. Se debe eliminar la extensión **.jks**, por lo que quedará del siguiente modo: **debug.keystore**, como se aprecia en la imagen siguiente.
+        <ImageView
+            android:id="@+id/img_bedu"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginBottom="32dp"
+            android:src="@drawable/beto"/>
 
-    <img src="assets/07.png" width="70%"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="64dp"
+            android:text="@string/app_name"
+            android:textAppearance="?attr/textAppearanceHeadline3" />
 
-5. Después debe hacerse clic en la siguiente ruta: File > Project Structure > Modules > app > Signing Configs y una vez dentro es necesario buscar el archivo de la llave, agregar los datos de usuario y hacer clic en OK. Este proceso se representa en la siguiente imagen.
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp">
 
-    <img src="assets/08.png" width="70%"/>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_user"
+                android:hint="Correo electrónico"
+                android:inputType="textPersonName"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-6. Luego, en la pestaña de *Default Config*, en la opción de *Signing Config*, seleccionamos ***$signingConfigs.debug***. Después debe hacerse clic en OK, como se visualiza en la imagen.
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp">
 
-    <img src="assets/09.png" width="70%"/> 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_pass"
+                android:hint="Contraseña"
+                android:inputType="textPassword"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    Esto agrega la siguiente línea en el gradle
 
-    ```kotlin
-    signingConfigs {
-      debug {
-        storeFile file('/home/andres/Documentos/Android/DebugKey/debug.keystore')
-        storePassword 'android'
-        keyAlias 'android'
-      }
-    }
-    ```
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonAccept"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Iniciar sesión" />
 
-7. Así, para generar la huella ejecutamos la siguiente línea en la terminal.
+        <TextView
+            android:id="@+id/textRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Regístrate aquí"
+            android:textAppearance="?attr/textAppearanceBody2" />
+    </LinearLayout>
+```
 
-    ```hash
-    /opt/android-studio/jre/bin/keytool -list -v -keystore /home/andres/Documentos/Android/DebugKey/debug.keystore -alias android -storepass android -keypass android
-    ```
+3. Pedimos permiso de internet en el *AndroidManifest.xml*:
 
-    > Pro-tip: la primera parte es la ruta donde está instalado **keytool**, luego la ruta donde está la llave, y después los datos de ésta.
+```xml
+<uses-permission android:name="android.permission.INTERNET"/>
+```
 
-    La salida esperada es:
+4. Escribimos las dependencias necesarias en el *app/build.gradle*. **P.D.** Picasso es una librería de *Square* (los creadores de okHttp y de Retrofit) que facilita la implementación de imágenes en vistas (en este caso, para insertar la imagen del pokemon en el ImageView).
 
-    <img src="assets/10.png" width="80%"/>
+```kotlin
+implementation "com.squareup.retrofit2:retrofit:2.9.0"
+implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+implementation 'com.squareup.okhttp3:logging-interceptor:4.9.1'
+```
 
-    > Pro-tip: guarda la clave SHA1 y SHA256.
+5. En un nuevo package que llamaremos model, Creamos la clase LoginResponse, que tendrá tanto el token cuando el login es exitoso, y un error como String cuando nuestrarespuesta sea fallida.
 
-8. Ahora, configuraremos el método de acceso en Firebase Console. En el menú Authentication debe hacerse clic en la pestaña  *Sign-in method* y habilitarse *Teléfono*. 
+```kotlin
+data class LoginResponse(
+    val token: String,
+    val error: String
+)
+```
 
-    <img src="assets/01.png" width="70%"/>
+6. Creamos un package llamado api, conteniendo su interfaz, donde guardaremos los detalles de la API. 
 
-9. Debe hacerse clic para habilitar el check, como se visualiza en la imagen.
+```kotlin
+interface LoginService {
+    @FormUrlEncoded
+    @POST("login")
+    suspend fun login(
+        @Field("email") email: String,
+        @Field("password") password: String): Response<LoginResponse>
+}
+```
+7. Ahora creamos un objeto Api, donde construimermos la intancia apuntando al endpoint del login.
 
-    <img src="assets/02.png" width="70%"/>
+   ```kotlin
+   object Api{
+       private val loggingInterceptor = HttpLoggingInterceptor()
+   
+       val httpClient = OkHttpClient.Builder()
+           .addInterceptor(loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY))
+           .build()
+   
+   
+       val loginService: LoginService =
+           Retrofit.Builder()
+               .baseUrl("https://reqres.in/api/")
+               .addConverterFactory(GsonConverterFactory.create())
+               .build()
+               .create(LoginService::class.java)
+   
+   }
+   ```
 
-    Este método requiere unos pasos extra de configuración, ya que la verificación trabaja de dos maneras. Estas formas se explicaron como último subtema en tu Prework. 
+8. seteamos el onClickListener del botón search, y verificamos en primera instancia que ambos campos no estén vacíos.
 
-10. Es necesario agregar las huellas digitales de nuestra app. Para ello primero se debe dirigir hacia la configuración del proyecto en Firebase.
+```kotlin 
+val email = binding.editEmail.text.toString()
+            val password = binding.editPassword.text.toString()
 
-    <img src="assets/03.png" width="70%"/>
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Valores vacíos",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+```
 
-    Al final de la configuración figura un botón para *Agregar las huellas*, como se aprecia en la imagen siguiente.
+Después de verificar que los campos estén llenos, llamamos a nuestro endpoint dentro de una corrutina.
 
-    <img src="assets/04.png" width="70%"/>
+```kotlin
+CoroutineScope(Dispatchers.IO).launch {
+    try {
+        val result = Api.loginService.login(email, password)
 
-11. Deben agregarse las dos huellas generadas, y el resultado debe ser el siguiente.
-
-    <img src="assets/11.png" width="70%"/>
-
-12. Una vez configuradas las huellas es necesario dirigirse al código. Se modificará **PhoneActivity** de la siguiente manera.
-
-    ```kotlin
-    //Declaramos las variables
-    private lateinit var auth: FirebaseAuth
-
-    private var storedVerificationId: String? = ""
-    private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
-    private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
-    ```
-
-    ```kotlin
-    //Dentro de onCreate
-    auth = Firebase.auth
-    ```
-
-13. Después, en el clic del botón deben enviarse las variables declaradas, como se presenta a continuación.
-
-    ```kotlin
-    ...
-    resendVerificationCode(phone, resendToken)
-    ...
-    storedVerificationId?.let { it1 -> verifyPhoneNumberWithCode(it1, code) }
-    ...
-    ```
-14. Después se agrega el callback de *responses* de la siguiente forma.
-
-    ```kotlin
-    callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-
-      override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-        Log.d(TAG, "onVerificationCompleted:$credential")
-        signInWithPhoneAuthCredential(credential)
-      }
-
-      override fun onVerificationFailed(e: FirebaseException) {
-        Log.w(TAG, "onVerificationFailed", e)
-
-        binding.edtPhone.visibility = View.VISIBLE
-        binding.btnContinue.visibility = View.VISIBLE
-        binding.loading.visibility = View.GONE
-
-        when (e) {
-          is FirebaseAuthInvalidCredentialsException -> {
-            // Invalid request
-            Utility.displaySnackBar(
-              binding.root,
-              "Invalid request",
-              this@PhoneActivity,
-              R.color.red
-            )
-          }
-          is FirebaseTooManyRequestsException -> {
-            // The SMS quota for the project has been exceeded
-            Utility.displaySnackBar(
-              binding.root,
-              "The SMS quota for the project has been exceeded",
-              this@PhoneActivity,
-              R.color.red
-            )
-          }
-          else -> {
-            Utility.displaySnackBar(
-              binding.root,
-              e.message.toString(),
-              this@PhoneActivity,
-              R.color.red
-            )
-          }
-        }
-      }
-
-      override fun onCodeSent(
-        verificationId: String,
-        token: PhoneAuthProvider.ForceResendingToken
-      ) {
-        Log.d(TAG, "onCodeSent:$verificationId")
-
-        binding.btnContinue.visibility = View.VISIBLE
-        binding.edtCode.visibility = View.VISIBLE
-        binding.loading.visibility = View.GONE
-
-        Utility.displaySnackBar(
-          binding.root,
-          "Code sent",
-          this@PhoneActivity,
-          R.color.green
-        )
-
-        storedVerificationId = verificationId
-        resendToken = token
-      }
-    }
-    ```
-
-15. Posteriormente se cambia el tipo de variable para token en la función *resendVerificationCode*, como en el siguiente código.
-
-    ```Kotlin
-    token: PhoneAuthProvider.ForceResendingToken?
-    ```
-
-16. Luego modificamos la función *startPhoneNumberVerification*  con el siguiente código:
-
-    ```Kotlin
-    val options = PhoneAuthOptions.newBuilder(auth)
-      .setPhoneNumber(phoneNumber)       // Phone number to verify
-      .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-      .setActivity(this)                 // Activity (for callback binding)
-      .setCallbacks(callbacks)          // OnVerificationStateChangedCallbacks
-      .build()
-    PhoneAuthProvider.verifyPhoneNumber(options)
-    ```
-
-17. En este paso se agrega la siguiente función para validar las credenciales: **createAccount**, como de la siguiente forma.
-
-    ```kotlin
-    private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
-      auth.signInWithCredential(credential)
-        .addOnCompleteListener(this) { task ->
-          if (task.isSuccessful) {
-            // Sign in success, update UI with the signed-in user's information
-            Log.d(TAG, "signInWithCredential:success")
-
-            val user = task.result?.user
-            updateUI(user, null)
-          } else {
-            // Sign in failed, display a message and update the UI
-            Log.w(TAG, "signInWithCredential:failure", task.exception)
-            if (task.exception is FirebaseAuthInvalidCredentialsException) {
-              // The verification code entered was invalid
-
-              binding.loading.visibility = View.GONE
-              binding.btnContinue.visibility = View.VISIBLE
-              binding.btnContinue.text = "Resend code"
-
-              Utility.displaySnackBar(
-                  binding.root,
-                  "The verification code entered was invalid",
-                  this@PhoneActivity,
-                  R.color.red
-              )
+        withContext(Dispatchers.Main) {
+            if (result.isSuccessful) {
+                onSuccess(result.body())
             } else {
-                task.exception?.let { updateUI(null, it) }
+                Toast.makeText(
+                    this@LoginActivity,
+                    "Tu correo o contraseña es incorrecto",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-              // Update UI
-            }
-          }
-    }
-      ```
-
-18. Asimismo, en ambas respuestas, *(success - failure)*, llamamos a la función *updateUI*, la cual se encargará de mostrar los mensajes, así que la reemplazamos con el siguiente bloque de código.
-
-      ```kotlin
-      private fun updateUI(user: FirebaseUser?, exception: Exception?) {
-        binding.edtPhone.visibility = View.VISIBLE
-        if (exception != null) {
-          binding.loading.visibility = View.GONE
-          binding.btnContinue.visibility = View.VISIBLE
-          Utility.displaySnackBar(binding.root, exception.message.toString(), this, R.color.red)
-        } else {
-          Utility.displaySnackBar(binding.root, "Login was successful", this, R.color.green)
-          binding.loading.visibility = View.GONE
-          binding.btnContinue.visibility = View.VISIBLE
         }
-      }
-      ``` 
-
-19. Ahora debe ejecutarse la app con un número telefónico, como se aprecia en la imagen.
-
-    <img src="assets/12.png" width="70%"/>
-
-20. La respuesta después de unos segundos debería ser la siguiente pantalla.
-
-    <img src="assets/13.png" width="70%"/>
-
-    Además, si utilizaste tu número de teléfono deberías de recibir un mensaje de texto con el código.
-
-¡Felicidades! Ahora tu app puede enviar códigos de verificación.
-El siguiente reto te espera con el logro de validar el código y concluir el registro.
+    } catch (cause: Throwable) {
+        withContext(Dispatchers.Main) {
+            Toast.makeText(
+                this@LoginActivity,
+                "Error de la API",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+}
+```
 
 
-</br>
 
-[Siguiente ](../Reto-02/README.md)(Reto 2)
+El resultado es la siguiente pantalla:
+
+
+
+<img src="images/01.png" width="33%">
+
+[`Anterior`](../Reto-02) | [`Siguiente`](../Proyecto)      
+
+</div>
+

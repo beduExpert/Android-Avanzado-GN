@@ -1,61 +1,41 @@
-# Reto  02: Tipos de errores y su gestión
+[`Kotlin Avanzado`](../../Readme.md) > [`Sesión 04`](../Readme.md) > `Reto 2`
 
-## Objetivo
+## Reto 2: Room
 
-- Implementar los dos tipos de errores y gestionarlos mediante las opciones del dashboard de Crashlytics.
+<div style="text-align: justify;">
+### 1. Objetivos :dart:
 
-## Desarrollo
+* Editar un elemento de la lista
 
-Ya conociste el primer tipo de error: el producido en el Ejemplo 2. Este evento es de tipo Falla y es provocado cuando la app obtiene una excepción y no sabe cómo responder, por lo que el resultado es el cierre inesperado. 
+### 2. Requisitos :clipboard:
 
-El segundo tipo es Error recuperable. Este tipo sucede cuando agregamos un bloque de try / catch. Si el código dentro del try falla, es posible almacenar la excepción y Crashlytics enviará el error en algún momento, pues este error no tiene la misma prioridad que el otro y tardará más en enviarlo.
+* Haber cursado el [Ejemplo 2](../Ejemplo-02)
 
-Notas: 
-- Crashlytics guarda máximo 64 kb del log en memoria para evitar saturar la app.
-- Los errores pueden tardar hasta 5 minutos en aparecer, por lo que debe tenerse paciencia si no aparecen rápido.
+### 3. Desarrollo :computer:
 
-Ahora que reconoces los tipos de errores y las formas de gestionarlos, sigue las indicaciones expuestas a continuación para resolver el reto 2.
+El reto es implementar funcionalidad al botón editar. Cuando este botón sea presionado, debemos navegar a la pantalla de agregar vehículo, con la diferencia que esta vez en el botón se leerá __Actualizar__. 
 
-1. Genera un error recuperable dentro del clickListener del botón Crash.
-2. Después, genera una falla en el mismo evento, de modo que cierre la app.
-3. Gestiona los errores en Crashlytics:
-    - **a)** Agrega notas (Comentarios) a los errores generados, previamente
-    - **b)** Silencia el error indicando que ya corregiste el error y no tiene caso que te siga notificando, por lo que es posible cancelar los avisos.
-    - **c)** Cierra el error indicando que ya fue solucionado.
+La información puede ser enviada a través de un ___bundle___ en el método ___findNavController___.
 
-    </br>
+```kotlin
+findNavController().navigate(
+                R.id.action_vehicleListFragment_to_addEditFragment,
+                bundleOf("vehicle_id" to vehicle.id )
+        )
+```
 
-<details>
-    <summary>Solución 1-2</summary>
-    
-  ```kotlin
-  binding.btnCrash.setOnClickListener {
-  //1
-    try {
-        Log.e(TAG, "handleClick: " + 0 / 0)
-    } catch (e: Exception) {
-        FirebaseCrashlytics.getInstance().recordException(e)
-    }
-  //2
-    throw RuntimeException("Test Crash") // Force a crash
-  }
-  ```
-</details>
 
-  </br>
 
-<details>
-  <summary>Solución 3</summary>
-a)
-    <img src="assets/01.png" width="50%"/>
+Dependiendo de la existencia de ese valor en el bundle identificamos si estamos editando o agregndo un vehículo.
 
-b)
-    <img src="assets/02.png" width="50%"/>
-    
-c)
-    <img src="assets/03.png" width="50%"/>
-</details>
 
-</br>
 
-[Siguiente ](../Postwork/README.md)(Postwork)
+El siguiente gif muestra como se debe interactuar al agregar y al editar un elemento:
+
+
+
+<img src="images/edit.gif" width="35%">
+
+[`Anterior`](../Ejemplo-02) | [`Siguiente`](../Proyecto/Readme.md)      
+
+</div>

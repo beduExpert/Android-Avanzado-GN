@@ -1,70 +1,169 @@
-# Reto 01: Dashboard Crashlytics
+[`Kotlin Avanzado`](../../Readme.md) > [`Sesión 04`](../Readme.md) > `Reto 1` 
 
-## Objetivo
+## Reto 1: Shared Preferences
 
-- Interpretar el Dashboard de Crashlytics para gestionar errores de una app Android.
-- Discriminar los errores mediante las opciones de detección y seguimiento de Crashlytics.
-- Consultar el error generado previamente en Crashlytics.
+<div style="text-align: justify;">
 
 
-## Desarrollo
 
-En el ejemplo 2 se provocó un error y es momento de reconocer e interpretar el dashboard de Crashlytics para saber cómo gestionar los errores.
 
-Para hacerlo realiza los siguientes pasos:
+### 1. Objetivos :dart:
 
-1. Nos dirigimos a la Console de Crashlytics. Ahí veremos una pantalla muy similar a la siguiente.
+Aplicar SharedPreferences a través de un ejemplo
 
-    <img src="assets/01.png" width="70%"/>
+### 2. Requisitos :clipboard:
 
-2. Identifica las diferentes opciones de filtro de errores que ofrece el dashboard.
+1. Haber tomado el primer tema de la sesión 1
+2. Haber cursado el [Ejemplo 01](../Ejemplo-01)
 
-    <details>
-      <summary>Solución</summary>
+### 3. Desarrollo :computer:
 
-    - Filtrar por versión de app y tipo de error.
-    - Seleccionar rango de fecha para visualizar errores por lapso de tiempo.
-    - Filtrar por estado del problema, dispositivo y sistema operativo.
-    - Buscar error por ID del usuario.
+- Vamos a hacer un ejemplo de login con SharedPreferences, tomaremos un booleano como bandera para saber si se está loggeado o no. ***Nota: desaconsejamos utilizar una bandera para identificar que un usuario ha iniciado sesión, existen mecanismos más seguros y sofisticados*
 
-    > Nota: Más adelante revisamos cada una de estas opciones
+1. Seteamos este login en el layout del MainActivity
 
-    </details>
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:background="@color/gray"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
 
-    </br>
+    <ImageView
+        android:id="@+id/imgBedu"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/bedu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-3. Es momento de revisar el error generado previamente en nuestra app. Para ello haz clic en la tabla que se encuentra en la parte inferior, como se visualiza en la siguiente imagen.
+    <EditText
+        android:id="@+id/etMail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgBedu" />
 
-    <img src="assets/02.png" width="70%"/>
+    <EditText
+        android:id="@+id/etPass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etMail" />
 
-4. Después consulta las diferentes opciones que ofrece el detalle del error.
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPass" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+```
 
-    <details>
-      <summary>Solución</summary>
+2. Agrega el color gray a colors.xml:
 
-    - Filtrar por versión de app, tipo de error, estado del problema, dispositivo y sistema operativo.
-    - Número de veces que se ha producido el error y a cuántos usuarios ha afectado.
-    - Filtrar por selección de rango de fecha.
-    - Eventos.
-        - Seguimiento de pila:
-            - Muestra qué, en dónde y porqué surgió el error.
-        - Claves:
-            - Datos enviados por la app. Se encuentra vacío porque aún no se revisará esa parte.
-        - Registros:
-            - Clase o vista donde se provocó el error.
-        - Datos:
-            - Información del Dispositivo (Hardware y Software).
+   ```xml
+   <color name="gray">#333333</color>
+   ```
 
-    </br>
+2. Guardamos el archivo adjunto ***bedu.png*** en la carpeta drawable, dentro de res. 
 
-    > Nota: más adelante se utilizan cada una de estas opciones.
 
-    </details>
+3. Para cambiar de pantalla sin poder regresar a la anterior con el botón back, aquí está el siguiente código.
 
-    </br>
+```kotlin
+val i = Intent(this, LoggedActivity::class.java)
+            i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(i)
+```
 
-    <img src="assets/03.png" width="70%"/>
+4. Utilizar este código para que en onStart cambiar de actividad (hay que declarar los métodos isLogged y goToLogged)
 
-</br>
+```kotlin
+   override fun onStart() {
+        super.onStart()
 
-[Siguiente ](../Ejemplo-03/README.md)(Ejemplo 3)
+        if(isLogged()){
+            goToLogged()
+        }
+    }
+```
+
+5. Guardar este archivo como *activity_logged.xml*
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal">
+    <TextView
+    android:id="@+id/tvEmail"
+        android:text="Correo"
+    android:layout_marginTop="64dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/tvName"
+        android:text="Nombre"
+        android:layout_marginTop="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:text="Cerrar sesión"
+        android:id="@+id/btnClose"
+        android:layout_marginTop="64dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
+```
+
+**Aconsejamos también declarar todos los tags en una sola actividad y que la otra los utilice, evitando así confusiones en ellas**
+
+```kotlin
+companion object{
+        val PREFS_NAME = "org.bedu.login"
+        val EMAIL = "email"
+        val IS_LOGGED = "is_logged"
+    }
+```
+
+utilizando:
+
+```kotlin
+getSharedPreferences(MainActivity.PREFS_NAME, Context.MODE_PRIVATE)
+```
+
+Las pantallas se deben ver así
+
+<img src="images/01.png" width="33%">
+
+<img src="images/02.png" width="33%">
+
+
+
+[`Anterior`](../Ejemplo-01) | [`Siguiente`](../Ejemplo-02)      
+
+</div>
+
+
+
+
+

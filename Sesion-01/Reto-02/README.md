@@ -1,84 +1,55 @@
-# Reto  02: Verificar y reenviar código
+[`Kotlin Avanzado`](../../Readme.md) > [`Sesión 02`](../Readme.md) > `Reto 2 `
 
-## Objetivo
+## Reto 2: Retrofit
 
-* Operar el registro de una cuenta con número telefónico y la simulación del inicio de sesión con el mismo método mediante la validación del código de Auth y/o con la solicitud de un código nuevo.
+<div style="text-align: justify;">
 
-## Desarrollo
 
-En el ejemplo 3 solicitamos el código para registrar un usuario con el número telefónico y ahora se concluirá el registro de manera satisfactoria y se simulará este método.
-Para hacerlo realiza los siguientes pasos:
+### 1. Objetivos :dart:
 
-1. Crear PhoneAuthProvider con el código de verificación y el code que se recibió vía SMS. Después solicitar la comprobación con la función **signInWithPhoneAuthCredential**, y el resto lo hará *updateUI*.
+- Implementar HttpLogging 
+- Notificar al usuario si algo salió mal
 
-    > Para ello se debe crear Provider > PhoneAuthProvider.getCredential(verificationId, userCode)
+### 2. Requisitos :clipboard:
 
-    Los resultados esperados deben ser similares a los siguientes:
+1. Haber terminado TODOS los ejercicios anteriores.
 
-    <img src="assets/04.png" width="50%"/>
+### 3. Desarrollo :computer:
 
-    <img src="assets/03.png" width="50%"/>
+Para terminar con nuestro pokedex, debemos ser capaces de notificar al usuario cuando un pokemon no existe, y de rastrear detalles del tráfico.
 
-    </br>
+  1. Instalar la siguiente dependencia
 
-    <details>
-      <summary>Solución</summary>
-        
-      ```kotlin
-      private fun verifyPhoneNumberWithCode(verificationId: String, code: String) {
-        val credential = PhoneAuthProvider.getCredential(verificationId, code)
-        signInWithPhoneAuthCredential(credential)
-      }
-      ```
-    </details>
+ ```groovy
+ implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
+ ```
 
-  </br>
+ 2.- Vamos a agregar el cliente okHttp a nuestro build de retrofit, para eso hay que definir antes el cliente por medio de esta líneas de código:
 
-</br>
+ ```groovy
+ val client = OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .connectTimeout(TIMEOUT_CALL_SECONDS, TimeUnit.SECONDS)
+                .readTimeout(TIMEOUT_CALL_SECONDS, TimeUnit.SECONDS)
+                .writeTimeout(TIMEOUT_CALL_SECONDS, TimeUnit.SECONDS)
+                .build()
+ ```
 
-2. Si el código expiró o está mal escrito es necesario agregar una acción al botón actual para solicitar un nuevo código. para ello se debe agregar la petición en la función **resendVerificationCode**.
+ El reto es donde suscribir al cliente para que tome efecto (**Hint:** es algo que ya se vio).
 
-    > Pro-tip: Esta llamada es muy similar a **startPhoneNumberVerification**.
+ El resultado es la impresión en el logcat que sucede cuando se hace una llamada con retrofit:
 
-    Los resultados esperados deben ser similares a los siguientes:
+ <img src="images/01.png" width="33%">
 
-    <img src="assets/01.png" width="50%"/>
+ 3.- Agregar un mensaje (puede ser un Toast) que le notifique al usuario cuando el pokemon que ingresó es inexistente o hay un problema de comunicación. (**Hint:** es en los callbacks de retrofit).
 
-    <img src="assets/02.png" width="50%"/>
+ El mensaje se debe ver parecido a esto: 
 
-    <img src="assets/03.png" width="50%"/>
+  <img src="images/02.png" width="33%">
 
-    </br>
 
-    <details>
-      <summary>Solución</summary>
-        
-      ```kotlin
-      private fun resendVerificationCode(
-        phoneNumber: String,
-        token: PhoneAuthProvider.ForceResendingToken?
-      ) {
-        val optionsBuilder = PhoneAuthOptions.newBuilder(auth)
-          .setPhoneNumber(phoneNumber)       // Phone number to verify
-          .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-          .setActivity(this)                 // Activity (for callback binding)
-          .setCallbacks(callbacks)          // OnVerificationStateChangedCallbacks
-        if (token != null) {
-          optionsBuilder.setForceResendingToken(token) // callback's ForceResendingToken
-        }
-        PhoneAuthProvider.verifyPhoneNumber(optionsBuilder.build())
-      }
-      ```
-    </details>
 
-    </br>
+[`Anterior`](../Ejemplo-02) | [`Siguiente`](../Ejemplo-03)      
 
-3. El último paso es la comprobación de que el registro fue correcto, como se aprecia en la siguiente imagen.
-
-    <img src="assets/05.png" width="80%"/>
-
-</br>
-</br>
-
-[Siguiente ](../Postwork/README.md)(Postwork)
+</div>
 

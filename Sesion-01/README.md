@@ -1,65 +1,53 @@
+[`Kotlin-Avanzado`](../Readme.md) > `Sesión 1`
 
-# :wave: Sesión 01: Firebase Authentication - Simplifica el inicio de sesión y el registro
+## Sesión 1: Conexiones GET y POST
 
-## 🎯  Objetivo de la sesión:
-Implementar Firebase Authentication en el código de la app para operar el registro e inicio de sesión con los métodos de Firebase.
+<img src="images/network.png" align="right" height="120" hspace="10">
 
-## 🎯 Qué aprenderán
+<div style="text-align: justify;">
 
-- Implementación de firebase-auth en un proyecto.
-- Gestión de usuarios sin código en el servidor.
-- Simulación de registro y login con diferentes métodos de autenticación de Auth.
+### 1. Objetivos :dart: 
 
-## ⚙ Requisitos
+- Comunicarse con sistemas remotos mediante sus API REST
+- Parsear información de un modelo a una representación JSON
+- Analizar el tráfico de datos en la comunicación
+- Utilizar el cliente okHttp y retrofit
 
-+ Revisión previa del prework de esta sesión
-+ Cuenta de Google
-+ Proyecto de Firebase
-+ Android studio
+### 2. Contenido :blue_book:
 
-## 🎩 Desarrollo
+<ins>Gson e Interceptores</ins>
 
-En esta sesión aprenderemos cuáles son los servicios de Firebase, las funciones que suma Authentication, y cómo se implementa dentro de un proyecto de Android para un registro e inicio de sesión enlazados con Auth, como la llamaremos también. 
-Asimismo, se operará la app para verificar la funcionalidad del registro y del login mediante SMS,, correo y cuenta de Google.
+Crearemos un data class para poder manipular la informaciǿn en formato JSON recolectada mediante _OkHttp_.
 
-Firebase Authentication proporciona servicios de backend, SDK y bibliotecas de IU preelaboradas que sirven para autenticar a los usuarios en tu app. Así, es posible la autenticación mediante contraseñas, números de teléfono, proveedores de identidad federada populares, como Google, Facebook y Twitter, y muchos más.
+- [**`EJEMPLO 1`**](Ejemplo-01/Readme.md)
+- [**`RETO 1`**](Reto-01/Readme.md)
 
+---
 
-## ⚙ Configuración
+<ins>Introducción a Retrofit</ins>
 
-### Firebase - Setup inicial
+Ahora utilizaremos el cliente Retrofit diseñado para aplicaciones android, resaltando la ventaja de su uso frente a sus alternativas.
 
-Antes de implementar firebase en nuestra app, debemos configurar un proyecto en la Firebase console. Para ello deben realizarse los siguientes pasos:
+- [**`EJEMPLO 2`**](Ejemplo-02/Readme.md)
+- [**`RETO 2`**](Reto-02/Readme.md)
 
-1. Abrir Firebase Console mediante una cuenta google que poseamos.
-2. Crear un proyecto nuevo.
+---
 
-    <img src="images/01.png" width="50%"/>
+ <ins>Retrofit y coroutines</ins>
 
-3. Asignar un nombre al proyecto. En este caso se le llamará "Bedu".
-4. Aceptar la habilitación de Google Analytics para el proyecto.
+Combinaremos Retrofit con corrutinas para usar http methods.
 
-    <img src="images/02.png" width="50%"/>
+- [**`EJEMPLO 3`**](Ejemplo-03/Readme.md)
 
-5. Seleccionar México como ubicación Analytics, hacer clic en los recuadros para aceptar todos los términos, y finalmente hacer clic en Crear proyecto.
+---
 
-    <img src="images/03.png" width="50%"/>
+### 3. Proyecto :hammer:
 
-Y listo, ya creamos nuestro Firebase Project.
+Aplica los lineamientos que vienen en esta guía para definir y comenzar el desarrollo de tu proyecto.
 
-<img src="images/04.png" width="50%"/>
+- [**`PROYECTO SESIÓN 2`**](Proyecto/Readme.md)
 
-</br>
+[`Anterior`](../Readme.md) | [`Siguiente`](../Sesion-03/Readme.md)      
 
-## 📂 Organización de la clase
-
-- [Ejemplo 01:  Implementar Firebase Authentication](./Ejemplo-01/README.md)
-- [Ejemplo 02: Registrarse con correo y contraseña](./Ejemplo-02/README.md)
-    - [Reto 01: Iniciar sesión](./Reto-01/README.md)
-- [Ejemplo 03: Accede con número telefónico](./Ejemplo-03/README.md)
-    - [Reto  02: Verificar y reenviar código](./Reto-02/README.md)
-- [Postwork: Accede con Google](./Postwork/README.md)
-
-
-
+</div>
 
