@@ -1,4 +1,4 @@
-[`Kotlin Avanzado`](../../Readme.md) > [`Sesión 02`](../Readme.md) > `Reto 1`
+[`Android Avanzado`](../..#readme) > [`Sesión 01`](..#readme) > `Reto 1`
 
 ## Reto 1: OkHttp Avanzado
 
@@ -9,7 +9,8 @@
 
 ### 1. Objetivos :dart:
 
-Poner en práctica los conceptos aprendidos en el [Ejemplo 01](../Ejemplo-01)
+* Utilizar GSON y OkHttp para imprimir resultados en la consola de debug.
+* Especificar el nombre de un campo JSON cuando se serializa o deserializa un objeto Java.
 
 ### 2. Requisitos :clipboard:
 
@@ -18,13 +19,9 @@ Poner en práctica los conceptos aprendidos en el [Ejemplo 01](../Ejemplo-01)
 
 ### 3. Desarrollo :computer:
 
-Este proyecto es una adaptación del ejemplo 2.
+Imprimiremos en consola el resultado de la lista entera de gente de star wars, pero con Gson. Elaboraremos esta pantalla:
 
-Buscamos sólamente imprimir en consola el resultado de la lista entera de gente de star wars, pero con Gson.
-
-por lo tanto, requerimos mostrar una pantalla así:
-
-<img src="/Users/dancu/Documents/bedu/C1-Kotlin-Avanzado/Sesion-03/Reto-02/01.png" width="35%">
+<img src="images/01.png" width="35%">
 
 * El json tiene la siguiente estructura: 
 
@@ -92,7 +89,7 @@ override fun onResponse(call: Call, response: Response) {
 
 
 
-[`Anterior`](../Ejemplo-01) | [`Siguiente`](../Ejemplo-02)      
+[`Anterior`](../Ejemplo-01#readme) | [`Siguiente`](../Ejemplo-02#readme)      
 
 </div>
 

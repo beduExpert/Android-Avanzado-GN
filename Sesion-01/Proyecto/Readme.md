@@ -1,4 +1,4 @@
-[`Kotlin Avanzado`](../../Readme.md) > [`Sesión 02`](../Readme.md) > `Proyecto`
+[`Android Avanzado`](../../Readme.md) > [`Sesión 01`](..#readme) > `Proyecto`
 
 ## Proyecto
 

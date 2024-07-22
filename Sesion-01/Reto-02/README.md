@@ -1,18 +1,20 @@
-[`Kotlin Avanzado`](../../Readme.md) > [`Sesión 02`](../Readme.md) > `Reto 2 `
+[`Android Avanzado`](../../Readme.md) > [`Sesión 02`](..#readme) > `Reto 2 `
 
 ## Reto 2: Retrofit
 
 <div style="text-align: justify;">
+### Diccionario :book:
 
+**HTTP Logging**: En Android,  usualmente se refiere a la funcionalidad proporcionada por bibliotecas como OkHttp, que permite registrar (log) las solicitudes y respuestas HTTP para facilitar la depuración y el análisis. Esto incluye información detallada como las cabeceras, el cuerpo del mensaje, los métodos HTTP utilizados, y los tiempos de las transacciones.
 
 ### 1. Objetivos :dart:
 
-- Implementar HttpLogging 
-- Notificar al usuario si algo salió mal
+- Implementar HttpLogging para imprimir los detalles en nuestra llamada HTTP.
+- Crear una notificación para alertar al usuario sobre un error.
 
 ### 2. Requisitos :clipboard:
 
-1. Haber terminado TODOS los ejercicios anteriores.
+1. Haber concluido el [Ejemplos 01](../Ejemplo-01#readme) y [02](../Ejemplo-02#readme), así como el [Reto 01](../Reto-01#readme).
 
 ### 3. Desarrollo :computer:
 
@@ -49,7 +51,7 @@ Para terminar con nuestro pokedex, debemos ser capaces de notificar al usuario c
 
 
 
-[`Anterior`](../Ejemplo-02) | [`Siguiente`](../Ejemplo-03)      
+[`Anterior`](../Ejemplo-02#readme) | [`Siguiente`](../Ejemplo-03#readme)      
 
 </div>
 

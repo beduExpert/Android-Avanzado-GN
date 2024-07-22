@@ -1,4 +1,4 @@
-[`Kotlin-Avanzado`](../Readme.md) > `Sesión 1`
+[`Kotlin-Avanzado`](..#readme) > `Sesión 1`
 
 ## Sesión 1: Conexiones GET y POST
 
@@ -8,8 +8,8 @@
 
 ### 1. Objetivos :dart: 
 
-- Comunicarse con sistemas remotos mediante sus API REST
-- Parsear información de un modelo a una representación JSON
+- Identificar la ruta de comunicación con sistemas remotos mediante sus API REST
+- Transformar información contenido en un modelo a una representación JSON
 - Analizar el tráfico de datos en la comunicación
 - Utilizar el cliente okHttp y retrofit
 
@@ -17,10 +17,10 @@
 
 <ins>Gson e Interceptores</ins>
 
-Crearemos un data class para poder manipular la informaciǿn en formato JSON recolectada mediante _OkHttp_.
+Crearemos un data class para poder manipular la información en formato JSON recolectada mediante _OkHttp_.
 
-- [**`EJEMPLO 1`**](Ejemplo-01/Readme.md)
-- [**`RETO 1`**](Reto-01/Readme.md)
+- [**`EJEMPLO 1`**](Ejemplo-01#readme)
+- [**`RETO 1`**](Reto-01#readme)
 
 ---
 
@@ -28,8 +28,8 @@ Crearemos un data class para poder manipular la informaciǿn en formato JSON rec
 
 Ahora utilizaremos el cliente Retrofit diseñado para aplicaciones android, resaltando la ventaja de su uso frente a sus alternativas.
 
-- [**`EJEMPLO 2`**](Ejemplo-02/Readme.md)
-- [**`RETO 2`**](Reto-02/Readme.md)
+- [**`EJEMPLO 2`**](Ejemplo-02#readme)
+- [**`RETO 2`**](Reto-02#readme)
 
 ---
 
@@ -37,7 +37,7 @@ Ahora utilizaremos el cliente Retrofit diseñado para aplicaciones android, resa
 
 Combinaremos Retrofit con corrutinas para usar http methods.
 
-- [**`EJEMPLO 3`**](Ejemplo-03/Readme.md)
+- [**`EJEMPLO 3`**](Ejemplo-03#readme)
 
 ---
 
@@ -45,9 +45,9 @@ Combinaremos Retrofit con corrutinas para usar http methods.
 
 Aplica los lineamientos que vienen en esta guía para definir y comenzar el desarrollo de tu proyecto.
 
-- [**`PROYECTO SESIÓN 2`**](Proyecto/Readme.md)
+- [**`PROYECTO SESIÓN 2`**](Proyecto#readme)
 
-[`Anterior`](../Readme.md) | [`Siguiente`](../Sesion-03/Readme.md)      
+[`Anterior`](..#readme) | [`Siguiente`](../Sesion-03#readme)      
 
 </div>
 

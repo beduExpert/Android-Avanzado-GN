@@ -1,22 +1,20 @@
-[`Kotlin Avanzado`](../../Readme.md) > [`Sesión 02`](../Readme.md) > `Ejemplo 2`
+[`Android Avanzado`](../../Readme.md) > [`Sesión 01`](..#Readme.md) > `Ejemplo 2`
 
 ## Ejemplo 2: Introducción a Retrofit
 
 <div style="text-align: justify;">
+### Diccionario :book:
 
-
-
+**Retrofit** es una biblioteca para Android y Java que facilita las solicitudes HTTP hacia servicios web, transformando automáticamente las respuestas JSON en objetos Java. Emplea interfaces y anotaciones para definir peticiones y sus parámetros, soporta varios métodos HTTP y simplifica las solicitudes asíncronas. Retrofit añade un nivel de abstracción superior utilizando internamente OkHttp, aprovechando su eficiencia, pero proporcionando una capa adicional que mejora la usabilidad y la conversión automática de datos.
 
 ### 1. Objetivos :dart:
 
-- Aplicar los conceptos vistos en los anteriores ejemplos.
-- Utilizar la librería retrofit.
+- Utilizar la librería retrofit, reemplazando OkHttp.
 
 ### 2. Requisitos :clipboard:
 
-1. Haber terminado todos los ejercicios anteriores de esta sesión.
+1. Haber terminado El [Ejemplo 1](../Ejemplo-01#readme).
 2. Haber leído el prework.
-3. Tener conocimiento suficiente de API's Rest.
 
 ### 3. Desarrollo :computer:
 
@@ -202,7 +200,7 @@ El pokedex debería verse similar a esto.
 
 <img src="images/01.png" width="33%">
 
-[`Anterior`](../Reto-01) | [`Siguiente`](../Reto-02)      
+[`Anterior`](../Reto-01#readme) | [`Siguiente`](../Reto-02#readme)      
 
 </div>
 

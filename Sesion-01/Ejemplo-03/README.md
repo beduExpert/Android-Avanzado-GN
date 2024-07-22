@@ -1,4 +1,4 @@
-[`Kotlin Avanzado`](../../Readme.md) > [`Sesión 01`](../Readme.md) > `Ejemplo 3`
+[`Kotlin Avanzado`](../../Readme.md) > [`Sesión 01`](..#readme) > `Ejemplo 3`
 
 ## Ejemplo 3: Retrofit y Coroutines
 
@@ -209,7 +209,7 @@ El resultado es la siguiente pantalla:
 
 <img src="images/01.png" width="33%">
 
-[`Anterior`](../Reto-02) | [`Siguiente`](../Proyecto)      
+[`Anterior`](../Reto-02#readme) | [`Siguiente`](../Proyecto#readme)      
 
 </div>
 

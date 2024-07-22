@@ -1,26 +1,24 @@
-[`Kotlin Avanzado`](../../Readme.md) > [`Sesión 02`](../Readme.md) > `Ejemplo 1`
+[`Android Avanzado`](../../Readme.md) > [`Sesión 01`](..#readme) > `Ejemplo 1`
 
 ## Ejemplo 1: Interceptores y GSON
 
 <div style="text-align: justify;">
 
+### Definiciones :open_book:
 
-
+* **GSON** es una biblioteca de Java desarrollada por Google que facilita la conversión entre objetos Java y su representación en formato JSON.
+* **OkHttp** es una biblioteca de Java para manejar peticiones HTTP. Este consta de componentes llamados Interceptors que permiten modificar o inspeccionar solicitudes y respuestas HTTP.
 
 ### 1. Objetivos :dart:
 
-- Que el usuario aprenda a interceptar peticiones y modificarlas 
-- Que implemente la librería GSON para obtener en un mejor formato las respuestas de una petición
+- Aplicar la intercepción y modificación de peticiones  mediante okhttp
+- Implementar la librería GSON 
 
 ### 2. Requisitos :clipboard:
 
-1. Haber terminado el [Ejemplo 01](../Ejemplo-01)
-2. Haber terminado el [Reto 01](../Reto-01)
-3. Haber estudiado previamente estos temas en las diapositivas
+1. Recomendable: saber qué es una API Rest. [Info aquí](https://www.redhat.com/es/topics/api/what-is-a-rest-api),
 
 ### 3. Desarrollo :computer:
-
-El siguiente ejercicio será similar al primero
 
 Contaremos con una tarjeta que contendrá datos esenciales de un jedi. Por medio de un Interceptor cambiaremos al jedi por un sith y la información la recuperaremos con GSON.
 
@@ -239,7 +237,7 @@ class InterceptCharacter : Interceptor{
 }
 ```
 
-El interceptor forma parte de la dependencia de okhttp3 y es este caso, ccrea un nuevo builder con los parámetros que quería modificar, y lo devuelvo.
+El interceptor forma parte de la dependencia de okhttp3 y es este caso, crea un nuevo builder con los parámetros que quería modificar, y lo devuelvo.
 
 8. Vamos a agregar la línea de código que permitirá la intercepción:
 
@@ -295,6 +293,6 @@ El null safety en las variables nos sirvfe para evitar una excepción si en algu
 
 
 
-[`Anterior`](../Readme.md) | [`Siguiente`](../Reto-01)      
+[`Anterior`](..#readme) | [`Siguiente`](../Reto-01#readme)      
 
 </div>
