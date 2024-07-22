@@ -8,7 +8,12 @@
 
 ### :clipboard:  Descripción
 
-Este módulo tiene como  finalidad aplicar conceptos concurrentes en el desarrollo de aplicaciones móviles para estructurar correctamente un proyecto android, comunicar el sistema con servicios web, guardar información adquirida para su uso posterior,utilizar servicios de push notifications y analytics.
+Al finalizar este módulo serás capaz de:
+
+- Aplicar conceptos concurrentes en el desarrollo de aplicaciones móviles para estructurar correctamente un proyecto android.
+- Crear comunicación del sistema con servicios web.
+- Guardar información adquirida para su uso posterior.
+- Programar para la utilización de servicios de push notifications y analytics.
 
 ## :gear: Requerimientos
 
@@ -23,25 +28,25 @@ Este módulo tiene como  finalidad aplicar conceptos concurrentes en el desarrol
 
 ## 💻 Proyecto
 
-Continuaremos con el desarrollo del proyecto del módulo anterior. Implementanto logins, notificaciones y otras utilidades para mejorar la usabilidad y la experiencia de usuario mediante un Mínimo Producto Viable.
+Continuaremos con el desarrollo del proyecto del módulo anterior. Implementando logins, notificaciones y otras utilidades para mejorar la usabilidad y la experiencia de usuario mediante un Mínimo Producto Viable.
 
 ### :memo:  Contenido
 
 El módulo consta de 8 sesiones en su mayoría prácticas que abordarán los siguientes temas:
 
-| Sesión | Tema                                                         | Descripción                                                  |
-| ------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| 1      | [Conexiones GET y POST (Networking)](Sesion-01/Readme.md)    | Comunícate con sistemas remotos.                             |
-| 2      | [Persistencia y Bases de Datos](Sesion-02/Readme.md)         | Almacena diversos tipos de datos.                            |
-| 3      | [Patrones de Arquitectura](Sesion-03/Readme.md)              | Estructura adecuadamente el código fuente de tu proyecto.    |
-| 4      | [Testing](Sesion-04/Readme.md)                               | Crea pruebas automatizadas para detectar errores.            |
-| 5      | [GPS y Google Maps](Sesion-05/Readme.md)                     | Obtén tu ubicación y utiliza el servicio de mapas de google. |
-| 6      | [Notifications](Sesion-06/Readme.md)                         | Configura y recibe notificaciones en tu aplicación.          |
-| 7      | [Servicios de Firebase](Sesion-07/Readme.md)                 | Implementa autenticación segura, detecta bugs en tu app y recibe push notifications remotas. |
-| 8      | [Acceso a cámara y generación de pdf's](Sesion-08/Readme.md) | Utiliza la cámara de tu dispositivo y crea archivos pdf con el contenido que desees. |
+| Sesión | Tema                                                      | Descripción                                                  |
+| ------ | --------------------------------------------------------- | ------------------------------------------------------------ |
+| 1      | [Conexiones GET y POST (Networking)](Sesion-01#readme)    | Comunícate con sistemas remotos.                             |
+| 2      | [Persistencia y Bases de Datos](Sesion-02#readme)         | Almacena diversos tipos de datos.                            |
+| 3      | [Patrones de Arquitectura](Sesion-03#readme)              | Estructura adecuadamente el código fuente de tu proyecto.    |
+| 4      | [Testing](Sesion-04#readme)                               | Crea pruebas automatizadas para detectar errores.            |
+| 5      | [GPS y Google Maps](Sesion-05#readme)                     | Obtén tu ubicación y utiliza el servicio de mapas de google. |
+| 6      | [Notifications](Sesion-06#readme)                         | Configura y recibe notificaciones en tu aplicación.          |
+| 7      | [Servicios de Firebase](Sesion-07#readme)                 | Implementa autenticación segura, detecta bugs en tu app y recibe push notifications remotas. |
+| 8      | [Acceso a cámara y generación de pdf's](Sesion-08#readme) | Utiliza la cámara de tu dispositivo y crea archivos pdf con el contenido que desees. |
 
 
 
-[`Siguiente`](Sesion-01/Readme.md)
+[`Siguiente`](Sesion-01#readme)
 
 </div>
