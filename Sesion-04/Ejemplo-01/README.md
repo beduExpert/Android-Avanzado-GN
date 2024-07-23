@@ -1,15 +1,13 @@
-[`Kotlin Avanzado`](../../Readme.md) > [`Sesión 08`](../Readme.md) > `Ejemplo 1`
+[`Android Avanzado`](../..#readme) > [`Sesión 04`](..#readme) > `Ejemplo 1`
 
 ## Ejemplo 1: Pruebas unitarias
 
 <div style="text-align: justify;">
 
 
-
-
 ### 1. Objetivos :dart:
 
-* Realizar pruebas de clases y métodos aislados  en específico en la JVM.
+* Listar los pasos para realizar pruebas de clases y métodos aislados en específico en la JVM.
 
 ### 2. Requisitos :clipboard:
 
@@ -170,7 +168,7 @@ fun getNumberOfVehicles_two_returnsTwo(){
 }
 ```
 
-[`Anterior`](../) | [`Siguiente`](../Reto-01)      
+[`Anterior`](..#readme) | [`Siguiente`](../Reto-01#readme)      
 
 </div>
 

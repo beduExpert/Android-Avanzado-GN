@@ -1,4 +1,4 @@
-[`Kotlin Avanzado`](../../Readme.md) > [`Sesión 08`](../Readme.md) > `Reto 1`
+[`Android Avanzado`](../..#readme) > [`Sesión 04`](../Readme.md) > `Reto 1`
 
 ## Reto 1: Pruebas unitarias
 
@@ -10,7 +10,7 @@
 
 ### 2. Requisitos :clipboard:
 
-
+* Haber utilizado JUnit y thruth.
 
 ### 3. Desarrollo :computer:
 
@@ -100,7 +100,7 @@ internal fun activeVehiclesPercentage(vehicles: List<Vehicle>?): Float{
 
 
 
-[`Anterior`](../Ejemplo-01) | [`Siguiente`](../Ejemplo-02)      
+[`Anterior`](../Ejemplo-01#readme) | [`Siguiente`](../Ejemplo-02#readme)      
 
 </div>
 

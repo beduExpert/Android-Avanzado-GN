@@ -1,16 +1,16 @@
-[`Kotlin-Avanzado`](../Readme.md) > `Sesión 4`
+[`Android Avanzado`](../Readme.md) > `Sesión 4`
 
 ## Sesión 4: Testing
 
 <img src="images/testing.png" align="right" height="120" hspace="10">
 
 <div style="text-align: justify;">
-
 ### 1. Objetivos :dart: 
 
-- Automatizar el testing de una aplicación
-- Implementar la metodología Test-Driven Development
-- Corregir errores detectados por nuestro sistema
+* Identificar los pasos para automatizar el testing de una aplicación
+* Describir e implementar la metodología Test-Driven Development
+* Enunciar las categorías para tipos de test
+* Ejecutar la secuencia para corregir errores detectados por nuestro sistema
 
 ### 2. Introducción
 
@@ -18,11 +18,9 @@ En general, al desarrollar el código fuente de un software requerimos estar con
 
 TDD (Test-Driven Development) es una metodología de desarrollo donde se desarrollan ___Test Cases___ para validar automáticamente el código de las distintas características de nuestro programa. Estos tests incluyen simples exámenes de comportamientos en un elemento aislado hasta la comprobación de un flujo de navegación completo. Cada Test Case se debe crear incluso antes de haber creado el feature.
 
+<img src="images/test flow.png" align="center" width="35%">
 
-
-<img src="images/test flow.png" align="center" width="35%" hspace="10">
-
-
+<p align="center">Ciclo de Test Cases</p>
 
 #### Tipos de tests
 
@@ -42,27 +40,25 @@ Google divide los tipos de tests en tres categorías diferentes:
 
 Generaremos pruebas unitarias para una aplicación sencilla.
 
-- [**`EJEMPLO 1`**](Ejemplo-01/Readme.md)
-- [**`Reto 1`**](Reto-01/Readme.md)
-- [**`EJEMPLO 2`**](Ejemplo-02/Readme.md)
+- [**`EJEMPLO 1`**](Ejemplo-01#readme)
+- [**`Reto 1`**](Reto-01#readme)
+- [**`EJEMPLO 2`**](Ejemplo-02#readme)
 
 #### <ins>Integrated tests y Tests instrumentados</ins>
 
 Generaremos pruebas unitarias para una aplicación sencilla.
 
-- [**`EJEMPLO 3`**](Ejemplo-03/Readme.md)
-
-
+- [**`EJEMPLO 3`**](Ejemplo-03#readme)
 
 ### 3. Proyecto :hammer:
 
 Aplica los lineamientos que vienen en esta guía para definir y comenzar el desarrollo de tu proyecto.
 
-- [**`PROYECTO SESIÓN 8`**](Proyecto/Readme.md)
+- [**`PROYECTO SESIÓN 4`**](Proyecto/Readme.md)
 
 <br/>
 
-[`Anterior`](../Sesion-03/Readme.md) | [`Siguiente`](../Sesion-05/Readme.md)      
+[`Anterior`](../Sesion-03#readme) | [`Siguiente`](../Sesion-05#readme)      
 
 </div>
 

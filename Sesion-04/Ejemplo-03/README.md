@@ -1,4 +1,4 @@
-[`Kotlin Avanzado`](../../Readme.md) > [`Sesión 08`](../Readme.md) > `Ejemplo 3`
+[`Android Avanzado`](../..#readme) > [`Sesión 04`](..#readme) > `Ejemplo 3`
 
 ## Ejemplo 3: Integrated tests y Tests instrumentados
 
@@ -6,6 +6,7 @@
 ### 1. Objetivos :dart:
 
 * Realizar pruebas de flujo mediante el emulador de android.
+* Identificar el procedimiento para Definir un Service Locator y su utilidad para la gestión de base de datos.
 
 ### 2. Requisitos :clipboard:
 
@@ -41,7 +42,7 @@ Ahora crearemos un test para nuestro ViewModel (el test debe ir dentro de ***and
 
 #### Corriendo un Fragment en Testing
 
-Para poder lanzar un Fragment y desplegar su interfaz de usuario, se requiere de un view raíz dentro de un _Activity_ que la contenga, este view lo determinamos en el layout de nuestro activity y a este se le asignan los fragments de forma estático o dinámicamente (a través de la clase o con ayuda de un navigation grpah). Sin embargo, para realizar una prueba instrumentada no existe un root que albergue nuestro fragment y su UI, por lo cual utilizamos el método ___launchFragmentInContainer___ para adjuntar el fragment a un view container. Agregaremos el método _sleep_ para congelar el hilo 4 segundos y poder apreciar la interfaz.
+Para poder lanzar un Fragment y desplegar su interfaz de usuario, se requiere de un view raíz dentro de un _Activity_ que la contenga, este view lo determinamos en el layout de nuestro activity y a este se le asignan los fragments de forma estático o dinámicamente (a través de la clase o con ayuda de un navigation graph). Sin embargo, para realizar una prueba instrumentada no existe un root que albergue nuestro fragment y su UI, por lo cual utilizamos el método ___launchFragmentInContainer___ para adjuntar el fragment a un view container. Agregaremos el método _sleep_ para congelar el hilo 4 segundos y poder apreciar la interfaz.
 
 ```kotlin
 launchFragmentInContainer<VehicleListFragment>()
@@ -64,9 +65,7 @@ launchFragmentInContainer<VehicleListFragment>(null, R.style.Theme_RoomVehicles)
 
 El primer argumento es nulo ya que no requerimos ningún argumento para este fragment, el segundo parámetro es el tema por defecto en nuestra aplicación. Se desplegará lo siguiente:
 
-<img src="images/launched-fragment.png" width="75%">
-
- 
+<img src="images/launched-fragment.png" width="35%">
 
 #### Creando un Service Locator
 
@@ -248,7 +247,7 @@ Al correr nuevamente esto, la prueba funcionará. Veremos en la parte superior d
 
  El siguiente gif muestra la reproducción del test:
 
-<img src="images/passed-test.gif" width="80%">
+<img src="images/passed-test.gif" width="45%">
 
 
 
@@ -258,7 +257,7 @@ __NOTA:__ Con motivo de visualizar la UI, se utilizó ___Thread.sleep()___, sin 
 
 
 
-[`Anterior`](../Ejemplo-02) | [`Siguiente`](../Proyecto/Readme.md)      
+[`Anterior`](../Ejemplo-02#readme) | [`Siguiente`](../Proyecto#readme)      
 
 </div>
 

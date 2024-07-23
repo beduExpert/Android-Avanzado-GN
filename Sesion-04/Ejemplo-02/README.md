@@ -1,6 +1,6 @@
 
 
-[`Kotlin Avanzado`](../../Readme.md) > [`Sesión 08`](../Readme.md) > `Ejemplo 2`
+[`Kotlin Avanzado`](../../Readme.md) > [`Sesión 04`](..#readme) > `Ejemplo 2`
 
 ## Ejemplo 2: Local Tests con Dependencias Android
 
@@ -255,10 +255,8 @@ Esta regla debe ser declarada en nuestra clase de testing.
 var coroutineTestRule = CoroutineTestRule()
 ```
 
-
-
 Finalmente, ejecutamos nuestro test y verificamos que funcione correctamente.
 
-[`Anterior`](../Reto-01) | [`Siguiente`](../Ejemplo-03)      
+[`Anterior`](../Reto-01) | [`Siguiente`](../Ejemplo-03#readme)
 
 </div>
