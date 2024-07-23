@@ -1,4 +1,4 @@
-[`Kotlin Avanzado`](../../Readme.md) > [`Sesión 07`](../Readme.md) > `Ejemplo 3`
+[`Android Avanzado`](../..#readme) > [`Sesión 03`](..#readme) > `Ejemplo 2`
 
 ## Architecture Components
 
@@ -7,13 +7,15 @@
 ### 1. Objetivos :dart:
 
 
-- Migrar una actividad convencional al patrón Model-View-Presenter
+- Definir los conceptos Repositorio, Data binding y LiveData
+- Comprender las funciones Adapter, Gestión de Eventos
+- Crear ViewModels
 
 ### 2. Requisitos :clipboard:
 
-* Haber leído previamente el tema de Patrones de arquitectura para android en el Prework
+* Saber y haber implementado al menos un patrón de arquitectura (MVC por ejemplo).
 
-### 3. Desarrollo :computer:
+### 3. Introducción :airplane:
 
 Un proyecto de android puede variar en cuanto a la complejidad de su estructura, dependiendo de muchos factores que afectan al performance, escalabilidad y al peso de una app. Una de estas características es la estructura que siga el proyecto.
 
@@ -48,11 +50,11 @@ Este es un esquema general, sin embargo, utilizaremos una versión reducida de e
 
 
 
+### 4. Desarrollo :computer:
+
 #### Setup inicial 
 
-Para este ejemplo, volveremos a desarrollar el ejercicio del  [Ejemplo 2](../../Sesion-04/Ejemplo-02) de la [Sesión 4](../../Sesion-04/Readme.md), para esto, volveremos a tomar la [base del proyecto](base) (incluído aquí).
-
-
+Para este ejemplo, volveremos a desarrollar el ejercicio del  [Ejemplo 3](../../Sesion-02/Ejemplo-03#readme) de la [Sesión 4](../../Sesion-04/Readme.md), para esto, volveremos a tomar la [base del proyecto](base) (incluído aquí).
 
 Editaremos el archivo ***app/buid.gradle***. Agregaremos la opción de databinding, que abordaremos más adelante, mediante las siguientes líneas: 
 
@@ -739,6 +741,6 @@ fun setupNavigation() {
 
 Este método se utiliza en ___onCreateView___.
 
-[`Anterior`](../Ejemplo-02) | [`Siguiente`](../Proyecto/Readme.md)      
+[`Anterior`](../Ejemplo-01#readme) | [`Siguiente`](../Proyecto#readme)      
 
 </div>

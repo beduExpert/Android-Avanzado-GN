@@ -1,4 +1,4 @@
-[`Kotlin-Avanzado`](../Readme.md) > `Sesión 3`
+[`Android-Avanzado`](..#readme) > `Sesión 3`
 
 ## Sesión 3: Patrones de Arquitectura
 
@@ -8,14 +8,11 @@
 
 ### 1. Objetivos :dart: 
 
-
-* Introducir el patrón Observer mediante RxKotlin
-
-- Diseñar la estructura del proyecto y la composición de los archivos
-- Separar la lógica de negocio de los modelos, la interfaz gráfica y su gestión mediante el patrón MVVM
-- Aplicar los Architectures components de Jetpack en una app
-
-
+* Definir qué son los patrones de arquitectura
+* Describir los elementos contenidos en las librerías *Android Architecture Components*
+* Diseñar la estructura del proyecto y la composición de los archivos
+* Evaluar la lógica de negocio de los modelos, la interfaz gráfica y su gestión mediante el patrón MVVM
+* Aplicar los Architectures components de Jetpack en una app
 
 ### 2. Contenido :blue_book:
 
@@ -25,8 +22,8 @@
 
 Estructuraremos nuestro código con este patrón.
 
-- [**`EJEMPLO 1`**](Ejemplo-01/Readme.md)
-- [**`RETO 1`**](Reto-01/Readme.md)
+- [**`EJEMPLO 1`**](Ejemplo-01#readme)
+- [**`RETO 1`**](Reto-01#readme)
 
 ---
 
@@ -34,17 +31,17 @@ Estructuraremos nuestro código con este patrón.
 
 Utilizaremos el patrón de arquitectura propuesto por Jetpack para estructurar nuestro proyecto. 
 
-- [**`EJEMPLO 2`**](Ejemplo-02)
+- [**`EJEMPLO 2`**](Ejemplo-02#readme)
 
 ### 3. Proyecto :hammer:
 
 Aplica los lineamientos que vienen en esta guía para definir y comenzar el desarrollo de tu proyecto.
 
-- [**`PROYECTO SESIÓN 7`**](Proyecto/Readme.md)
+- [**`PROYECTO SESIÓN 7`**](Proyecto#readme)
 
 <br/>
 
-[`Anterior`](../Sesion-02/Readme.md) | [`Siguiente`](../Sesion-04/Readme.md)      
+[`Anterior`](../Sesion-02#readme) | [`Siguiente`](../Sesion-04#readme)      
 
 </div>
 

@@ -1,21 +1,35 @@
-[`Kotlin Avanzado`](../../Readme.md) > [`Sesión 07`](../Readme.md) > `Ejemplo 1`
+[`Kotlin Avanzado`](../../Readme.md) > [`Sesión 03`](..#readme) > `Ejemplo 1`
 
 ## Patrón de arquitectura: Model-View-Presenter :
 
 <div style="text-align: justify;">
 
 
-
-
 ### 1. Objetivos :dart:
 
-- Migrar una actividad convencional al patrón Model-View-Presenter
+- Aplicar el patrón Model-View-Presenter.
 
 ### 2. Requisitos :clipboard:
 
-* Haber leído previamente el tema de Patrones de arquitectura para android en el Prework
+* Conocer al menos un patrón de arquietectura.
 
-### 3. Desarrollo :computer:
+### 3. Introducción :airplane:
+
+**MVP (Model-View-Presenter)** es un atrón de arquitectura que separa la lógica de la presentación en tres componentes: 
+
+* **Model:** Maneja los datos y la lógica de negocio.
+*  **View:** Interfaz de usuario.
+* **Presenter:** Intermediario que recibe la entrada de la vista y actualiza el modelo y la vista.
+
+**Diferencia con MVC (Model-View-Controller):**
+
+\- En **MVC**, el **Controller** maneja la entrada del usuario directamente y actualiza el modelo o la vista en consecuencia.
+
+\- En **MVP**, el **Presenter** actúa como intermediario entre la vista y el modelo, lo que puede hacer que la vista sea más pasiva y centrada solo en la presentación.
+
+En resumen, en MVP, la vista y el modelo son totalmente independientes y se comunican solo a través del presenter, mientras que en MVC hay una interacción directa entre el controlador, la vista y el modelo.
+
+### 4. Desarrollo :computer:
 
 Vamos a aprender implementar lo esencial del patrón MVP en un proyecto previamente creado.
 
@@ -123,6 +137,6 @@ class AddContactActivity : AppCompatActivity(),AddContactPresenter.View {
 
 5. Corremos la app, el funcionamiento no debió ser alterado.
 
-[`Anterior`](../) | [`Siguiente`](../Reto-01)      
+[`Anterior`](..#readme) | [`Siguiente`](../Reto-01#readme)      
 
 </div>
