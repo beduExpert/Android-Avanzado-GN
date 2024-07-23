@@ -1,27 +1,27 @@
-[`Kotlin Avanzado`](../../Readme.md) > [`Sesión 04`](../Readme.md) > `Ejemplo 1`
+[`Kotlin Avanzado`](../../Readme.md) > [`Sesión 02`](..#readme) > `Ejemplo 1`
 
 ## Ejemplo 1: Shared Preferences
 
 <div style="text-align: justify;">
+### Diccionario :book:
 
-
-
+* **SharedPreferences**:  Herramienta en Android que permite almacenar y recuperar pares clave-valor de datos simples y persistentes, como configuraciones de usuario, dentro de una aplicación. De fácil acceso, por lo que no se debe guardar información sensible.
 
 ### 1. Objetivos :dart:
 
-- Aprender el funcionamiento de SharedPreferences
-- Utilizarlo para guardar/cargar información
+- Identificar el funcionamiento de *Shared Preferences*
+- Identificar el funcionamiento de Data Store
+- Habilitar las opciones de guardar/ cargar información
 
 ### 2. Requisitos :clipboard:
 
-1. Haber leído previamente el Prework
-2. Tomar la clase de de esta sesión
+1. Conocer qué es un archivo xml. [Info aquí](https://aws.amazon.com/es/what-is/xml/).
 
 #### 
 
 ### 3. Desarrollo :computer:
 
-Vamos a construir una aplicación sencilla pero capaz de almacenar y cargar tres tipos de dato:
+Vamos a construir una aplicación sencilla pero capaz de almacenar y cargar tres tipos de datos:
 
 - Un booleano
 - Un String
@@ -101,7 +101,7 @@ el layout que elegimos es el siguiente:
 </androidx.constraintlayout.widget.ConstraintLayout>
 ```
 
-1. En el MainActivity, declaramos nuestras constantes: PREFS_NAME es el nombre de nuestra colección de preferencias, mientras que los otros tres son los keys en el key-pair
+3. En el MainActivity, declaramos nuestras constantes: PREFS_NAME es el nombre de nuestra colección de preferencias, mientras que los otros tres son los keys en el key-pair
 
 ```kotlin
 private val PREFS_NAME = "org.bedu.sharedpreferences"
@@ -110,19 +110,19 @@ private val PREFS_NAME = "org.bedu.sharedpreferences"
     private val BOOLEAN_KEY = "boolean_key"
 ```
 
-1. Declaramos también nuestra variable preferences, sin asignarle valor aún:
+4. Declaramos también nuestra variable preferences, sin asignarle valor aún:
 
 ```kotlin
 private lateinit var preferences: SharedPreferences
 ```
 
-1. declaramos sharedPreferences
+5. declaramos sharedPreferences
 
 ```kotlin
 preferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE) //Modo privado
 ```
 
-1. para guardar los valores en nuestras vistas cada que abrimos la app, obtenemos los valores de SharedPreferences y los atamos a sus vistas
+6. para guardar los valores en nuestras vistas cada que abrimos la app, obtenemos los valores de SharedPreferences y los atamos a sus vistas
 
 ```kotlin
 fun setValues(){
@@ -148,7 +148,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
 }
 ```
 
-1. declaramos el listener del botón guardar,
+7. declaramos el listener del botón guardar,
 
 ```kotlin
 with (binding) {
@@ -251,7 +251,7 @@ Para hacer una breve diferencia entre SharedPreferences, y la nueva versión de 
 
 La funcionalidad debería ser idéntica a la de SharedPreferences.
 
-[`Anterior`](../Readme.md) | [`Siguiente`](../Reto-01)      
+[`Anterior`](..#readme) | [`Siguiente`](..#readme)      
 
 </div>
 

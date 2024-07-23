@@ -1,4 +1,4 @@
-[`Kotlin Avanzado`](../../Readme.md) > [`Sesión 04`](../Readme.md) > `Reto 2`
+[`Kotlin Avanzado`](../../Readme.md) > [`Sesión 02`](../Readme.md) > `Reto 2`
 
 ## Reto 2: Room
 
@@ -13,7 +13,7 @@
 
 ### 3. Desarrollo :computer:
 
-El reto es implementar funcionalidad al botón editar. Cuando este botón sea presionado, debemos navegar a la pantalla de agregar vehículo, con la diferencia que esta vez en el botón se leerá __Actualizar__. 
+El reto es implementar funcionalidad al botón **Editar**. Cuando este botón sea presionado, debemos navegar a la pantalla de agregar vehículo, con la diferencia que esta vez en el botón se leerá __Actualizar__. 
 
 La información puede ser enviada a través de un ___bundle___ en el método ___findNavController___.
 
@@ -36,6 +36,6 @@ El siguiente gif muestra como se debe interactuar al agregar y al editar un elem
 
 <img src="images/edit.gif" width="35%">
 
-[`Anterior`](../Ejemplo-02) | [`Siguiente`](../Proyecto/Readme.md)      
+[`Anterior`](../Ejemplo-03#readme) | [`Siguiente`](../Proyecto#readme)      
 
 </div>

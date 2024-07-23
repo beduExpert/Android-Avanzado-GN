@@ -174,6 +174,6 @@ El resultado sería el siguiente:
 
 
 
-[`Anterior`](../Reto-03) | [`Siguiente`](../Readme.md)
+[`Anterior`](../Reto-02) | [`Siguiente`](..#readme)
 
 </div>

@@ -1,20 +1,17 @@
-[`Kotlin Avanzado`](../../Readme.md) > [`Sesión 04`](../Readme.md) > `Reto 1` 
+[`Kotlin Avanzado`](../..#readme) > [`Sesión 2`](../Readme.md) > `Reto 1` 
 
 ## Reto 1: Shared Preferences
 
 <div style="text-align: justify;">
 
 
-
-
 ### 1. Objetivos :dart:
 
-Aplicar SharedPreferences a través de un ejemplo
+Aplicar SharedPreferences a través de un ejemplo.
 
 ### 2. Requisitos :clipboard:
 
-1. Haber tomado el primer tema de la sesión 1
-2. Haber cursado el [Ejemplo 01](../Ejemplo-01)
+1. Dominar el uso de shared preferences.
 
 ### 3. Desarrollo :computer:
 
@@ -159,7 +156,7 @@ Las pantallas se deben ver así
 
 
 
-[`Anterior`](../Ejemplo-01) | [`Siguiente`](../Ejemplo-02)      
+[`Anterior`](../Ejemplo-01#readme) | [`Siguiente`](../Ejemplo-02#readme)      
 
 </div>
 
