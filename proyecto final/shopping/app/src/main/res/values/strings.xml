@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Bedu shop</string>
+
+    <!-- Pantalla de login -->
+    <string name="hint_login_user">Correo electrónico</string>
+    <string name="hint_login_password">Constraseña</string>
+    <string name="login">Iniciar sesión</string>
+    <string name="register_here">Regístrate aquí</string>
+    <string name="empty_field">Te falta llenar algún campo</string>
+    <string name="user_not_found">Usuario no encontrado</string>
+    <string name="error_login">Un error ha ocurrido</string>
+    <string name="understood">Entendido</string>
+
+    <!-- Lista de productos -->
+    <string name="product_list_title">Productos cerca de ti</string>
+
+    <!-- Bottom Navigation -->
+    <string name="bottom_home">Inicio</string>
+    <string name="bottom_map">Ubícanos</string>
+    <string name="button_logout">Cerrar sesión</string>
+
+    <!-- common -->
+
+    <string name="error_unknown">Hubo un error, intenta nuevamente</string>
+
+</resources>

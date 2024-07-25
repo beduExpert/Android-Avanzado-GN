@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="EditTextRegister">
+        <item name="android:drawablePadding">12dp</item>
+        <item name="android:layout_marginLeft">24dp</item>
+        <item name="android:layout_marginRight">24dp</item>
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style
+        name="Widget.BeduCompras.BottomNavigationView"
+        parent="@style/Widget.MaterialComponents.BottomNavigationView.PrimarySurface">
+        <item name="labelVisibilityMode">selected</item> <!-- Mostrar el label cuando seleccione el icono-->
+        <item name="itemTextAppearanceActive">@style/TextAppearance.BeduCompras.BottomNavigation</item>
+        <item name="itemIconTint">@color/bottom_nav_item</item>
+        <item name="itemTextColor">@color/bottom_nav_item</item>
+    </style>
+
+    <style
+        name="Widget.BeduCompras.Button"
+        parent="@style/Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/red_bedu</item>
+    </style>
+
+    <style
+        name="Widget.BeduCompras.InputStyle.Outlined"
+        parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:drawablePadding">12dp</item>
+        <item name="android:layout_marginLeft">24dp</item>
+        <item name="android:layout_marginRight">24dp</item>
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+
+</resources>

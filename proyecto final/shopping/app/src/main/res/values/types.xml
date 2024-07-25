@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TextAppearance.BeduCompras.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.BeduCompras.Headline2" parent="TextAppearance.MaterialComponents.Headline2">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.BeduCompras.Headline4" parent="TextAppearance.MaterialComponents.Headline4">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.BeduCompras.Headline3" parent="TextAppearance.MaterialComponents.Headline3">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/red_bedu</item>
+        <item name="lineHeight">40sp</item>
+    </style>
+
+    <style name="TextAppearance.BeduCompras.Headline5" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.BeduCompras.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="lineHeight">28sp</item>
+    </style>
+
+    <style name="TextAppearance.BeduCompras.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="lineHeight">22sp</item>
+    </style>
+
+    <style name="TextAppearance.BeduCompras.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
+    </style>
+
+    <style name="TextAppearance.BeduCompras.Body1" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="lineHeight">28sp</item>
+    </style>
+
+    <style name="TextAppearance.BeduCompras.Body2" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="lineHeight">16sp</item>
+    </style>
+
+    <style name="TextAppearance.BeduCompras.Button" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.BeduCompras.Caption" parent="TextAppearance.MaterialComponents.Caption">
+    </style>
+
+    <style name="TextAppearance.BeduCompras.Overline" parent="TextAppearance.MaterialComponents.Overline">
+    </style>
+
+    <style name="TextAppearance.BeduCompras.BottomNavigation" parent="TextAppearance.BeduCompras.Caption">
+        <item name="android:letterSpacing">0.08</item>
+    </style>
+
+</resources>

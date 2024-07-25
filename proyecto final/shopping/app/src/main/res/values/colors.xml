@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black_bedu">#172126</color>
+    <color name="black_light">#3e484e</color>
+    <color name="black_dark">#000000</color>
+    <color name="red_bedu">#f03c15</color>
+    <color name="red_orange">#ff7244</color>
+    <color name="red_dark">#b50000</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+</resources>
