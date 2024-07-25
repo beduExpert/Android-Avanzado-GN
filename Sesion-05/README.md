@@ -26,7 +26,11 @@ Gestionaremos los permisos de localización con una precisión definida y obtend
 
 ---
 
- 
+#### <ins>Google Maps</ins>
+
+Gestionaremos los permisos de localización con una precisión definida y obtendremos la latitud y longitud donde se ubica nuestro dispositivo.
+
+- [**`EJEMPLO 2`**](Ejemplo-02#readme)
 
 ### 3. Proyecto  :hammer:
 
