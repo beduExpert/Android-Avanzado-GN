@@ -1,38 +1,42 @@
+[`Android-Avanzado`](..#readme) > `Sesión 5`
 
-# :wave: Sesión 05: Terceros - Implementa SDK´s
+## Sesión 5: GPS y Google Maps
 
-## 🎯  Objetivo de la sesión:
+<img src="images/sensor.png" align="right" height="120" hspace="10">
 
-- Implementar SDK´s en la arquitectura de la app, y reconocer sus lineamientos, para sumar funciones al proyecto.
+<div style="text-align: justify;">
 
-## 🎯 Qué aprenderán
 
-- Implementación de SDK's de terceros (Software Development Kit) en proyecto base.
-- Combinar funciones de publicar contenido en Facebook y controlar la reproducción de Spotify desde una app mediante SDK´s.
 
-## ⚙ Requisitos
+### 1. Objetivos :dart: 
 
-+ Revisión previa del Prework de la sesión.
-+ Android Studio.
-+ Cuenta de Facebook.
-+ Cuenta de Spotify.
-+ Télefono físico y/o emulador con la última versión de Spotify App.
+- Utilizar el GPS disponible en los dispositivos android para dar geolocalizar al usuario.
+- Implementar el SDK de google maps para android y renderizarlo en una pantalla.
 
-## 🎩 Desarrollo
+### 2. Contenido :blue_book:
 
-En esta sesión aprenderemos a implementar dos de los SDK más utilizados en el mercado. Nuestra app podrá publicar contenido en Facebook, además de controlar la reproducción de Spotify.
+ 
 
-Existe una extensa variedad de SDK´s, que proporcionan un conjunto de funciones en un solo paquete, recibiendo actualizaciones constantes.
+#### <ins>Localización y GPS</ins>
 
-Estos kits varían en las herramientas que integran y las licencias que emplean, sin embargo facilitan a los desarrolladores la creación de aplicaciones para la plataforma, el sistema, o el lenguaje de programación que provee el SDK.
+Gestionaremos los permisos de localización con una precisión definida y obtendremos la latitud y longitud donde se ubica nuestro dispositivo.
 
-</br>
+- [**`EJEMPLO 1`**](Ejemplo-01#readme)
+- [**`RETO 1`**](Reto-01#readme)
 
-## 📂 Organización de la clase
+---
 
-- [Ejemplo 01: Facebook Developers](./Ejemplo-01/README.md)
-    - [Reto 01: Compartiendo imágenes, cita y tags](./Reto-01/README.md)
-- [Ejemplo 02: Agregando multidex](./Ejemplo-02/README.md)
-- [Ejemplo 03: Spotify Developers](./Ejemplo-03/README.md)
-    - [Reto  02: Reproduciendo contenido](./Reto-02/README.md)
-- [Postwork: Conekta](./Postwork/README.md)
+ 
+
+### 3. Proyecto  :hammer:
+
+Aplica los lineamientos que vienen en esta guía para definir y comenzar el desarrollo de tu proyecto.
+
+- [**`PROYECTO SESIÓN 5`**](Proyecto#readme)
+
+<br/>
+
+[`Anterior`](../Sesion-04#readme) | [`Siguiente`](../Sesion-06#readme)      
+
+</div>
+

@@ -1,76 +1,91 @@
-# Reto 01: Compartiendo imágenes, cita y tags
+[
 
-## Objetivo
+[`Kotlin Avanzado`](../../Readme.md) > [`Sesión 03`](../Readme.md) > `Reto 1`
 
-* Adaptar el código para agregar cita y tags al compartir vínculos a través del SDK de facebook en la app.
-* Compartir imágenes con tags.
+## Reto 1: Localización y GPS
 
-## Desarrollo
+<div style="text-align: justify;">
 
-En el ejemplo 01 aprendimos a compartir vínculos con el SDK de Facebook. Para completar este reto necesitas sumar los siguientes puntos al proyecto trabajado previamente:
 
-</br>
 
-1. Agregar cita y tags al evento del botón Link.
-  
-    - Para agregar la url utilizamos **.setContentUrl**. Explora qué otras opciones tiene **ShareLinkContent**, pues utilizarás dos de ellas para completar este reto.
 
-2. Compartir una imagen alojada en nuestro proyecto al evento del botón Picture. 
+### 1. Objetivos :dart:
 
-    - Utiliza la imagen que sea de tu agrado.
-    - Para compartir imágenes utilizamos SharePhoto.
+Completar el código del ejemplo anterior para tener una experiencia de localización más integral
 
-</br>
+### 2. Requisitos :clipboard:
 
-[Haz clic aquí para abrir la documentación oficial](https://developers.facebook.com/docs/sharing/android)
+Haber finalizado el [Ejemplo 1](../Ejemplo-01)
 
-</br>
+### 3. Desarrollo :computer:
+
+Investigar para poder hacer las siguientes tareas:
+
+1. Abrir el menú de prender localización cuando este no esté prendido
+2. Localizar automáticamente después de obtener el permiso de localización
+
+3. En caso de obtener una localización nula, avisar por medio de un _Toast_.
+
+___NOTA:___ Si después de desactivar y reactivar el servicio de Gps la localización no se puede recuperar, intenta abrir el servicio de google maps y vuelve a pedir el request.
 
 <details>
-    <summary>Solución 1</summary>
+	<summary>Solucion</summary>
 
-  Evento botón Link
-  ```kotlin
-  val content = ShareLinkContent.Builder()
-    .setContentUrl(Uri.parse("https://bedu.org/"))
-    .setQuote("Logra + con BEDU")
-    .setShareHashtag(
-        ShareHashtag.Builder()
-            .setHashtag("#RetaTuPotencial")
-            .build()
-    )
-    .build()
 
-  ShareDialog.show(this, content)
-  ```
+1. crear este método para ir a la pantalla de prender GPS
 
-  <img src="assets/01.png" width="70%"/> 
+```kotlin
+private fun goToTurnLocation(){
+        Toast.makeText(this, "Debes prender el servicio de GPS", Toast.LENGTH_LONG).show()
+        val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+        startActivity(intent)
+    }
+```
+
+ e implementarlo en *getLocation*
+
+```kotlin
+if (isLocationEnabled()) { //localizamos sólo si el GPS está encendido
+   ...
+} else{
+	goToTurnLocation()
+}
+```
+
+
+2. Implementar este código
+
+```kotlin
+override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        //Esta condicionante implica que se respondió una petición de permisos GPS
+        if (requestCode == PERMISSION_ID) {
+            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                getLocation()
+            }
+        }
+    }
+```
+
+
+
+3. En ___addOnSuccessListener___, agregar lo siguiente:
+
+```kotlin
+if(location!=null){
+    tvLatitude.text = location?.latitude.toString()
+    tvLongitude.text = location?.longitude.toString()
+} else{
+    Toast.makeText(
+        this,
+        "Aún no se ha detectado una posición de localización",
+        Toast.LENGTH_SHORT)
+        .show()
+}
+```
 
 </details>
 
-</br>
+[`Anterior`](../Ejemplo-01) | [`Siguiente`](../Ejemplo-02)      
 
-<details>
-    <summary>Solución 2</summary>
-  
-  Evento botón Picture
-  ```kotlin
-  val image = BitmapFactory.decodeResource(resources, R.drawable.bedu)
-  val photo = SharePhoto.Builder()
-      .setBitmap(image)
-      .build()
-  val photoContent = SharePhotoContent.Builder()
-      .addPhoto(photo)
-      .build()
+</div>
 
-  ShareDialog.show(this, photoContent)
-  ```
-
-  <img src="assets/02.png" width="70%"/>
-
-</details>
-
-</br>
-</br>
-
-[Siguiente ](../Ejemplo-02/README.md)(Ejemplo 2)

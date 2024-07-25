@@ -1,66 +1,64 @@
-# Reto 01: Generando llave y firmando la app
+[`Android Avanzado`](../..#readme) > [`Sesión 06`](..#readme) > `Reto 1`
 
-## Objetivo
+## Reto 1: Notificaciones
 
-* Generar la llave de un proyecto Android para utilizarla en la creación de APK / APP Bundle.
-* Crear Apk firmado con llave creada previamente.
+<div style="text-align: justify;">
 
-## Desarrollo
 
-En el Prework de esta sesión debiste seleccionar el proyecto con el que trabajarás. Sólo si no te fue posible seleccionar el proyecto puedes utilizar el [Proyecto base](./base).
 
-El proyecto base muestra la siguiente interfaz:
 
-<img src="assets/01.png" width="70%"/> 
+### 1. Objetivos :dart:
 
-</br>
-</br>
+* Aplicar el conocimiento adquirido en el [Ejemplo 1](../Ejemplo-01)
 
-Un **keystore** es un repositorio asegurado con una contraseña, donde se guardan una serie de llaves y certificados. Cada llave tiene asignado un alias para identificarse y una contraseña para protegerse. Para firmar nuestra aplicación de release, debemos generar un keystore con una signing key, que es una llave privada que genera un certificado (una llave pública), y este está en el META_INF de nuestro APK; esto asegura a Google que nuestra aplicación es auténtica. Una vez que una app es subida, la llave no puede ser cambiada, por lo que perderla implica no poder volver a actualizar la app. La llave de debug es genérica e insegura, por lo que no es válida como una llave de release.
+### 2. Requisitos :clipboard:
 
-</br>
+* Saber crear una notificación básica.
+* Crear un canal para notificaciones.
 
-> IMPORTANTE, el keystore debe ser guardado de forma segura y no debe subirse como archivo en un CVS (Control Version System) como Git.
+### 3. Desarrollo :computer:
 
-Para completar este reto necesitas sumar los siguientes puntos al proyecto seleccionado previamente:
+Reforzaremos ciertos conceptos del ejemplo anterior.
 
-1. Genera la llave con la que firmarás tus Apk’s enviados a producción.
-	a. Encontrarás la opción en **Build > Generate Signed Bundle / Apk**
-2. Crea el Apk con la firma generada previamente.
-
-</br>
+1. Corremos la app en un dispositivo con OS menor a la API 26 Reproduciremos en secuencia y rápidamente los tres botones de la aplicación ¿Qué sucede? Se generaron nuevas notificaciones o se reemplazaron las mismas? Por qué creen que sucede esto? (Comentar y resolver con el instructor) y hacer que las notificaciones no se reemplacen.
 
 <details>
-    <summary>Solución</summary>
+	<summary>Solucion</summary>
 
-1. Ir a **Build > Generate Signed Bundle / Apk.**
-2. Selecciona APK.
 
-     <img src="assets/02.png" width="70%"/> 
-
-3. Haz clic en Create new.
-
-     <img src="assets/04.png" width="70%"/> 
-
-4. Ingresa los datos. Es importante guardar estos datos.
-
-     <img src="assets/03.png" width="70%"/> 
-
-5. Una vez creada la llave, búscala con el botón Choose existing… Y agrega los datos de la misma, como se aprecia.
-
-     <img src="assets/04.png" width="70%"/> 
-
-6. Selecciona release y activa los checkbox V1 (Jar Signature) y V2 (Full APK Signature) para tener mayor seguridad.
-
-     <img src="assets/05.png" width="70%"/> 
-
-7. Listo. La Apk está lista.
-
-     <img src="assets/06.png" width="70%"/> 
+	en cada generación de notificacción, hacer las id's diferentes para el método notify(id,builder.build()) 
 
 </details>
 
-</br>
-</br>
 
-[Siguiente ](../Ejemplo-01/README.md)(Ejemplo 1)
+2. Ahora, crear otro canal de push notifications, de modo que se vean como en la siguiente pantalla
+
+<img src="images/01.png" width="33%"/>
+
+la notificación simple y con botón deben pertenecer al canal *Diversos*, mientras que el de redireccionamiento debe estar en *Cursos*.
+
+<details>
+	<summary>Solucion</summary>
+
+
+	Crear otro canal, suscribirlo en onCreate y asignarlo a las notificaciones correspondientes.
+
+</details>
+
+Apagar el switch del canal *Diversos*, abrir la app y accionar los tres botones ¿Qué sucede ahora? comentar la causa.
+
+
+3. Hacer que la notificación de redireccionamiento también implemente el botón que acciona el Toast.
+
+<details>
+	<summary>Solucion</summary>
+
+
+	Utiliza el cógido del PendingIntent y el método addAction del builder de la notificación en la función *buttonNotification*
+
+</details>
+
+[`Anterior`](../Ejemplo-01) | [`Siguiente`](../Ejemplo-02)      
+
+</div>
+

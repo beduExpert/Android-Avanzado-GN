@@ -1,155 +1,225 @@
-# Ejemplo 01: Facebook Developers
+[`Kotlin Avanzado`](../..#readme) > [`Sesión 3`](..#readme) > `Ejemplo 1`
 
-## Objetivo
+## Ejemplo 1: Localización y GPS
 
-* Implementar SDK de Facebook en proyecto base Android para combinar la función de compartir contenido a una app.
-- Crear y configurar proyecto desde el portal de Facebook Developers.
+<div style="text-align: justify;">
 
-## Desarrollo
 
-En el prework de esta sesión debiste crear un proyecto desde cero que tuviera 3 botones en su pantalla principal: “Facebook, Spotify, y Conekta”. Cada botón abre una pantalla con una interfaz mínima. Sólo si no te fue posible completar este proyecto puedes utilizar el [Proyecto base](./base),
 
-El proyecto base muestra la siguiente interfaz:
 
-<img src="assets/01.png" width="60%"/>
+### 1. Objetivos :dart:
 
-Con la intención de agregar el SDK de Facebook a nuestra app, sea la del proyecto base o un proyecto individual previamente seleccionado y trabajado en el prework, realizaremos los siguientes pasos.
+- Utilizar el GPS del dispositivo para obtener la localización del usuario.
 
-</br>
+### 2. Requisitos :clipboard:
 
-1. Nos dirigimos al **Gradle** del módulo y agregamos las siguientes líneas de código.
+- Haber leído previamente todo lo relacionado a localización en el prework.
 
-    ```gradle
-    // Facebook Android SDK (everything)
-    implementation 'com.facebook.android:facebook-android-sdk:8.1.0'
+### 3. Desarrollo :computer:
 
-    // Facebook Share only
-    implementation 'com.facebook.android:facebook-share:8.1.0'
-    ```
+1. nstalamos la dependencia e localización de google play services:
 
-    Cada empresa que provee un SDK para implementar sus servicios en nuestras app genera una sección donde se incluye la configuración y documentación de la misma.
+```kotlin
+implementation 'com.google.android.gms:play-services-location:17.0.0'
+```
 
-2. Ahora, para crear y configurar nuestro proyecto desde el administrador de Facebook es necesario abrir el administrador de [Facebook Developers](https://developers.facebook.com/docs/) e iniciar sesión. 
+2. Necesitamos pedir permiso para usar la localización 
 
-    **"Podemos utilizar nuestra cuenta de Facebook"**.
- 
-    <img src="assets/02.png" width="100%"/>
+```xml
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+```
 
-    <img src="assets/03.png" width="80%"/>
+3. Creamos un layout con un botón para localizar y dos textview que guardarán la latitud y longitud de la localización
 
-3. Una vez iniciada la sesión hacemos clic en **Mis Apps**, y después clic en **Crear app**.
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
 
-    <img src="assets/04.png" width="100%"/>
+    <TextView
+        android:id="@+id/tvLatitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="@+id/textView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-4. En el modal seleccionamos **Ninguno** y se hace clic en **Continuar**.
+    <Button
+        android:id="@+id/btnLocate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Localizar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintVertical_bias="0.060000002" />
 
-    <img src="assets/05.png" width="100%"/>
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:text="Latitud"
+        app:layout_constraintEnd_toStartOf="@+id/textView3"
+        app:layout_constraintHorizontal_bias="0.55"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
-5. Luego escribimos el nombre del proyecto y el correo de contacto, y hacemos clic en **Crear app**. En este momento puede solicitar nuestra contraseña de Facebook.
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.65" />
 
-    <img src="assets/06.png" width="100%"/>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.25" />
 
-    Una vez creado el proyecto nos mandará a la pantalla principal, donde se muestra el identificador de la app.
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="111dp"
+        android:layout_marginEnd="64dp"
+        android:text="Longitud"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
-    <img src="assets/07.png" width="100%"/>
+    <TextView
+        android:id="@+id/tvLongitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="@+id/textView3"
+        app:layout_constraintStart_toStartOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-6. Abrimos el siguiente [link](https://developers.facebook.com/docs/facebook-login/android) de Facebook para desarrolladores, para completar la configuración, y nos dirigimos al paso 1 del sitio, donde seleccionaremos el proyecto recién creado
+</androidx.constraintlayout.widget.ConstraintLayout>
+```
 
-    <img src="assets/08.png" width="90%"/>
+El layout debe verse así:
 
-7. Nos saltamos al paso 4 “Al inicio del ejemplo realizamos los pasos 2 y 3”. Abrimos los **strings**  de nuestro proyecto y agregamos el punto 2. Estos son únicos de nuestro proyecto.
+<img src="images/01.png" width="33%"/>
 
-    <img src="assets/09.png" width="100%"/>
+4. Procedemos a implementar el código de GPS
 
-8. Después se agrega el permiso de Internet, los metadatos y el provider de Facebook a nuestro  **AndroidManifest**, como se aprecia en la imagen.
+Seteamos nuestras variables (un id de permiso y el cliente localizador)
 
-    ```xml
-    <uses-permission android:name="android.permission.INTERNET"/>
-
-    …
-
-    <meta-data
-      android:name="com.facebook.sdk.ApplicationId"
-      android:value="@string/facebook_app_id" />
-
-    …
-
-    <provider
-      android:name="com.facebook.FacebookContentProvider"
-      android:authorities="com.facebook.app.FacebookContentProvider{cambiarPorId}"
-      android:exported="true"
-      tools:ignore="ExportedContentProvider" />
-    ```
-
-    <img src="assets/10.png" width="100%"/>
-
-9. Debe asociarse el nombre de tu paquete y la clase predeterminada con tu app
-
-    <img src="assets/11.png" width="100%"/>
-
-10. Posteriormente, en Android Studio hacemos clic en la siguiente ruta: **File > Project Structure > Modules > app > Signing Configs** y una vez dentro es necesario buscar el archivo de la llave.
-
-    "Podemos usar la llave generada en el Ejercicio 03 de la sesión 01", agregar los datos de usuario y hacer clic en **OK**. Este proceso se representa en la siguiente imagen.
-
-    <img src="assets/12.png" width="90%"/>
-
-11. Luego, en la pestaña de *Default Config*, en la opción de *Signing Config*, seleccionamos ***$signingConfigs.debug***. Después debe hacerse clic en OK, como se visualiza en la imagen.
-
-    <img src="assets/13.png" width="90%"/> 
-
-    Esto agrega la siguiente línea en el Gradle:
-
-    ```kotlin
-    signingConfigs {
-      debug {
-        storeFile file('/home/andres/Documentos/Android/DebugKey/debug.keystore')
-        storePassword 'android'
-        keyAlias 'android'
-      }
+```kotlin
+companion object{
+        const val PERMISSION_ID = 33
     }
-    ```
 
-12. Así, para generar la huella ejecutamos la siguiente línea en la terminal.
+    //Obeto que obtiene la localización
+    lateinit var mFusedLocationClient: FusedLocationProviderClient
+    private lateinit var btnLocate : Button
+    private lateinit var tvLatitude : TextView
+    private lateinit var tvLongitude :TextView
+```
 
-    ```hash
-    /opt/android-studio/jre/bin/keytool -exportcert -alias android -storepass android -keypass android -keystore /home/andres/Documentos/Android/DebugKey/debug.keystore  | openssl sha1 -binary | openssl base64
-    ```
+Las inicializamos dentro de `onCreate`
 
-    > Nota: la primera parte es la ruta donde está instalado **keytool**, luego la ruta donde está la llave, y después los datos de ésta.
-    La salida esperada es la siguiente: ywtccZ4ubNv2icrQKK9tCMYQN64=
+```kotlin
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-    > Pro-tip: guarda el hash generado.
+        btnLocate = findViewById(R.id.btnLocate)
+        tvLatitude = findViewById(R.id.tvLatitude)
+        tvLongitude = findViewById(R.id.tvLongitude)
+```
 
-13. Se agrega y guarda el hash en el portal de Facebook.
+un método para consultar el status de algún permiso en la app, responde con bool
 
-    <img src="assets/14.png" width="70%"/>
+```kotlin
+ private fun checkGranted(permission: String): Boolean{
+        return ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
+    }
+```
 
-14. Ahora, en Android Studio abrimos la Actividad que tiene la interfaz de Facebook y agregamos el siguiente código en el evento del botón Link.
 
-    ```kotlin
-    val content = ShareLinkContent.Builder()
-    .setContentUrl(Uri.parse("https://developers.facebook.com"))
-    .build()
+un código para checar si la app tiene permisos de localización, responde con un Booleano
 
-    ShareDialog.show(this, content)
-    ```
+```kotlin
+private fun checkPermissions(): Boolean {
+        if ( checkGranted(Manifest.permission.ACCESS_COARSE_LOCATION) &&
+            checkGranted(Manifest.permission.ACCESS_COARSE_LOCATION) ){
+            return true
+        }
+        return false
+    }
+```
 
-15. Se ejecuta el proyecto y se hace clic en el botón Link.
+una función para pedir el permiso de localización por si aún no se lo otorgamos en la app
 
-    <img src="assets/15.png" width="70%"/> 
+```kotlin
+//Pedir los permisos requeridos para que funcione la localización
+    private fun requestPermissions() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION),
+            PERMISSION_ID
+        )
+    }
+```
 
-    Si tenemos la app de Facebook instalada nos mostrará la siguiente interfaz, donde se muestra el link que agregamos en el código anterior, de lo contrario nos abrirá una página web donde nos pedirá iniciar sesión.
+consultamos si el GPS está prendido
 
-    <img src="assets/16.png" width="70%"/>
+```kotlin
+private fun isLocationEnabled(): Boolean {
+        var locationManager: LocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
+            LocationManager.NETWORK_PROVIDER
+        )
+    }
+```
 
-    <img src="assets/17.png" width="70%"/>
+Mostramos la localización en formato latitud y longitud en los TextViews correspondientes
 
-    <img src="assets/18.png" width="70%"/>
+```kotlin
+@SuppressLint("MissingPermission") 
+private fun getLocation() {
+        if (checkPermissions()) { //verificamos si tenemos permisos
+            if (isLocationEnabled()) { //localizamos sólo si el GPS está encendido
 
-</br>
+                mFusedLocationClient.lastLocation.addOnSuccessListener(this) { location ->
 
-**¡Felicidades!** Tu app ahora puede compartir contenido en Facebook.
+                   tvLatitude.text = location?.latitude.toString()
+                    tvLongitude.text = location?.longitude.toString()
 
-</br>
+                }
+            }
+        } else{
+            //si no se tiene permiso, pedirlo
+            requestPermissions()
+        }
+    }
+```
 
-[Siguiente ](../Reto-01/README.md)(Reto 1)
+Y asignamos el método getLocation al botón de localización
+
+La primera vez que abramos la app, o hasta no dar permisos, aparecerá este mensaje cuando demos click al botón
+
+<img src="images/02.png" width="33%"/>
+
+Resultado final:
+
+
+
+<img src="images/geo.gif" width="33%"/>
+
+[`Anterior`](..#readme) | [`Siguiente`](../Reto-01#readme)      
+
+</div>
+

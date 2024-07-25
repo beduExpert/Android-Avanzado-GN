@@ -1,40 +1,47 @@
+[`Android-Avanzado`](..#readme) > `Sesión 6`
 
-# :wave: Sesión 06: Deploys - Publica en tiendas alternativas a Google Play o en servidor externo
+## Sesión 6: Notifications
 
-## 🎯  Objetivo de la sesión:
+<img src="images/bell.jpg" align="right" height="120" hspace="10">
 
-- Gestionar la app en tiendas alternativas a Google Play o en servidor externo.
+<div style="text-align: justify;">
 
-## 🎯 Qué aprenderán
+### 1. Objetivos :dart: 
 
-- Generar APK / APP Bundle con llave “Release”
-- Publicación y gestión de app Android en tiendas alternativas a Google Play Store.
-- Publicación de app Android en servidor externo y gestión de las actualizaciones programáticamente.
-
-## ⚙ Requisitos
-
-+ Android studio
-+ Cuenta de GitHub
-+ Cuenta de ApkPure
-
-## 🎩 Desarrollo
-
-En esta sesión aprenderemos a crear la llave con la que generamos el apk firmado, para, posteriormente, publicarlo en tiendas alternativas a  Google Play Store. En suma, gestionaremos las actualizaciones programáticamente desde un servidor externo.
-
-Conforme el mundo de Android continúa su expansión, surgen alternativas para gestionar las apps: instalaciones y actualizaciones.
-
-A continuación veremos algunas alternativas al ecosistema de Google Play.
+- Manejar el funcionamiento de una push notification el alcance de dicha herramienta y su configuración.
+- Notificar al usuario de acciones realizadas a través de elementos gráficos estandarizados.
+- Configurar un servicio de push notifications en Firebase para recibir y customizar el comportamiento de estos.
 
 
-</br>
+### 2. Contenido :blue_book: 
 
-## 📂 Organización de la clase
+#### <ins>Notifications</ins>
 
-- 
-    - [Reto 01: Generando llave y firmando App](./Reto-01/README.md)
-- [Ejemplo 01: Subiendo APK a servidor externo](./Ejemplo-01/README.md)
-- [Ejemplo 02: Descargando e instalando APK programáticamente (Manual)](./Ejemplo-02/README.md)
-    - [Reto  02: Descargando actualizaciones automáticamente](./Reto-02/README.md)
-- [Ejemplo 03: Publicando en ApkPure](./Ejemplo-03/README.md)
-    - [Reto  03: Publicando en ApkMirror](./Reto-02/README.md)
-- [Postwork: Agregando actualización a tu proyecto](./Postwork/README.md)
+<ins>Notificaciones básicas</ins>
+
+Crearemos notificaciones locales sencillas desde nuestra app.
+
+- [**`EJEMPLO 1`**](Ejemplo-01/#readme)
+- [**`RETO 1`**](Reto-01/#readme)
+
+
+
+<ins>Notificaciones avanzadas</ins>
+
+Agregaremos elementos a las notificaciones que las personalizar y ajustan al contexto en que se utilizan. 
+
+- [**`EJEMPLO 2`**](Ejemplo-02#readme)
+- [**`RETO 2`**](Reto-02/#readme)
+
+### 3. Proyecto :hammer:
+
+Aplica los lineamientos que vienen en esta guía para definir y comenzar el desarrollo de tu proyecto.
+
+- [**`PROYECTO SESIÓN 6`**](Proyecto/#readme)
+
+  
+
+  [`Anterior`](../Sesion-05#readme) | [`Siguiente`](../Sesion-07#readme)
+
+</div>
+
