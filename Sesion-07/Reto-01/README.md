@@ -1,166 +1,163 @@
-# Reto 01: Personalizando mensajes
+[`Android Avanzado`](../../Readme.md) > [`Sesión 07`](..#readme) > `Reto 1`
 
-## Objetivo
+## Reto 1: Detectar un error
 
-* Personalizar los mensajes Toasty.
+<div style="text-align: justify;">
 
-## Desarrollo
 
-En el ejemplo 1 se implementó la librería Toasty, la cual nos permite mostrar avisos con diferentes colores, íconos, fuentes, entre otras personalizaciones.
+### 1. Objetivos :dart:
 
-Puedes encontrar opciones de personalización en la documentación oficial.
-[Haz clic aquí para abrir la documentación oficial de Toasty](https://github.com/GrenderG/Toasty)
+* Detectar un bug a través de Crashlytics.
 
-Para completar este reto necesitas sumar los siguientes puntos al proyecto:
+### 2. Requisitos :clipboard:
 
-1. El proyecto de esta sesión contiene varios botones dentro de la pantalla **Toasty**, cada botón debe mostrar el aviso **“Toast”** correspondiente. Por ejemplo si hacemos clic en Warning debería mostrarse el Toasty de **Warning**, el cual es **amarillo**.
+* Instalar previamente firebase y la dependencia de crashlytics
 
-    Te recomendamos generar alguna función que puedas llamar desde cualquier parte del código, y así con una llamada genérica puedas mostrar cualquier tipo de Toasty.
+### 3. Desarrollo :computer:
 
-</br>
+Vamos a crear una nueva aplicación de pago de un producto. Esta contiene un error que detectaremos mediante crashlytics. La instalación de las dependencias fue abordada previamente y por lo tanto, corren por cuenta del alumno.
 
-<details>
-    <summary>Solución</summary>
+1. Se debe diseñar la primera pantalla de la siguiente manera
 
-1. Crea el package **utils**.
-2. Crea un archivo de kotlin con el nombre de **Utils**, el cual debe estar dentro del package **utils**.
-3. Dentro del archivo crea las siguientes variables.
+<img src="01.png" width="33%"/>
 
-    ```kotlin
-    const val ERROR = "error"
-    const val SUCCESS = "success"
-    const val INFO = "info"
-    const val INFO_FORMATTED = "info_formatted"
-    const val WARNING = "warning"
-    const val NORMAL = "normal"
-    const val NORMAL_WITH_ICON = "normalWithIcon"
-    const val CUSTOM = "custom"
-    ```
 
-4. Agrega la siguiente función debajo de las variables previamente creadas.
+-Los radioButtons funcionan dentro de un RadioGroup, parecido a esto:
 
-    ```kotlin
-    fun showToasty(
-        context: Context,
-        type: String,
-        message: String,
-        duration: Int,
-        withIcon: Boolean,
-        drawable: Drawable?,
-        charSequence: CharSequence?
-    ) {
-        when (type) {
-            "error" -> Toasty.error(context, message, duration, withIcon).show()
-            "success" -> Toasty.success(context, message, duration, withIcon).show()
-            "info" -> Toasty.info(context, message, duration, withIcon).show()
-            "info_formatted" -> charSequence?.let { Toasty.info(context, it).show() }
-            "warning" -> Toasty.warning(context, message, duration, withIcon).show()
-            "normal" -> Toasty.normal(context, message, duration).show()
-            "normalWithIcon" -> Toasty.normal(context, message, duration, drawable).show()
-            "custom" -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                Toasty.custom(
-                    context,
-                    message,
-                    drawable,
-                    context.resources.getColor(R.color.purple_500, context.theme),
-                    context.resources.getColor(R.color.teal_200, context.theme),
-                    duration,
-                    true,
-                    true
-                ).show()
-            } else {
-                Toasty.custom(
-                    context,
-                    message,
-                    drawable,
-                    context.resources.getColor(R.color.purple_500),
-                    context.resources.getColor(R.color.teal_200),
-                    duration,
-                    true,
-                    true
-                ).show()
-            }
+```xml
+<RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="120dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp">
+        <RadioButton
+            android:id="@+id/rbtnPaypal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:checked="true"
+            android:text="Paypal" />
+
+        <RadioButton
+            android:id="@+id/rbtnWallet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="Monedero" />
+
+        <RadioButton
+            android:id="@+id/rbtnCard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="Tarjeta de crédito" />
+    </RadioGroup>
+```
+
+**El equipo debe ser capaz de generar el layout sin ayuda**
+
+- El MainActivity debe ser tal cuál el que está a continuación (no hace falta leerlo). No olvidar nombrar el botón de pago como ***btnPago*** para evitar inconsistencias (también los radioButtons deben mantener su id).
+
+```kotlin
+class MainActivity : AppCompatActivity() {
+
+    val VISA = "Visa"
+    val WALLET = "Wallet"
+    val PAYPAL = "PayPal"
+
+    val payments = arrayOf(
+        VISA,
+        WALLET,
+        PAYPAL
+    )
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        Crashlytics.setUserIdentifier("Bedu-LmtvK4ge-Fqox-blRy")
+        Crashlytics.setUserEmail("manuel@bedu.org")
+        Crashlytics.setUserName("Manuel Bedu")
+
+
+
+        btnError.setOnClickListener{
+            payGame()
         }
     }
-    ```
 
-5. Descarga la fuente de la [siguiente dirección](./GreatVibes-Regular.otf)
+    private fun payGame(){
 
-6. Después de descargar la fuente crea un directorio dentro de la app, con el nombre de **assets**, en la ruta **src/main**.
+        var paymentType: Int
 
-     <img src="assets/01.png" width="70%"/> 
+        if(rbtnPaypal.isChecked){
+            paymentType = 2
 
-     <img src="assets/02.png" width="70%"/> 
+        } else if(rbtnCard.isChecked){
+            paymentType = 0
 
-7. Una vez creada pega la fuente en la carpeta.
+        } else{
+            paymentType = 3
+        }
 
-8. ahora dirígete al **ToastyActivity**. Ahí agrega la siguiente función debajo del **onCreate**, la cual se encarga de generar el texto del **Toasty formatted**.
 
-    ```kotlin
-    private fun getFormattedMessage(): CharSequence? {
-        val prefix = "Formatted "
-        val highlight = "bold italic"
-        val suffix = " text"
-        val ssb = SpannableStringBuilder(prefix).append(highlight).append(suffix)
-        val prefixLen = prefix.length
-        ssb.setSpan(
-            StyleSpan(BOLD_ITALIC),
-            prefixLen, prefixLen + highlight.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        return ssb
+        Crashlytics.setInt("Tipo de pago",paymentType)
+        val payment = payments.get(paymentType)
+
+        if(payment == PAYPAL){
+            Snackbar.make(window.decorView.findViewById(android.R.id.content), "No se Admite PayPal", Snackbar.LENGTH_LONG)
+                .show()
+        } else{
+            val intent = Intent(this,SuccessActivity::class.java)
+            startActivity(intent)
+        }
+
+
     }
-    ```
+}
 
-9. En el mismo **ToastyActivity** reemplaza los eventos de los botones por el siguiente código.
+```
 
-    ```kotlin
-    binding.btnError.setOnClickListener {
-        showToasty(this, ERROR, "This is an error toast", Toast.LENGTH_SHORT, true, null, null)
+- Debe existir otra clase que se llame SuccessActivity con el siguiente código:
+
+```kotlin
+package org.bedu.crashlytics
+
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+
+class SuccessActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_success)
     }
-    binding.btnSuccess.setOnClickListener {
-        showToasty(this, SUCCESS, "Success!", Toast.LENGTH_SHORT, true, null, null)
-    }
-    binding.btnInfo.setOnClickListener {
-        showToasty(this, INFO, "Here is some info for you", Toast.LENGTH_SHORT, true, null, null)
-    }
-    binding.btnInfoFormatted.setOnClickListener {
-        showToasty(this, INFO_FORMATTED, "", Toast.LENGTH_SHORT, true, null, getFormattedMessage())
-    }
-    binding.btnWarning.setOnClickListener {
-        showToasty(this, WARNING, "Beware of the dog", Toast.LENGTH_SHORT, true, null, null)
-    }
-    binding.btnNormal.setOnClickListener {
-        showToasty(this, NORMAL, "Normal toast", Toast.LENGTH_SHORT, false, null, null)
-    }
-    binding.btnNormalWithIcon.setOnClickListener {
-        val icon = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            resources.getDrawable(R.drawable.ic_check_white_24dp, theme) else resources.getDrawable(R.drawable.ic_check_white_24dp)
-        showToasty(this, NORMAL_WITH_ICON, "Normal toast with icon", Toast.LENGTH_SHORT, true, icon, null)
-    }
-    binding.btnCustom.setOnClickListener {
-        Toasty.Config.getInstance()
-            .setToastTypeface(Typeface.createFromAsset(assets, "GreatVibes-Regular.otf"))
-            .allowQueue(false)
-            .setTextSize(35)
-            .apply()
 
-        val icon = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            resources.getDrawable(R.drawable.ic_check_white_24dp, theme) else resources.getDrawable(R.drawable.ic_check_white_24dp)
-        showToasty(this, CUSTOM, "Custom message", Toast.LENGTH_SHORT, true, icon, null)
+}
+```
 
-        Toasty.Config.reset()
-    }
-    ```
+y su respectivo layout
 
-10. Se ejecuta el proyecto. Se hace clic en **Toasty** y ahora se prueban los botones. Verás que cada uno muestra un Toast diferente.
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:textAlignment="center"
+        android:textSize="64sp"
+        android:text="¡Compra Efectuada!"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
-    <img src="assets/04.png" width="60%"/>
+</LinearLayout>
+```
 
-    <img src="assets/05.png" width="60%"/>  
+2. Probar el pago con los tres métodos de pago y solucionar los errores de Crash viendo el stacktrace en**Crashlytics**!
 
-</details>
+[`Anterior`](../Ejemplo-02#readme) | [`Siguiente`](../Proyecto#readme)      
 
-</br>
-</br>
-
-[Siguiente ](../Ejemplo-02/README.md)(Ejemplo 2)
+</div>

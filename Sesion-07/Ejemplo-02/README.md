@@ -1,521 +1,282 @@
-# Ejemplo 02: Agregando gráficas by MpAndroidChart
+[`Android Avanzado`](../..#readme) > [`Sesión 07`](..#readme) > `Ejemplo 2`
 
-## Objetivo
+## Ejemplo 2: Crashlytics
 
-* Implementar una de las mejores librerías, MpAndroidChart, para visualizar gráficas de barras, líneas, y pie con un rendimiento alto.
+<div style="text-align: justify;">
 
-## Desarrollo
 
-En este ejemplo descargaremos e instalaremos la librería MpAndroidChart. Como se mencionó en el prework, hay librerías que no están escritas en kotlin, algunas de ellas podríamos pasarlas a Kotlin con ayuda de Android Studio, pero existen otras que implican varios cambios, por lo que lo más recomendable sería utilizarlas con JAVA, y MpAndroidChart es una de ellas. Por lo anterior aprovecharemos para utilizar la interoperabilidad soportada por Kotlin y Android Studio.
+### 1. Objetivos :dart:
 
-Para hacerlo realizamos los siguientes pasos en el proyecto utilizado previamente:
+- Instalar Crashlytics
+- Hacer las primeras pruebas 
+- Utilizar las configuraciones y características adicionales que brinda Crashlytics
 
-1. Nos dirigimos al **Gradle** del módulo y agregamos las siguientes líneas de código.
+### 2. Requisitos :clipboard:
 
-    ```gradle
-    //    MPAndroidChart
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
-    ```
+* Instalar el sdk de Firebase
 
-2. Sincronizamos el proyecto.
+### 3. Desarrollo :computer:
 
-    <img src="assets/01.png" width="90%"/> 
+##### Configuración
 
-3. Creamos el **package items**, donde agregaremos los ítems que pintarán las gráficas.
+Antes de instalar y aplicar Crashlytics, debemos configurar nuestro proyecto en la Firebase console para crashlytics. Iremos a la barra izquierda y daremos click en Crashlytics, daremos en siguiente para todas las instrucciones.
 
-4. La primera clase es abstracta y tiene por nombre **ChartItem**, y tiene la tarea de agregar los métodos que implementarán los items, así como el tipo que tendrán. Para ello agregamos el siguiente código.
+![img](img/01.png)
 
-    ```kotlin
-    public abstract class ChartItem {
+![img](img/02.png)
 
-        static final int TYPE_BARCHART = 0;
-        static final int TYPE_LINE_CHART = 1;
-        static final int TYPE_PIE_CHART = 2;
 
-        ChartData<?> mChartData;
 
-        ChartItem(ChartData<?> cd) {
-            this.mChartData = cd;
-        }
+Ahora, agregaremos el plugin de Gradle de Crashlytics en ___build.gradle___
 
-        public abstract int getItemType();
+```groovy
+classpath 'com.google.firebase:firebase-crashlytics-gradle:2.5.2'
+```
 
-        public abstract View getView(int position, View convertView, Context c);
-    }
-    ```
 
-5. La segunda clase tiene por nombre **BarChartItem**, y se añade con el siguiente código. 
 
-    > Nota: fue agregada una condicional dentro del constructor para obtener el color, según el tema del dispositivo “**Dark / Day**”.
+En nuestro archivo ***app/build.gradle*** activaremos el plugin de crashlytics
 
-    ```kotlin
-    public class BarChartItem extends ChartItem {
+```groovy
+plugins{
+    id 'com.google.firebase.crashlytics'
+}
+```
 
-        private final Typeface mTf;
-        private final int resTextColor;
+E implementamos nuestra dependencia de crashlytics.
 
-        public BarChartItem(ChartData<?> cd, Context c) {
-            super(cd);
+```kotlin
+ implementation 'com.google.firebase:firebase-crashlytics-ktx' // Dependencia de crashlytics
+```
 
-            mTf = Typeface.createFromAsset(c.getAssets(), "OpenSans-Regular.ttf");
+Sincronizamos nuestro proyecto y corremos.
 
-            resTextColor = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ?
-                    c.getResources().getColor(R.color.text_color, c.getTheme())
-                    : c.getResources().getColor(R.color.text_color);
-        }
 
-        @Override
-        public int getItemType() {
-            return TYPE_BARCHART;
-        }
 
-        @SuppressLint("InflateParams")
-        @Override
-        public View getView(int position, View convertView, Context c) {
+##### Primer error
 
-            ViewHolder holder;
+Vamos a provocar nuestro primer error. En el arcchivo *activity_main.xml*, hay qué crear un botón para generar el crash:
 
-            if (convertView == null) {
-
-                holder = new ViewHolder();
-
-                convertView = LayoutInflater.from(c).inflate(
-                        R.layout.list_item_barchart, null);
-                holder.chart = convertView.findViewById(R.id.chart);
-
-                convertView.setTag(holder);
-
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-
-            holder.chart.getDescription().setEnabled(false);
-            holder.chart.setDrawGridBackground(false);
-            holder.chart.setDrawBarShadow(false);
-
-            XAxis xAxis = holder.chart.getXAxis();
-            xAxis.setPosition(XAxisPosition.BOTTOM);
-            xAxis.setTypeface(mTf);
-            xAxis.setTextColor(resTextColor);
-            xAxis.setDrawGridLines(false);
-            xAxis.setDrawAxisLine(true);
-
-            YAxis leftAxis = holder.chart.getAxisLeft();
-            leftAxis.setTypeface(mTf);
-            leftAxis.setLabelCount(5, false);
-            leftAxis.setTextColor(resTextColor);
-            leftAxis.setSpaceTop(20f);
-            leftAxis.setAxisMinimum(0f);
-
-            YAxis rightAxis = holder.chart.getAxisRight();
-            rightAxis.setTypeface(mTf);
-            rightAxis.setTextColor(resTextColor);
-            rightAxis.setLabelCount(5, false);
-            rightAxis.setSpaceTop(20f);
-            rightAxis.setAxisMinimum(0f);
-
-            mChartData.setValueTypeface(mTf);
-
-            Legend l = holder.chart.getLegend();
-            l.setTextColor(resTextColor);
-
-            holder.chart.setData((BarData) mChartData);
-            holder.chart.setFitBars(true);
-
-            holder.chart.animateY(700);
-
-            return convertView;
-        }
-
-        private static class ViewHolder {
-            BarChart chart;
-        }
-    }
-    ```
-
-6. La tercera clase tiene el nombre de **LineChartItem**, y esta se encarga de mostrar los datos de la gráfica de líneas. Agregamos el siguiente código para establecerla.
-
-    ```kotlin
-    public class LineChartItem extends ChartItem {
-
-        private final Typeface mTf;
-        private final int resTextColor;
-
-        public LineChartItem(ChartData<?> cd, Context c) {
-            super(cd);
-
-            mTf = Typeface.createFromAsset(c.getAssets(), "OpenSans-Regular.ttf");
-
-            resTextColor = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ?
-                    c.getResources().getColor(R.color.text_color, c.getTheme())
-                    : c.getResources().getColor(R.color.text_color);
-        }
-
-        @Override
-        public int getItemType() {
-            return TYPE_LINE_CHART;
-        }
-
-        @SuppressLint("InflateParams")
-        @Override
-        public View getView(int position, View convertView, Context c) {
-
-            ViewHolder holder;
-
-            if (convertView == null) {
-
-                holder = new ViewHolder();
-
-                convertView = LayoutInflater.from(c).inflate(
-                        R.layout.list_item_linechart, null);
-                holder.chart = convertView.findViewById(R.id.chart);
-
-                convertView.setTag(holder);
-
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-
-            holder.chart.getDescription().setEnabled(false);
-            holder.chart.setDrawGridBackground(false);
-
-            XAxis xAxis = holder.chart.getXAxis();
-            xAxis.setPosition(XAxisPosition.BOTTOM);
-            xAxis.setTypeface(mTf);
-            xAxis.setTextColor(resTextColor);
-            xAxis.setDrawGridLines(false);
-            xAxis.setDrawAxisLine(true);
-
-            YAxis leftAxis = holder.chart.getAxisLeft();
-            leftAxis.setTypeface(mTf);
-            leftAxis.setTextColor(resTextColor);
-            leftAxis.setLabelCount(5, false);
-            leftAxis.setAxisMinimum(0f);
-
-            YAxis rightAxis = holder.chart.getAxisRight();
-            rightAxis.setTypeface(mTf);
-            rightAxis.setTextColor(resTextColor);
-            rightAxis.setLabelCount(5, false);
-            rightAxis.setDrawGridLines(false);
-            rightAxis.setAxisMinimum(0f);
-
-            Legend l = holder.chart.getLegend();
-            l.setTextColor(resTextColor);
-
-            holder.chart.setData((LineData) mChartData);
-
-            holder.chart.animateX(750);
-
-            return convertView;
-        }
-
-        private static class ViewHolder {
-            LineChart chart;
-        }
-    }
-    ```
-
-7. Por último, la cuarta clase se añade con el nombre de **PieChartItem**, para mostrar los valores del pie, y se suma lo siguiente.
-
-    ```kotlin
-    public class PieChartItem extends ChartItem {
-
-        private final Typeface mTf;
-        private final SpannableString mCenterText;
-        private final int resTextColor;
-
-        public PieChartItem(ChartData<?> cd, Context c) {
-            super(cd);
-
-            mTf = Typeface.createFromAsset(c.getAssets(), "OpenSans-Regular.ttf");
-            mCenterText = generateCenterText();
-
-            resTextColor = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ?
-                    c.getResources().getColor(R.color.text_color, c.getTheme())
-                    : c.getResources().getColor(R.color.text_color);
-        }
-
-        @Override
-        public int getItemType() {
-            return TYPE_PIE_CHART;
-        }
-
-        @SuppressLint("InflateParams")
-        @Override
-        public View getView(int position, View convertView, Context c) {
-
-            ViewHolder holder;
-
-            if (convertView == null) {
-
-                holder = new ViewHolder();
-
-                convertView = LayoutInflater.from(c).inflate(
-                        R.layout.list_item_piechart, null);
-                holder.chart = convertView.findViewById(R.id.chart);
-
-                convertView.setTag(holder);
-
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-
-            holder.chart.getDescription().setEnabled(false);
-            holder.chart.setHoleRadius(52f);
-            holder.chart.setTransparentCircleRadius(57f);
-            holder.chart.setCenterText(mCenterText);
-            holder.chart.setHoleColor(resTextColor);
-            holder.chart.setCenterTextTypeface(mTf);
-            holder.chart.setCenterTextSize(9f);
-            holder.chart.setUsePercentValues(true);
-            holder.chart.setExtraOffsets(5, 10, 50, 10);
-
-            mChartData.setValueFormatter(new PercentFormatter());
-            mChartData.setValueTypeface(mTf);
-            mChartData.setValueTextSize(11f);
-            mChartData.setValueTextColor(resTextColor);
-
-            holder.chart.setData((PieData) mChartData);
-
-            Legend l = holder.chart.getLegend();
-            l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-            l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-            l.setOrientation(Legend.LegendOrientation.VERTICAL);
-            l.setTextColor(resTextColor);
-            l.setDrawInside(false);
-            l.setYEntrySpace(0f);
-            l.setYOffset(0f);
-
-            holder.chart.animateY(900);
-
-            return convertView;
-        }
-
-        private SpannableString generateCenterText() {
-            SpannableString s = new SpannableString("MPAndroidChart\nBedu\nAdvanced");
-            s.setSpan(new RelativeSizeSpan(1.6f), 0, 14, 0);
-            s.setSpan(new ForegroundColorSpan(ColorTemplate.VORDIPLOM_COLORS[0]), 0, 14, 0);
-            s.setSpan(new RelativeSizeSpan(1.0f), 14, 20, 0);
-            s.setSpan(new ForegroundColorSpan(Color.GRAY), 14, 20, 0);
-            s.setSpan(new RelativeSizeSpan(1.4f), 20, s.length(), 0);
-            s.setSpan(new ForegroundColorSpan(ColorTemplate.getHoloBlue()), 20, s.length(), 0);
-            return s;
-        }
-
-        private static class ViewHolder {
-            PieChart chart;
-        }
-    }
-    ```
-
-8. Descarga la fuente de la [siguiente dirección](./OpenSans-Regular.ttf) y agrégala en la carpeta de **assets**.
-
-    <img src="assets/03.png" width="80%"/> 
-
-9. Una vez creado el código de los **ítems**, agregamos la interfaz de los mismos mediante el siguiente código.
-
-    9.1  xml list_item_barchart
-
-
-    ```xml
-    <?xml version="1.0" encoding="utf-8"?>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
+```xml
+...
+    <Button
+        android:id="@+id/btnError"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:text="Provocar error"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+...
+```
 
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/chart"
-            android:layout_width="match_parent"
-            android:layout_height="200dp" />
+7. Setear el click listener del botón para generar el error en el *MainActivity*:
 
-    </LinearLayout>
-    ```
-
-    9.2 xml list_item_linechart
-
-    ```xml
-    <?xml version="1.0" encoding="utf-8"?>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/chart"
-            android:layout_width="match_parent"
-            android:layout_height="200dp" />
-
-    </LinearLayout>
-    ```
-
-    9.3 xml list_item_piechart
-
-    ```xml
-    <?xml version="1.0" encoding="utf-8"?>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/chart"
-            android:layout_width="match_parent"
-            android:layout_height="345dp" />
-
-    </LinearLayout>
-    ```
-
-10. Ahora nos dirigimos al **ChartActivity** y agregamos el siguiente código dentro del **onCreate**, el cual va a crear las 30 gráficas que veremos dentro de nuestra pantalla, además de seleccionar el color del texto a partir del tema, por lo que no debes olvidar agregar la variable resTextColor.
-
-    ```kotlin
-    private int resTextColor;
-
-    ...
-
-    resTextColor = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ?
-            getResources().getColor(R.color.text_color, getTheme())
-            : getResources().getColor(R.color.text_color);
-
-    ListView listView = findViewById(R.id.listView);
-    ArrayList<ChartItem> list = new ArrayList<>();
-
-    for (int i = 0; i < 30; i++) {
-        if (i % 3 == 0) {
-            list.add(new LineChartItem(generateDataLine(i + 1), getApplicationContext()));
-        } else if (i % 3 == 1) {
-            list.add(new BarChartItem(generateDataBar(i + 1), getApplicationContext()));
-        } else {
-            list.add(new PieChartItem(generateDataPie(), getApplicationContext()));
+```kotlin
+ btnError.setOnClickListener{
+            throw RuntimeException("Ejemplo de crash")
         }
-    }
+```
 
-    ChartDataAdapter cda = new ChartDataAdapter(getApplicationContext(), list);
-    listView.setAdapter(cda);
-    ```
+Corremos y pulsamos el botón, la aplicación debe crashear y mostrar un mensaje similar a este: 
 
-11. Ya que nuestra pantalla tendrá una lista, necesitamos crear un **adaptador**. Es posible agregar el siguiente código debajo del **onCreate** para ello.
+<img src="img/03.png" width="40%"/>
 
-    ```kotlin
-    private static class ChartDataAdapter extends ArrayAdapter<ChartItem> {
+Refrescaremos el panel de crashlytics en la consola, deberá salir un *Bloqueo* (ese es el error que provocamos).
 
-        ChartDataAdapter(Context context, List<ChartItem> objects) {
-            super(context, 0, objects);
+<img src="img/04.png" width="40%"/>
+
+- Al dar click sobre el botón, debe aparecer el siguiente panel, hacer todo lo que dice la imagen: 
+
+<img src="img/05.png" width="50%"/>
+
+- Al dar click al StackTrace, saldrá el siguiente panel, analizarlo y explorar las pestañas
+
+<img src="img/06.png" width="90%"/>
+
+- La última pestaña son datos del dispositivo que tuvo los errores
+
+<img src="img/07.png" width="90%"/>
+
+
+
+##### Crashlytics Log
+
+
+
+Primero, crearemos una instancia de ___FirebaseCrashlytics___ para poder ejecutar sus métodos.
+
+```kotlin
+val crashlytics = FirebaseCrashlytics.getInstance()
+```
+
+La pestaña de registros corresponde a logs que se imprimen desde la aplicación por medio del comando: 
+
+```kotlin
+CrashLytics.getInstance().log(ms: String)//De esta forma sólo se reporta el log
+```
+
+ el log de un crash report se envía en la siguiente vez que la aplicación se abra para evitar problemas de tráfico, por lo cual en los errores no críticos, hay que cerrar y volver a abrir nuestra app
+
+Vamos a implementar estos métodos en nuestro botón de de error
+
+
+```kotlin
+ btnError.setOnClickListener{
+            try {
+                throw NullPointerException()
+            } catch (ex: NullPointerException) {
+                crashlytics.log(Log.ERROR, "CrashError", "NullPointer Provocado para pruebas!")
+		crashlytics.recordException(ex) //para que se pueda reportar el non fatal exception
+            }
         }
+```
 
-        @NonNull
-        @Override
-        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-            return getItem(position).getView(position, convertView, getContext());
-        }
+***Nota: crashlytics guarda máximo 64kb del log en memoria para evitar realentamiento en la app***
 
-        @Override
-        public int getItemViewType(int position) {
-            ChartItem ci = getItem(position);
-            return ci != null ? ci.getItemType() : 0;
-        }
+***Nota 2: Los errores pueden tardar hasta 5 minutos en aparecer, tener paciencia si no aparece rápido***
 
-        @Override
-        public int getViewTypeCount() {
-            return 3;
-        }
-    }
-    ```
+En el dashboard, se deben ver reflejadas las tareas de la siguiente forma: 
 
-12. Como lo has notado, el código que agregamos en el **onCreate** muestra errores, ya que aún no hemos creado las funciones que generarán los datos para nuestras gráficas. 
-A continuación se muestra el código de las tres gráficas.
+<img src="img/08.png" width="90%"/>
 
-    12.1 Función generateDataLine
+Como ya no se usa el error provocado por Crashlytics, sino un NullPointerException provocado por nosotros, ahora se muestra que el origen del error 09fue en *MainActivity.kt*. Notamos también que dice *No crítico* (son errores que se cachan en un try catch)
 
-    ```kotlin
-    private LineData generateDataLine(int cnt) {
+<img src="img/09.png" width="90%"/>
 
-        ArrayList<Entry> values1 = new ArrayList<>();
+<img src="img/10.png" width="90%"/>
 
-        for (int i = 0; i < 12; i++) {
-            values1.add(new Entry(i, (int) (Math.random() * 65) + 40));
-        }
+Tanto en el logcat como en el registro aparece el error log que escribimos.
 
-        LineDataSet d1 = new LineDataSet(values1, "New DataSet " + cnt + ", (1)");
-        d1.setLineWidth(2.5f);
-        d1.setCircleRadius(4.5f);
-        d1.setHighLightColor(resTextColor);
-        d1.setValueTextColor(resTextColor);
-        d1.setDrawValues(false);
 
-        ArrayList<Entry> values2 = new ArrayList<>();
 
-        for (int i = 0; i < 12; i++) {
-            values2.add(new Entry(i, values1.get(i).getY() - 30));
-        }
+##### Agregando datos adicionales
 
-        LineDataSet d2 = new LineDataSet(values2, "New DataSet " + cnt + ", (2)");
-        d2.setLineWidth(2.5f);
-        d2.setCircleRadius(4.5f);
-        d2.setHighLightColor(resTextColor);
-        d2.setColor(ColorTemplate.MATERIAL_COLORS[0]);
-        d2.setCircleColor(ColorTemplate.MATERIAL_COLORS[0]);
-        d1.setValueTextColor(resTextColor);
-        d2.setDrawValues(false);
+Vamos a agregar datos extra, en este caso, simularemos algún identificador de usuario y otros datos que pueden ser útiiles para saber a quién le está sucediendo el error y bajo qué términos.
 
-        ArrayList<ILineDataSet> sets = new ArrayList<>();
-        sets.add(d1);
-        sets.add(d2);
+con el siguiente método, llamados en el onCreate: 
 
-        return new LineData(sets);
-    }
-    ```
+```kotlin
+crashlytics.setUserIdentifier("Bedu-LmtvK4ge-Fqox-blRy")
+```
 
-    12.2 Función generateDataBar
+Esperamos un momento y consultamos el dashboard de Crashlytics, abrimos el último registro y abrimos la pesataña *datos*:
 
-    ```kotlin
-    private BarData generateDataBar(int cnt) {
-        ArrayList<BarEntry> entries = new ArrayList<>();
+![img](img/11.png)
 
-        for (int i = 0; i < 12; i++) {
-            entries.add(new BarEntry(i, (int) (Math.random() * 70) + 30));
-        }
+En el anterior error, al entrar a la pestaña de Claves, podemos observar que el log está vacío:
 
-        BarDataSet d = new BarDataSet(entries, "New DataSet " + cnt);
-        d.setColors(ColorTemplate.MATERIAL_COLORS);
-        d.setHighLightAlpha(255);
-        d.setValueTextColor(resTextColor);
+![img](img/12.png)
 
-        BarData cd = new BarData(d);
-        cd.setBarWidth(0.9f);
-        cd.setValueTextColor(resTextColor);
-        return cd;
-    }
-    ```
+Pondremos ahora valores clave a los errores, llamando a los siguientes métodos en el *onCreate*:
 
-    12.3 Función generateDataPie
+```kotlin
+crashlytics.setCustomKey("email","manuel@bedu.org")
+crashlytics.setCustomKey("name","Manuel Bedu")
+crashlytics.setCustomKey("Edad", 23)
+```
 
-    ```kotlin
-    private PieData generateDataPie() {
-        ArrayList<PieEntry> entries = new ArrayList<>();
 
-        for (int i = 0; i < 4; i++) {
-            entries.add(new PieEntry((float) ((Math.random() * 70) + 30), "Quarter " + (i + 1)));
-        }
 
-        PieDataSet d = new PieDataSet(entries, "");
-        d.setSliceSpace(2f);
-        d.setValueTextColor(resTextColor);
-        d.setColors(ColorTemplate.MATERIAL_COLORS);
+También podemos agregar una serie de claves a través del método ___setCustomKeys___.
 
-        return new PieData(d);
-    }
-    ```
+```kotlin
+crashlytics.setCustomKeys {
+    key("Trabajo", "Developer")
+    key("Bloqueado",false)
+    key("Crédito",1350.23f)
+}
+```
 
-13. Ejecutamos el proyecto y hacemos clic en el botón **Mp Android Chart**. 
-Ahora se visualizarán las gráficas de la siguiente forma.
+corremos la aplicación y volvemos a generar el error. Consultamos el log y nos vamos a la pestaña *Claves*, debería salir un log similar al siguiente:
 
-    <img src="assets/02.png" width="60%"/>
+<img src="img/13.png" width="95%"/>
 
-</br>
 
-**¡Hecho!** Ahora nuestra app puede mostrar gráficas con muy buen rendimiento a pesar de la cantidad de elementos en la lista.
 
-</br>
+##### Activar correo de aviso
 
-[Siguiente ](../Reto-02/README.md)(Reto 2)
+Vamos a activar un correo de aviso cuando se genere un nuevo error. Para ello, tenemos qué dar click a la campana en la pantalla superior derecha (estando en el dashboard de Crashlytics).
+
+![img](img/14.png)
+
+Se desplegará un menú lateral, Dar click al enlace *Manage your alerts for this project*.
+
+![img](img/15.png)
+
+Se abrirá una nueva ventana con opciones de alerta para varios servicios, buscar Crashlytics y activar las casillas restantes (para nuevos errors urgentes y no urgentes).
+
+![img](img/16.png)
+
+Debemos mover un par de líneas de código al  error generado por nosotros para que Crashlytics lo reconozca como uno nuevo. Después de esto, reproduce nuevamente el error.
+
+Abrir la bandeja de la cuenta google que alberga el proyecto Firebase. Consultar el correo electrónico que ha llegado.
+
+![img](img/17.png)
+
+![img](img/18.png)
+
+##### Estados de incidencias
+
+Ahora vamos a modificar los estados de incidencias de errores, agregar notas y filtrarlos
+
+En el menú de Crashlytics, visualizar y clickar el filtro de *Problemas*.
+
+![img](img/19.png)
+
+1. En las opciones, enfocar *Estado de la incidencia*, se muestran tres opciones con cuatro estados
+
+- Abiertas
+- Cerradas
+- Silenciadas
+- Datos
+
+Vamos a manipular al menos tres de esos estados.
+
+![img](img/20.png)
+
+Abrimos cualquier problema Abierto (no dice ni cerrado ni silenciado y no se muestra opaco)
+
+en la siguiente página,debemos  buscar el botón azul *cerrar* y dar click a la flecha hacia abajo, aquí está la opción para cambiar a silenciado o cerrado un problema.
+
+![img](img/21.png)
+
+Cambiar a silenciado (el bicho capturado es azul)
+
+![img](img/22.png)
+
+Agregar una nota,  deberá visualizarse de la siguiente forma:
+
+![img](img/23.png)
+
+Cambiar a cerrado y agregar otra nota(el bicho capturado es verde con tapa roja)
+
+![img](img/24.png)
+
+Regresar a la pantalla principal de Crashlytics. Modificar otra incidencia aplicar el filtro de *Cerradas o silenciadas*, se deben visualizar únicamente las que modificaste.
+
+![img](img/25.png)
+
+##### Alertas de velocidad y Configuración de datos de fallos
+
+Si no deseas compartir la información de los crashes de tu app o quieres modificar el rango de tolerancia a incidencias repetidas por un periodo de tiempo, hay que abrir el DropDown menu en la esquina superior derecha del módulo de problemas.
+
+![img](img/26.png)
+
+\--
+
+
+
+![img](img/27.png)
+
+\--
+
+![img](img/28.png)
+
+
+
+[`Anterior`](../Ejemplo-01#readme) | [`Siguiente`](../Reto-01#readme)      
+
+</div>
+

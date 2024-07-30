@@ -1,34 +1,27 @@
+[`Android-Avanzado`](..#readme) > `Sesión 8`
 
-# :wave: Sesión 08: Realidad Aumentada - Implementaciones más utilizadas de RA
+## Sesión 8: Cámara y generación de pdf's
 
-## 🎯  Objetivo de la sesión:
+<img src="images/sensor.png" align="right" height="120" hspace="10">
 
-- Agregar algunas de las implementaciones más utilizadas de realidad aumentada en apps Android.
+<div style="text-align: justify;">
 
-## 🎯 Qué aprenderán
+### 1. Objetivos :dart: 
 
-- Implementar ArCore a un proyecto base Android.
-- Aplicar la función de mostrar rostros tipo Snapchat en una app Android mediante realidad aumentada.
-- Establecer la capacidad de renderizar modelos 3D en una app Android.
-- Enlazar a Google App la visualización de modelos.
+- Utilizar el hardware disponible de los dispositivos android para dar al usuario una interacción más integral con la app.
 
-## ⚙ Requisitos
+### 2. Contenido :blue_book:
 
-+ Android studio
-+ Télefono físico y/o emulador con soporte de Google ArCore
+<ins>Cámara</ins>
 
-## 🎩 Desarrollo
+Visualizaremos un Preview en pantalla que muestre lo que la cámara registre, capturaremos unas fotografías y  las almacenaremos en un sitio relativo a la aplicación.
 
-En esta sesión se sumarán en un nuevo proyecto algunas de las implementaciones más utilizadas de realidad aumentada en apps. Esto es un diferenciador en términos de prestaciones y tareas posibles mediante realidad aumentada, un nicho de mercado latente por su posibilidad de agregar elementos sensoriales de índole visual.
+- [**`EJEMPLO 1`**](Ejemplo-01#readme)
 
-</br>
 
-## 📂 Organización de la clase
 
-- [Ejemplo 01: Implementando ArCore y cambiando rostros desde imágenes](./Ejemplo-01/README.md)
-    - [Reto 01: Agregando nuevo rostro](./Reto-01/README.md)
-- [Ejemplo 02: Visualizando modelos 3D en el proyecto](./Ejemplo-02/README.md)
-    - [Reto  02: Probando modelos 3D](./Reto-02/README.md)
-- [Ejemplo 03: Mostrando rostros tipo Snapchat](./Ejemplo-03/README.md)
-    - [Reto  03: Personalizando opciones](./Reto-02/README.md)
-- [Postwork: Utilizando Scene Viewer](./Postwork/README.md)
+<br/>
+
+[`Anterior`](../Sesion-06#readme) | [`Siguiente`](..#readme) 
+
+</div>

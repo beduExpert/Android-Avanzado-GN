@@ -62,7 +62,8 @@ class HomeFragment : Fragment(), ProductAdapterListener {
            Si la respuesta es correcta, asignar los datos a la variable products
            y luego llamamos al método showProducts().
 
-           Si la respuesta es errónea o si no hubo una, mostrar
+           Si la respuesta es errónea o si no hubo una, mostrar un toast
+
 
          */
 

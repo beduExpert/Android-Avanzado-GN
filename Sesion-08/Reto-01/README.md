@@ -1,84 +1,67 @@
-# Reto 01: Agregando nuevo rostro
+[`Android Avanzado`](../..#readme) > [`Sesión 08`](..#readme) > `Reto 1`
 
-## Objetivo
+## Reto 1: Cámara
 
-* Agregar nueva apariencia digital al rostro a partir de imágenes y de una nueva interfaz.
+<div style="text-align: justify;">
 
-## Desarrollo
 
-En el ejemplo 1 se incorporaron las imágenes de un zorro para visualizarlas cuando se detecte un rostro. 
 
-Ahora, para completar este reto necesitas sumar los siguientes puntos al proyecto:
 
-1. Dentro de **FaceActivity**, agrega dos botones: “Pig y Fox” los cuales mostrarán el rostro según la opción elegida.
+### 1. Objetivos :dart:
 
-    - **a. Pig:** Muestra la “cara”, es decir orejas y boca, de un puerco.
-    - **b. Fox:** Muestra lo agregado en el ejemplo 01.
+- Aprender el flujo para pedir permiso de cámara dentro de la misma Activity
 
-    </br>
+### 2. Requisitos :clipboard:
 
-    Puedes buscar en Google los recursos, o bien tomarlos del siguiente recurso [zip con los archivos](./pig.zip).
+1. Haber realizado el [Ejemplo 2](Ejemplo-02)
 
-</br>
+### 3. Desarrollo :computer:
 
-Propuesta visual:
+Reemplazar la Acitvity de inicio por la de la cámara.
 
-<img src="assets/01.png" width="60%"/> 
+Para esto, vamos a requerir trasladar la petición de permisos a la pantalla de la cámara.
 
-</br>
-</br>
+El flujo debe ser el siguiente:
+
+- Al iniciarse la app sin ningún permiso, pedirlo. Si se da el permiso, inicializar la cámara; si no, el botón de la cámara debe realizar la petición del permiso cuando se le de click.
+
+- Al iniciarse la app con permiso, iniciar directamente la app.
 
 <details>
-    <summary>Solución</summary>
+	<summary>Solucion</summary>
+1. En el archivo de Manifiesto, Reemplazar 
 
-1. Crea la carpeta **Pig** y agrega los archivos del zip.
-     <img src="assets/02.png" width="70%"/> 
 
-2. Crea los botones en el xml **activity_face**.
+```xml
+<activity android:name=".CameraActivity">
+```
 
-    ```xml
-    <Button
-        android:id="@+id/btnPig"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="Pig" />
+por
 
-    <Button
-        android:id="@+id/btnFox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:text="Fox" />
-    ```
+```xml
+<activity android:name=".CameraActivity">
+```
 
-3. Agrega los eventos de los botones, y dentro agrega las llamadas para renderizar los elementos.
+2. copiar y pegar las funciones ***onRequestPermissionResult***, ***checkCameraPermission*** y ***requestPermissions*** en *CameraActivity*
 
-    ```kotlin
-    binding.btnFox.setOnClickListener {
-        earFur = "models/fox/ear_fur.png"
-        freckles = "models/fox/freckles.png"
-        noseFur = "models/fox/nose_fur.png"
+3. Escribir esta condicionante
 
-        surfaceView.onPause()
-        surfaceView.onResume()
-    }
-    binding.btnPig.setOnClickListener {
-        earFur = "models/pig/ear_fur.png"
-        freckles = "models/pig/freckles.png"
-        noseFur = "models/pig/nose_fur.png"
-
-        surfaceView.onPause()
-        surfaceView.onResume()
-    }
-    ```
-
-4. Se ejecuta el proyecto. Se hace clic en **Faces** y ahora se prueban los botones. Verás que cada uno muestra una apariencia de rostro diferente.
+```kotlin
+if(checkCameraPermission()){
+            startCamera()
+        } else{
+            requestPermissions()
+            capture_button.setOnClickListener {
+                requestPermissions()
+            }
+        }
+```
 
 </details>
 
-</br>
-</br>
 
-[Siguiente ](../Ejemplo-02/README.md)(Ejemplo 2)
+
+[`Anterior`](../Ejemplo-01#readme) | [`Siguiente`](..#readme)      
+
+</div>
+

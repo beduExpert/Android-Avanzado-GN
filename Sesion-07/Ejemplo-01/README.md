@@ -1,63 +1,201 @@
-# Ejemplo 01: Implementando Toasty
+[`Android Avanzado`](../..#readme) > [`Sesión 07`](..#readme) > `Ejemplo 1`
 
-## Objetivo
+## Ejemplo 1: Notificaciones y FCM
 
-* Implementar Toasty en un proyecto base Android para mostrar avisos "Toast" con mejoras visuales.
+<div style="text-align: justify;">
 
-## Desarrollo
 
-En el prework de esta sesión debiste crear desde cero un proyecto que contará con cinco botones en su pantalla principal: “Toasty, Mp Android Chart, Stacked bar, Short Bread y Fresco”; y cada botón debería abrir una pantalla con una interfaz mínima. 
 
-Sólo si no te fue posible completar este proyecto puedes utilizar el [Proyecto base](./base),
-El proyecto base muestra la siguiente interfaz:
 
-<img src="assets/01.png" width="60%"/>
+### 1. Objetivos :dart:
 
-Con la intención de agregar la dependencia de Toasty a nuestra app, realizaremos los siguientes pasos.
+* Instalar y utilizar el SDK de Firebase Message Cloud para el uso de push notifications
 
-1. Cada desarrollador tiene la opción de publicar las librerías en diferentes repositorios. Las que veremos en esta sesión se encuentran en **maven jitpack**, por lo que necesitamos indicarle al **Gradle** del proyecto donde buscará las librerías. Para ello agregamos las siguientes líneas de código en el Gradle del proyecto.
+### 2. Requisitos :clipboard:
 
-    ```gradle
-    maven { url "https://jitpack.io" }
-    ```
+1. Haber cursado los temas previos sobre notificaciones
+2. Leer todo lo relacionado a FCM en el prework
+3. Un dispositivo (emulador o físico) con Google Play Services
 
-    <img src="assets/02.png" width="90%"/> 
+### 3. Desarrollo :computer:
 
-2. Ahora nos dirigimos al Gradle del módulo y agregamos las siguientes líneas de código.
+Vamos a instalar la SDK de FCM Para android, y después la utilizaremos. Para ello, hay que configurar la aplicación en nuestro proyecto de Firebase (creado previamente en la [Sesión 6](../../Sesión-06#readme) ), en el [Ejemplo 1](../../Sesion-06/Ejemplo-01) para ser exactos.
 
-    ```gradle
-    //    Toasty
-    implementation 'com.github.GrenderG:Toasty:1.5.0'
-    ```
+**IMPORTANTE**: Debido a que FCM hace uso del SDK de Play Services, Se requiere una imagen de Android que tenga una versión compatible de Google Play Services.
 
-3. Sincronizamos el proyecto.
+a) En la pantalla de inicio del proyecto, click la opción *Añadir aplicación* y al ícono de android
 
-     <img src="assets/03.png" width="90%"/> 
+<img src="img/01.png" width="40%"/>
 
-4. Abrimos el **ToastyActivity** y agregamos el siguiente código en el evento del botón Error.
+<img src="img/02.png" width="40%"/>
 
-    ```kotlin
-    Toasty.error(this, "This is an error toast.", Toast.LENGTH_SHORT, true).show()
-    ```
+b) Registrar el nombre del paquete de la aplicación y su nickname
 
-5. Después sumamos el siguiente código en el evento del botón Success.
+<img src="img/03.png" width="40%"/>
 
-    ```kotlin
-    Toasty.success(this, "Success!", Toast.LENGTH_SHORT, true).show()
-    ```
+c) Descargar el archivo *google-services.json* y moverlo a la carpeta app del proyecto, como se indica en la imagen
 
-6. Ejecutamos el proyecto, hacemos clic en **Toasty**, seguido del botón Error, y vemos que nos muestra un Aviso “Toast” con una interfaz más colorida que los clásicos mensajes de Android.
 
-     <img src="assets/04.png" width="60%"/> 
+***Opcional:*** *el paso de comprobación puede ser saltado*
 
-7. Ahora hacemos clic en el botón **success** y observamos que el mensaje se muestra con otros colores, lo cual, en conjunto, nos permite mostrarle al usuario mensajes con este diseño según el tipo de aviso.
+d) Instalar las dependencias, tal cual se muestra en las instrucciones y sincroniza el proyecto.
 
-     <img src="assets/05.png" width="70%"/> 
+<img src="img/04.png" width="40%"/>
 
-</br>
+**¡LISTO!** Ya tienes firebase en tu proyecto.
 
-**¡Felicidades!** Tu app ahora puede mostrar mensajes con mejoras visuales según el tipo de aviso que se requiera mostrar.
 
-</br>
+1. Agregar la dependencia en gradle de FCM
 
-[Siguiente ](../Reto-01/README.md)(Reto 1)
+```groovy
+implementation 'com.google.firebase:firebase-messaging-ktx'
+```
+
+2. Creamos un clase que extienda de FirebaseMessagingService e Incluimos el servicio de FCM como service en el Manifiesto de nuestra aplicación. Esto sirve para opciones más allá de recibir notificaciones en background (mensajes en foreground, entre otras opciones).
+
+```kotlin
+class FirebaseMessaging: FirebaseMessagingService() {
+
+}
+```
+
+```xml
+ <service
+            android:name=".FirebaseMessaging"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+```
+
+3. Agregar el ícono bedu_icon del proyecto anterior a *drawable*. En el manifest pondremos estas líneas para agregaar un ícono si desde el servicio no se define uno, al igual que el otro metadata para notification channels.
+
+```xml
+<meta-data
+    android:name="com.google.firebase.messaging.default_notification_icon"
+    android:resource="@drawable/bedu_icon" />
+<meta-data
+    android:name="com.google.firebase.messaging.default_notification_channel_id"
+    android:value="DEFAULT_CHANNEL" />
+```
+
+4. En el *onCreate* del *MainActivity*, obtener el token FCM de nuestro dispositivo cliente e imprimirlo en el log (para pruebas).
+
+```kotlin
+FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("Error", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            val token = task.result
+
+            Log.d("FCM_TOKEN",token)
+            Toast.makeText(baseContext,"FCM token: $token", Toast.LENGTH_SHORT).show()
+        })
+```
+
+
+5. Ejecutaremos una prueba de notificación desde nuestra consola Firebase. En la barra lateral del menú principal, click a la opción *CloudMessaging*.
+
+<img src="img/05.png" width="40%"/>
+
+6. Click en ***Send your first message***
+
+<img src="img/06.png" width="40%"/>
+
+6. Escribir el título y el contenido de nuestra notificación.
+
+<img src="img/07.png" width="40%"/>
+
+7. Correr la aplicación, copiar el token como viene en el logcat (Filtrar el resultado del logcat con el Tag *FCM_TOKEN*) y cerrar la app.
+
+<img src="img/08.png" width="40%"/>
+
+8. Dar click en *Enviar mensaje de prueba*
+
+9. Ingresar el token copiado en la ventana, agregarlo y pulsar Test. **Nota: Importante cerrar la app o minimizarla**
+
+  <img src="img/09.png" width="40%"/>
+
+10. Recibirán una notificación como esta: 
+
+    <img src="img/10.png" width="40%"/>
+
+#### Declarando el canal de notificación
+
+Vamos a declarar el canal de notificación a utilizar, En el *MainActivity*.
+
+```kotlin
+companion object{
+        const val CHANNEL_ID = "CANAL_GENERICO"
+    }
+
+...
+
+override fun onCreate(savedInstanceState: Bundle?) {
+...
+if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            setNotificationChannel()
+        }
+...
+}
+
+...
+private fun setNotificationChannel(){
+        val channel = NotificationChannel(
+            CHANNEL_ID,
+            "Canal Generico",
+            NotificationManager.IMPORTANCE_DEFAULT
+        ).apply {
+            description = "CANAL GENERICO"
+        }
+
+        val notificationManager: NotificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        notificationManager.createNotificationChannel(channel)
+    }
+```
+
+
+
+#### Aplicación en primer plano
+
+Ahora vamos a correr la aplicación, mantenerla en primer plano y enviar otro mensaje de prueba por medio de la consola ¿Qué sucedió? No se recibe ningún mensaje porque se necesita habilitar un servicio que gestione la notificación en primer plano (la clase vacía que creamos previamente y que la declaramos como servicio en el Manifiesto).
+
+En nuestra clase *FirebaseMessaging*, haremos un *override* del método onMessageReceived para gestionar el mensaje arrivante. Los parámetros de la notificación (como título y cuerpo) los obtenemos de nuestro objeto ___remoteMessage___:
+
+```kotlin
+override fun onMessageReceived(remoteMessage: RemoteMessage) {
+        if (remoteMessage.notification != null) {
+            sendNotification(remoteMessage.notification?.title, remoteMessage.notification?.body)
+        }
+    }
+```
+
+En el método anterior, mandamos a llamar al método ___sendNotification()___, cuyo propósito es detonar nuestra notificación a través de nuestro ___NotificationManager___. Por lo cual la declaramos de la siguiente forma:
+
+```kotlin
+    private fun sendNotification(title: String?, body: String?){
+        Log.d("FCM_MESSAGE", "Cuerpo de la notificación: $body")
+
+        val notificationBuilder = NotificationCompat.Builder(this,MainActivity.CHANNEL_ID)
+            .setSmallIcon(R.drawable.bedu_icon)
+            .setContentTitle(title)
+            .setContentText(body)
+
+
+        //lanzamos la notificación
+        with(NotificationManagerCompat.from(this)) {
+            notify(0, notificationBuilder.build()) //en este caso pusimos un id genérico
+        }
+    }
+```
+
+Esta función nos permite mostrar una notificación personalizada con el título y el cuerpo de nuestra notificación. Sin embargo, podemos personalizar nuestra notificación de acuerdo a la función a cumplir (botones personalizados, poder enviar un mensaje, rechazar una llamada, etc.).
+
+[`Anterior`](..#readme) | [`Siguiente`](../Ejemplo-02)      
+
+</div>
